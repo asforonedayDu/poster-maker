@@ -19,7 +19,7 @@ module.exports = {
       // target: 'http://39.96.43.154:8080/',
       changeOrigin: true,
       // pathRewrite: {
-      //   '^/': '/api'
+      //   '^/api_h5': '/api'
       // }
     },
   },

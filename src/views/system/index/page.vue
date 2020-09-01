@@ -1,6 +1,7 @@
 <template>
   <div class="homepage-container">
-    <router-link to="/wordMaker">Go to wordMaker</router-link>
+    <router-link to="/wordMaker">跳转到组词页</router-link>
+    <router-link to="/editor">富文本编辑页</router-link>
   </div>
 </template>
 
@@ -28,5 +29,6 @@ export default {
     justify-content: space-around;
     align-items: center;
     background: black;
+    font-size: 30px;
   }
 </style>

@@ -20,6 +20,8 @@ import {
   // Form,
   // FormItem,
   // Card,
+  Message,
+  MessageBox,
   Input,
   // Dialog,
   Row,
@@ -80,3 +82,5 @@ Vue.component(Pagination.name, Pagination)
 Vue.component(Col.name, Col)
 Vue.component(Notification.name, Notification)
 Vue.prototype.$toast = Toast
+Vue.prototype.$message = Message
+Vue.prototype.$msgbox = MessageBox

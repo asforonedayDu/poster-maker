@@ -14,29 +14,6 @@ export default {
       }
     ]
   },
-  // banner配置
-  banner: [
-    {
-      label: '首页',
-      path: '/index'
-    },
-    {
-      label: '直播',
-      path: '/liveList'
-    },
-    {
-      label: '直播公约',
-      path: '/liveClause'
-    },
-    {
-      label: '用户协议',
-      path: '/userAgreement'
-    },
-    {
-      label: '联系我们',
-      path: '/contactUs'
-    },
-  ],
   // 注册的主题
   theme: {
     list: [

@@ -30,6 +30,15 @@ const frameIn = [
         },
         component: resolveComponentPath('wordMaker')
       },
+      {
+        path: '/editor',
+        name: 'editor',
+        meta: {
+          title: '富文本编辑',
+          auth: false
+        },
+        component: resolveComponentPath('editor')
+      },
     ]
   }
 ]
