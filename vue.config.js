@@ -18,7 +18,7 @@ process.env.VUE_APP_VERSION = require('./package.json').version
 // process.env.VUE_APP_BUILD_TIME = require('dayjs')().format('YYYY-M-D HH:mm:ss')
 process.env.VUE_APP_BUILD_TIME = '2020-8-15 12:00:00'
 // 基础路径 注意发布之前要先修改这里
-const publicPath = process.env.VUE_APP_PUBLIC_PATH || '/'
+const publicPath = process.env.VUE_APP_PUBLIC_PATH || '/company/'
 
 // 设置不参与构建的库 生产模式有效
 const externals = {}
