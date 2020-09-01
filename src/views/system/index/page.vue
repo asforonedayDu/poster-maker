@@ -1,0 +1,32 @@
+<template>
+  <div class="homepage-container">
+    <router-link to="/wordMaker">Go to wordMaker</router-link>
+  </div>
+</template>
+
+<script>
+
+export default {
+  name: 'homePage',
+  components: {},
+  data() {
+    return {}
+  },
+  created() {
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+  .homepage-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    align-items: center;
+    background: black;
+  }
+</style>
