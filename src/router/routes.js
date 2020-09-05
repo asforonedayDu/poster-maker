@@ -39,6 +39,24 @@ const frameIn = [
         },
         component: resolveComponentPath('editor')
       },
+      {
+        path: '/poster',
+        name: 'poster',
+        meta: {
+          title: '海报',
+          auth: false
+        },
+        component: resolveComponentPath('poster')
+      },
+      {
+        path: '/posterMaker',
+        name: 'posterMaker',
+        meta: {
+          title: '海报制作',
+          auth: false
+        },
+        component: resolveComponentPath('posterMaker')
+      },
     ]
   }
 ]

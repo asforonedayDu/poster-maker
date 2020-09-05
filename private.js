@@ -1,12 +1,23 @@
 const express = require('express')
 const path = require('path')
 const apiMocker = require('mocker-api')
+const fs = require('fs')
 
 // if (process.env.NODE_ENV === 'development') {
 //   const app = express()
 //   apiMocker(app, path.resolve('./mock/index.js'))
 //   app.listen(3333)
 // }
+function getAnimationList() {
+  const content = fs.readFileSync(path.resolve(__dirname, './src/views/poster/libs/animations.scss'), 'utf-8')
+  const regResult = content.match(/@keyframes (.*?) \{/gm)
+  const data = []
+  regResult.forEach(item => {
+    const result = /@keyframes (.*?) \{/.exec(item)
+    data.push(result[1])
+  })
+  return data
+}
 
 module.exports = {
   ENABLE_MOCK: false,
@@ -23,4 +34,5 @@ module.exports = {
       // }
     },
   },
+  getAnimationList
 }

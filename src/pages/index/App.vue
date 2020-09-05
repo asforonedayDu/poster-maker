@@ -17,7 +17,32 @@ export default {
   methods: {}
 }
 </script>
+<style lang="scss">
+  @import "../../views/poster/libs/animations";
 
+  .cell-container-mid {
+    width: 100%;
+    height: 160rem;
+    top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+    overflow: hidden;
+  }
+
+  .cell-container-flex {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+  }
+
+  .default-cell {
+    position: absolute;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+</style>
 <style lang="scss">
   @import '~@/assets/style/public-class.scss';
 

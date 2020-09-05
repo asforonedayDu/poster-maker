@@ -70,7 +70,7 @@ let pages = {
 }
 
 // pages = undefined
-function getEntry (globPath) {
+function getEntry(globPath) {
   let entries = {}, basename, tmp, pathname
   glob.sync(globPath).forEach(function (entry) {
     basename = path.basename(entry, path.extname(entry))
@@ -177,6 +177,14 @@ module.exports = {
         })
       })
     }
+    /**
+     * 把动画库的keyFrames转换成数组传到项目里面
+     */
+    config.plugin('define')
+    .tap(args => {
+      args[0].ANIMATE_LIST = JSON.stringify(PRV_CONFIG.getAnimationList())
+      return args
+    })
     /**
      * 删除懒加载模块的 prefetch preload，降低带宽压力
      * https://cli.vuejs.org/zh/guide/html-and-static-assets.html#prefetch
@@ -306,24 +314,6 @@ module.exports = {
           //       return /[\\/]node_modules[\\/]lodash/.test(module.resource)
           //     }
           //   },
-          // },
-          // axios: {
-          //   enforce: true,
-          //   name: 'chunk-axios',
-          //   priority: 22,
-          //   test: /[\\/]node_modules[\\/](axios)/,
-          // },
-          // vuex: {
-          //   enforce: true,
-          //   name: 'chunk-vuex',
-          //   priority: 23,
-          //   test: /[\\/]node_modules[\\/](vuex)/,
-          // },
-          // vueRouter: {
-          //   enforce: true,
-          //   name: 'chunk-vue-router', // split into a single package
-          //   priority: 24, // the weight needs to be larger than libs and app or it will be packaged into libs or app
-          //   test: /[\\/]node_modules[\\/](vue-router)/,
           // },
         }
       })
