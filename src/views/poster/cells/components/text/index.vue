@@ -1,7 +1,7 @@
 <template>
   <div class="cell-container-mid">
-    <div class="default-cell" :style="style">
-      <div ref="targetDom" :class="`cell-text-body ${verticalDirection?'vertical':''}`">
+    <div class="default-cell" :style="style" ref="targetDom">
+      <div :class="`cell-text-body ${verticalDirection?'vertical':''}`">
         {{content}}
       </div>
     </div>
@@ -21,11 +21,17 @@ export default {
       left: 40,
       top: 40
     },
-    animation: {},
-    content: '输入文字',
+    verticalDirection: false,
+    animationDuration: 1,
+    animationDelay: 0,
+    animationCount: 1,
+    animationFillMode: 'forwards',
+    content: 'TEXT',
+    fontsize: 8,
+    hideAfterAnimation: true,
   },
   panelList: [panelList.inputText, panelList.verticalDirection, panelList.fontsize, panelList.color, panelList.background,
-    panelList.backgroundImage, panelList.hideAfterAnimation, panelList.animateActions, panelList.animationCount, panelList.animationDelay, panelList.animationDuration, panelList.animationFillMode],
+    panelList.backgroundImage, panelList.hideAfterAnimation, panelList.animationActions, panelList.animationCount, panelList.animationDelay, panelList.animationDuration, panelList.animationFillMode],
   mixins: [animation, style],
   props: {
     content: {
@@ -49,11 +55,12 @@ export default {
 <style lang="scss" scoped>
   .cell-text-body {
     text-align: center;
-    padding: 3px 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     writing-mode: horizontal-tb;
+    height: 100%;
+    width: 100%;
   }
 
   .vertical {

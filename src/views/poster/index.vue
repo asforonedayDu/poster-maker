@@ -9,13 +9,24 @@ import page from "./page";
 
 export default {
   name: "poster",
+  props: {
+    pageData: {
+      default: () => {
+        return {}
+      }
+    }
+  },
   components: {
     page
   },
   created() {
-    let htmlWidth = document.documentElement.clientWidth || document.body.clientWidth
-    let htmlDom = document.getElementsByTagName('html')[0]
-    htmlDom.style.fontSize = (htmlWidth / 100) + 'px'
+    if (this.pageData) {
+      this.pages = this.pageData
+    } else {
+      let htmlWidth = document.documentElement.clientWidth || document.body.clientWidth
+      let htmlDom = document.getElementsByTagName('html')[0]
+      htmlDom.style.fontSize = (htmlWidth / 100) + 'px'
+    }
   },
   data() {
     return {
@@ -174,14 +185,12 @@ export default {
                   height: 80,
                   width: 80,
                 },
-                animation: {
-                  actions: ['rotateSlideInLeftDegree'],
-                  duration: '1',
-                  count: 1,
-                  fillMode: 'forwards',
-                  delay: 0,
-                },
                 background: 'white',
+                animationActions: ['rotateSlideInLeftDegree'],
+                animationDuration: '1',
+                animationCount: 1,
+                animationFillMode: 'forwards',
+                animationDelay: 0,
               }
             },
             {
@@ -193,33 +202,12 @@ export default {
                   height: 80,
                   width: 80,
                 },
-                animation: {
-                  actions: ['rotateSlideInRight'],
-                  duration: '1',
-                  count: 1,
-                  fillMode: 'forwards',
-                  delay: 0,
-                },
+                animationActions: ['rotateSlideInRight'],
+                animationDuration: '1',
+                animationCount: 1,
+                animationFillMode: 'forwards',
+                animationDelay: 0,
                 background: 'white',
-              }
-            },
-            {
-              type: 'cell-board',
-              props: {
-                position: {
-                  top: 20,
-                  left: 30,
-                  height: 40,
-                  width: 40,
-                },
-                animation: {
-                  actions: ['fadeInLeft'],
-                  duration: '1',
-                  count: 1,
-                  fillMode: 'both',
-                  delay: 1,
-                },
-                background: 'black',
               }
             },
           ]

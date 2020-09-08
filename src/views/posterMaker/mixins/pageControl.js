@@ -1,9 +1,11 @@
 import Vue from "vue";
+import {treeDataType} from '../index'
 
 export default {
   data() {
     return {
       dialogAddCellVisible: false,
+      dialogPreviewVisible: false,
       onSelectAddCell: {
         inputCellName: '',
         cell: ''
@@ -13,7 +15,7 @@ export default {
   },
   methods: {
     handleClickPage(item, index) {
-      this.onselectCell = null
+      this.onSelectCell = null
       this.onSelectPage = item
     },
     handleCreateNewPage() {
@@ -21,7 +23,7 @@ export default {
       this.pages.push({
         id: length,
         name: `第${length + 1}页`,
-        type: 'page'
+        createType: treeDataType.PAGE
       })
     },
     getPageOptions(item, index) {
@@ -33,7 +35,15 @@ export default {
             this.onSelectPage = item
             this.dialogAddCellVisible = true
           }
-        }
+        },
+        {
+          text: '删除',
+          onClick: (item, index) => {
+            this.onSelectPage = null
+            this.onSelectCell = null
+            this.pages.splice(index, 1)
+          }
+        },
       ]
     },
     handleAddCell() {
@@ -46,13 +56,13 @@ export default {
         return
       }
       this.dialogAddCellVisible = false
-      if (!this.onSelectPage.children) this.$set(this.onSelectPage, 'children', [])
-      this.onSelectPage.children.push({
+      if (!this.onSelectPage.cells) this.$set(this.onSelectPage, 'cells', [])
+      this.onSelectPage.cells.push(_.cloneDeep({
         name: this.onSelectAddCell.inputCellName,
-        id: this.onSelectPage.id + '_' + this.onSelectPage.children.length,
-        type: 'cell',
-        data: _.clone(this.onSelectAddCell.cell)
-      })
+        id: this.onSelectPage.id + '_' + this.onSelectPage.cells.length,
+        createType: treeDataType.CELL,
+        ...this.onSelectAddCell.cell
+      }))
     }
   }
 }

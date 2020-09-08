@@ -7,6 +7,11 @@
             新建页面
           </div>
         </template>
+        <template v-slot:footer>
+          <div class="header-body" @click="dialogPreviewVisible=true">
+            预览
+          </div>
+        </template>
       </tree-container>
     </div>
     <div class="maker-body">
@@ -15,7 +20,7 @@
     <div class="cell-config-body">
       <cell-config-panel v-if="onSelectCell" :onSelectCell.sync="onSelectCell"/>
     </div>
-    <el-dialog title="添加模板元素" :visible.sync="dialogAddCellVisible">
+    <el-dialog title="添加模板元素" :visible.sync="dialogAddCellVisible" :close-on-click-modal="false">
       <el-input v-model="onSelectAddCell.inputCellName" placeholder="输入自定义名字"></el-input>
       <el-radio class="radio-add-cell" v-model="onSelectAddCell.cell" v-for="(cell,index) in cellList" :label="cell"
                 :key="index">
@@ -25,6 +30,15 @@
         <el-button @click="dialogAddCellVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleAddCell">确 定</el-button>
       </span>
+    </el-dialog>
+    <el-dialog title="预览" v-if="dialogPreviewVisible" :visible.sync="dialogPreviewVisible">
+      <div>
+        <div class="preview-example-body">
+          <div class="example-container">
+            <poster :pageData="pages"/>
+          </div>
+        </div>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -38,7 +52,12 @@ import pageControl from './mixins/pageControl'
 import cellControl from './mixins/cellControl'
 import demoContainer from './demoContainer'
 import cellConfigPanel from './cellConfigPanel'
+import poster from '@/views/poster/index'
 
+export const treeDataType = {
+  CELL: '_CELL',
+  PAGE: '_PAGE',
+}
 export const baseConfig = {
   designWidth: 500,
   designHeight: 800,
@@ -62,11 +81,11 @@ export default {
     'tree-container': treeContainer,
     'demo-container': demoContainer,
     'cell-config-panel': cellConfigPanel,
+    'poster': poster,
   },
   mixins: [pageControl, cellControl],
   created() {
     this.animateList = util.getAnimationList()
-    console.log('animateList', this.animateList)
     // let htmlWidth = document.documentElement.clientWidth || document.body.clientWidth
     let htmlDom = document.getElementsByTagName('html')[0]
     htmlDom.style.fontSize = '5px'
@@ -78,8 +97,8 @@ export default {
         {
           id: 0,
           name: '第一页',
-          type: 'page',
-          children: []
+          cells: [],
+          createType: treeDataType.PAGE
         }
       ],
       cellList: cellList,
@@ -89,7 +108,7 @@ export default {
     treeData() {
       const values = this.pages
       if (values && Object.keys(values).length > 0) {
-        return flattenObj({targetObj: values, childrenKey: 'children'})
+        return flattenObj({targetObj: values, childrenKey: 'cells'})
       } else {
         return []
       }
@@ -107,17 +126,17 @@ export default {
           backgroundColor: 'white'
         },
         handleClickItem: function (item, index) {
-          if (item.type === 'page') {
+          if (item.createType === treeDataType.PAGE) {
             return this.handleClickPage(item, index)
-          } else if (item.type === 'cell') {
+          } else if (item.createType === treeDataType.CELL) {
             return this.handleClickCell(item, index)
           }
         }.bind(self),
         moreOption: {
           getOption: (item, index) => {
-            if (item.type === 'page') {
+            if (item.createType === treeDataType.PAGE) {
               return this.getPageOptions(item, index)
-            } else if (item.type === 'cell') {
+            } else if (item.createType === treeDataType.CELL) {
               return this.getCellOptions(item, index)
             }
             return []
@@ -174,5 +193,27 @@ export default {
       margin: 30px 0;
       display: block;
     }
+
+    .preview-example-body {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .example-container {
+        width: 500px;
+        height: 800px;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, .3);
+        border-radius: 30px;
+        margin-left: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+    }
+
   }
 </style>

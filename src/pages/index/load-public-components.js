@@ -12,7 +12,6 @@ import Toast from '@/components/common/toast/index.js'
 
 // Element
 import element from 'element-ui'
-
 Vue.use(element)
 // import {
 //   Button,
@@ -62,10 +61,10 @@ const dynamicLoadComponents = {
 }
 // 在这里配置项目需要公共引用的组件
 const _needComponents = [
-  // {
-  //   name: 'banner',
-  //   path: 'common/banner'
-  // },
+  {
+    name: 'color-pick',
+    path: 'color-pick'
+  },
 ]
 
 Vue.use(dynamicLoadComponents)

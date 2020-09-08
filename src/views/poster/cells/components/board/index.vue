@@ -18,11 +18,18 @@ export default {
   descriptor: '块元素(矩形区域，用于颜色块，背景色，动画块)',
   defaultProps: {
     position: {
-      left: 30,
-      top: 30
+      width:70,
+      height:70,
+      left: 20,
+      top: 20
     },
-    width: 40,
-    height: 40,
+    width:60,
+    height:60,
+    animationDuration: 1,
+    animationDelay: 0,
+    animationCount: 1,
+    animationFillMode: 'forwards',
+    hideAfterAnimation: true,
   },
   panelList: panelCellList,
   mixins: [animation, style],
