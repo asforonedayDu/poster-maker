@@ -7,7 +7,7 @@
 
 <script>
 import style from '../../mixins/style'
-import {panelList} from '@/views/posterMaker/cellConfigPanel/index.vue'
+import panelList from '@/views/posterMaker/cellConfigPanel/panelList'
 
 const panelCellList = Object.values({...panelList, inputText: null, verticalDirection: null, fontsize: null})
 

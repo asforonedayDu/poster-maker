@@ -33,6 +33,14 @@ module.exports = {
       //   '^/api_h5': '/api'
       // }
     },
+    '/nodeServer': {
+      target: 'http://127.0.0.1/',
+      // target: 'http://39.96.43.154:8080/',
+      changeOrigin: true,
+      // pathRewrite: {
+      //   '^/api_h5': '/api'
+      // }
+    },
   },
   getAnimationList
 }

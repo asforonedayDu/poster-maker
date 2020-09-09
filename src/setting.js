@@ -1,5 +1,5 @@
 export default {
-  api_prefix: '/api_h5/',
+  api_prefix: '/nodeServer/v1/',
   isDev: process.env.NODE_ENV === 'development',
   // 在读取持久化数据失败时默认页面
   page: {

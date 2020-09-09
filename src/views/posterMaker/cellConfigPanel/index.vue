@@ -2,57 +2,10 @@
 import Vue from 'vue'
 import util from "@/views/posterMaker/libs/utils";
 import {animateCell, animateQueueCell} from '@/views/poster/libs/animate-help'
+import panelList from "@/views/posterMaker/cellConfigPanel/panelList";
+import assetsManage from "@/views/posterMaker/cellConfigPanel/assetsManage";
+import panelRender from "@/views/posterMaker/cellConfigPanel/panelRender";
 
-export const panelList = {
-  inputText: {
-    method: 'rInputText',
-    propKey: 'content',
-  },
-  verticalDirection: {
-    method: 'rVerticalDirection',
-    propKey: 'verticalDirection',
-  },
-  background: {
-    method: 'rBackground',
-    propKey: 'background',
-  },
-  backgroundImage: {
-    method: 'rBackgroundImage',
-    propKey: 'backgroundImage',
-  },
-  color: {
-    method: 'rColor',
-    propKey: 'color',
-  },
-  fontsize: {
-    method: 'rFontsize',
-    propKey: 'fontsize',
-  },
-  animationActions: {
-    method: 'rAnimationActions',
-    propKey: 'animationActions',
-  },
-  hideAfterAnimation: {
-    method: 'rHideAfterAnimation',
-    propKey: 'hideAfterAnimation',
-  },
-  animationDuration: {
-    method: 'rAnimationDuration',
-    propKey: 'animationDuration',
-  },
-  animationCount: {
-    method: 'rAnimationCount',
-    propKey: 'animationCount',
-  },
-  animationFillMode: {
-    method: 'rAnimationFillMode',
-    propKey: 'animationFillMode',
-  },
-  animationDelay: {
-    method: 'rAnimationDelay',
-    propKey: 'animationDelay',
-  },
-}
 const watcher = {}
 Object.keys(panelList).forEach(key => {
   const propKey = panelList[key]['propKey']
@@ -66,6 +19,7 @@ Object.keys(panelList).forEach(key => {
 })
 const vueComponent = {
   name: "cell-config-panel",
+  mixins: [assetsManage, panelRender],
   props: {
     onSelectCell: {
       default: null
@@ -88,7 +42,7 @@ const vueComponent = {
     ...watcher,
     onSelectCell(val) {
       this.setConfigData(val)
-    }
+    },
   },
   render(h, context) {
     if (!this.onSelectCell.panelList) {
@@ -109,6 +63,7 @@ const vueComponent = {
           )
         })}
         {this.renderAnimatePickWindow(h)}
+        {this.renderAssetsWindow(h)}
       </div>
     )
   },
@@ -137,7 +92,6 @@ const vueComponent = {
       this.showAnimatePickWindow = false
     },
     renderAnimatePickWindow(h) {
-      const self = this
       return (
         <el-dialog title="选择动画" visible={this.showAnimatePickWindow} show-close={false}>
           <div class="pick-window-body">
@@ -167,137 +121,34 @@ const vueComponent = {
         </el-dialog>
       )
     },
-    rInputText(h, config) {
+    renderAssetsWindow(h) {
       return (
-        <div class="input-main">
-          <span>修改文字内容:</span>
-          <el-input vModel={this.configProps[config.propKey]} placeholder="请输入内容"/>
-        </div>
-      )
-    },
-    rVerticalDirection(h, config) {
-      return (
-        <div>
-          <span>文字方向:  </span>
-          <el-radio-group vModel={this.configProps[config.propKey]}>
-            <el-radio label={false}>水平方向</el-radio>
-            <el-radio label={true}>竖直方向</el-radio>
-          </el-radio-group>
-        </div>
-      )
-    },
-    rBackground(h, config) {
-      return (
-        <div class="input-main">
-          <span>背景颜色(rgba|16进制|颜色单词):</span>
-          <div class="inline-content">
-            <el-button class="button-front" on-click={() => {
-              this.showBackgroundColorPick = !this.showBackgroundColorPick
-            }}>开关颜色面板
-            </el-button>
-            <el-input class="input-right" vModel={this.configProps[config.propKey]} placeholder=""/>
+        <el-dialog title="选择素材"
+                   visible={this.showAssetsWindow} {...{on: {'update:visible': () => this.showAssetsWindow = false}}}
+                   class="assets-body" width="80%">
+          <div class="upload-img-body">
+            <input ref="uploadInput" class="upload-button-input" type="file"
+                   accept="image/jpg,image/jpeg,image/png,image/gif,*.svg"
+                   on-change={this.handleImgFileChange}/>
+            <el-button class="upload-button" onClick={() => this.$refs.uploadInput.click()}>上传素材</el-button>
           </div>
-          {this.showBackgroundColorPick &&
           <div>
-            <color-pick vModel={this.configProps[config.propKey]} color-format="rgb" show={true}/>
-          </div>}
-        </div>
-      )
-    },
-    rBackgroundImage(h, config) {
-      return (
-        <div class="input-main">
-          <span>背景图片(图片链接):</span>
-          <el-input vModel={this.configProps[config.propKey]} placeholder="图片链接"/>
-        </div>
-      )
-    },
-    rColor(h, config) {
-      return (
-        <div class="input-main">
-          <span>文字颜色(rgba|16进制|颜色单词):</span>
-          <div class="inline-content">
-            <el-button class="button-front" on-click={() => {
-              this.showTextColorPick = !this.showTextColorPick
-            }}>开关颜色面板
-            </el-button>
-            <el-input class="input-right" vModel={this.configProps[config.propKey]} placeholder=""/>
+            <div class="assets-list">
+              {
+                this.commonAssets.map(asset => {
+                  return (
+                    <div class="asset-body">
+                      <div class="asset-img-body" vOn:click={() => this.setBackgroundImage(asset)}>
+                        <img src={asset.asset_content}/>
+                        {asset.uploading && <div class="uploading-tag">上传中</div>}
+                      </div>
+                    </div>
+                  )
+                })
+              }
+            </div>
           </div>
-          {this.showTextColorPick &&
-          <div>
-            <color-pick vModel={this.configProps[config.propKey]} color-format="rgb" show={true}/>
-          </div>}
-        </div>
-      )
-    },
-    rFontsize(h, config) {
-      return (
-        <div class="input-main">
-          <span>字体大小(基于屏幕宽度百分比 数字):</span>
-          <el-input vModel={this.configProps[config.propKey]} placeholder="基于屏幕宽度百分比"/>
-        </div>
-      )
-    },
-    rAnimationActions(h, config) {
-      const actions = this.configProps[config.propKey]
-      return (
-        <div class="input-main">
-          <span style={{display: 'inline-block'}}>当前动画:(可以多选，动画会依次播放)</span>
-          <div class="inline-content">
-            {actions && actions.map((name, index) => {
-              return (<el-tag key={index}>{name}</el-tag>)
-            })}
-          </div>
-          <el-button onClick={() => this.showAnimatePickWindow = true}>选择动画:</el-button>
-        </div>
-      )
-    },
-    rHideAfterAnimation(h, config) {
-      return (
-        <div>
-          <span>动画结束后是否隐藏:  </span>
-          <el-radio-group vModel={this.configProps[config.propKey]}>
-            <el-radio label={true}>是</el-radio>
-            <el-radio label={false}>否</el-radio>
-          </el-radio-group>
-        </div>
-      )
-    },
-    rAnimationDuration(h, config) {
-      return (
-        <div class="input-main">
-          <span>动画执行时间(数字 单位秒):</span>
-          <el-input vModel={this.configProps[config.propKey]} placeholder="数字 单位秒"/>
-        </div>
-      )
-    },
-    rAnimationCount(h, config) {
-      return (
-        <div class="input-main">
-          <span>动画执行次数(数字或者infinite表示无限循环):</span>
-          <el-input vModel={this.configProps[config.propKey]} placeholder="数字"/>
-        </div>
-      )
-    },
-    rAnimationFillMode(h, config) {
-      return (
-        <div class="input-main">
-          <span>动画结束时的状态:</span>
-          <el-radio-group vModel={this.configProps[config.propKey]}>
-            <el-radio class="radio-label-body" label={'none'}>无</el-radio>
-            <el-radio label={'forwards'}>维持结束状态</el-radio>
-            <el-radio label={'both'}>both</el-radio>
-            <el-radio label={'backwards'}>backwards</el-radio>
-          </el-radio-group>
-        </div>
-      )
-    },
-    rAnimationDelay(h, config) {
-      return (
-        <div className="input-main">
-          <span>动画执行延时:</span>
-          <el-input vModel={this.configProps[config.propKey]} placeholder="数字 单位秒"/>
-        </div>
+        </el-dialog>
       )
     },
   }
@@ -354,6 +205,7 @@ export default vueComponent
 
       .input-right {
         flex: 1;
+        flex-shrink: 1;
       }
     }
 
@@ -411,6 +263,74 @@ export default vueComponent
     .color-pick-body {
       cursor: pointer;
       margin-left: 20px;
+    }
+
+    .assets-body {
+    }
+
+    .upload-img-body {
+      width: 100%;
+      height: 40px;
+      position: relative;
+
+      .upload-button-input {
+        position: absolute;
+        opacity: 0;
+        left: 20px;
+        width: 100px;
+        height: 100%;
+        cursor: pointer;
+        margin: auto 0;
+      }
+
+      .upload-button {
+        position: absolute;
+        left: 20px;
+        width: 100px;
+        height: 100%;
+        margin: auto 0;
+      }
+    }
+
+    .assets-list {
+      width: 100%;
+      height: 600px;
+      display: flex;
+      flex-flow: row wrap;
+      overflow-y: scroll;
+
+      .asset-body {
+        height: 250px;
+        min-width: 100px;
+        margin-right: 20px;
+        margin-top: 20px;
+        display: inline-flex;
+        flex-flow: column nowrap;
+        align-items: center;
+
+        .asset-img-body {
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          position: relative;
+
+          img {
+            max-height: 100%;
+          }
+
+          .uploading-tag {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+          }
+        }
+      }
     }
   }
 </style>
