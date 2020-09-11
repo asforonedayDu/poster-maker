@@ -1,10 +1,16 @@
 import setting from "@/setting";
+import jsonp from 'jsonp'
 
 export default ({request, tools}) => ({
   /**
    * @description 获取素材库资源
    */
   async GET_COMMON_ASSETS() {
+    // return new Promise((resolve, reject) => {
+    //   jsonp(setting.node_server + 'queryAllPicAssets', {}, (result) => {
+    //     resolve(result.data)
+    //   })
+    // })
     // 接口请求
     return await request({
       url: setting.node_server + 'queryAllPicAssets',

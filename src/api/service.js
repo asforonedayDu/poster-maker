@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import { errorLog, errorCreate } from './tools'
 
-axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = true
 
 /**
  * @description 创建请求实例
