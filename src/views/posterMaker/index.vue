@@ -6,10 +6,11 @@
           <div class="header-body" @click="handleCreateNewPage">
             新建页面
           </div>
-        </template>
-        <template v-slot:footer>
           <div class="header-body" @click="dialogPreviewVisible=true">
             预览
+          </div>
+          <div class="header-body" @click="showPageData">
+            查看数据
           </div>
         </template>
       </tree-container>
@@ -95,12 +96,84 @@ export default {
     return {
       pages: [
         {
-          id: 0,
-          name: '第一页',
-          cells: [],
-          createType: treeDataType.PAGE
-        }
-      ],
+          "id": 0, "name": "第一页", "cells": [{
+            "name": "背景图",
+            "id": "0_0",
+            "createType": "_CELL",
+            "type": "cell-flex-board",
+            "descriptor": "弹性块(随目标设备屏幕宽高拉伸，用于全屏自适应背景元素)",
+            "props": {
+              "position": {"width": 100, "height": 100, "left": 0, "top": 0},
+              "animationDuration": 1,
+              "animationDelay": 0,
+              "animationCount": 1,
+              "animationFillMode": "forwards",
+              "hideAfterAnimation": true,
+              "background": "rgba(165,52,141,1)"
+            },
+            "panelList": [{"method": "rBackground", "propKey": "background"}, {
+              "method": "rBackgroundImage",
+              "propKey": "backgroundImage"
+            }, {"method": "rColor", "propKey": "color"}, {
+              "method": "rAnimationActions",
+              "propKey": "animationActions"
+            }, {"method": "rHideAfterAnimation", "propKey": "hideAfterAnimation"}, {
+              "method": "rAnimationDuration",
+              "propKey": "animationDuration"
+            }, {"method": "rAnimationCount", "propKey": "animationCount"}, {
+              "method": "rAnimationFillMode",
+              "propKey": "animationFillMode"
+            }, {"method": "rAnimationDelay", "propKey": "animationDelay"}],
+            "$level": 1,
+            "$position": [0, 0],
+            "$hasChild": false,
+            "$parentId": 0,
+            "$namePath": "第一页"
+          }], "createType": "_PAGE", "$level": 0, "$position": [0], "$hasChild": true, "$parentId": -1, "$namePath": ""
+        }, {
+          "id": 1,
+          "name": "第2页",
+          "createType": "_PAGE",
+          "$level": 0,
+          "$position": [1],
+          "$hasChild": true,
+          "$parentId": -1,
+          "$namePath": "",
+          "cells": [{
+            "name": "背景",
+            "id": "1_0",
+            "createType": "_CELL",
+            "type": "cell-flex-board",
+            "descriptor": "弹性块(随目标设备屏幕宽高拉伸，用于全屏自适应背景元素)",
+            "props": {
+              "position": {"width": 101.8, "height": 101.125, "left": -1.4000000000000001, "top": -0.5},
+              "animationDuration": 1,
+              "animationDelay": 0,
+              "animationCount": 1,
+              "animationFillMode": "forwards",
+              "hideAfterAnimation": true,
+              "background": "rgba(71,73,63,1)"
+            },
+            "panelList": [{"method": "rBackground", "propKey": "background"}, {
+              "method": "rBackgroundImage",
+              "propKey": "backgroundImage"
+            }, {"method": "rAnimationActions", "propKey": "animationActions"}, {
+              "method": "rHideAfterAnimation",
+              "propKey": "hideAfterAnimation"
+            }, {"method": "rAnimationDuration", "propKey": "animationDuration"}, {
+              "method": "rAnimationCount",
+              "propKey": "animationCount"
+            }, {"method": "rAnimationFillMode", "propKey": "animationFillMode"}, {
+              "method": "rAnimationDelay",
+              "propKey": "animationDelay"
+            }],
+            "$level": 1,
+            "$position": [1, 0],
+            "$hasChild": false,
+            "$parentId": 1,
+            "$namePath": "第2页"
+          }]
+        }],
       cellList: cellList,
     }
   },
@@ -145,7 +218,15 @@ export default {
       }
     }
   },
-  methods: {}
+  methods: {
+    showPageData() {
+      this.$alert(_.cloneDeep(this.pages), '数据', {
+        confirmButtonText: '确定',
+        callback: action => {
+        }
+      });
+    }
+  }
 }
 </script>
 <style lang="scss">

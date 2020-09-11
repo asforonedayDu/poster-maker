@@ -8,7 +8,8 @@ export default {
       showAssetsWindow: false,
       requestedAssets: false,
       commonAssets: [],
-      fileList: []
+      fileList: [],
+      onSelectAsset: null,
     }
   },
   methods: {
@@ -54,6 +55,21 @@ export default {
     setBackgroundImage(asset) {
       if (asset.uploading) return
       this.$set(this.configProps, panelList.backgroundImage.propKey, asset.asset_content)
+      this.showAssetsWindow = false
+    },
+    handleAssetClick(asset) {
+      if (!this.onSelectAsset || this.onSelectAsset.asset_id !== asset.asset_id) {
+        this.onSelectAsset = asset
+      } else {
+        this.onSelectAsset = null
+      }
+    },
+    async deleteAsset(asset) {
+      const data = await this.$api.DELETE_COMMON_ASSETS(asset.asset_id)
+      console.log('data', data)
+      const index = this.commonAssets.indexOf(asset)
+      this.commonAssets.splice(index, 1)
+      this.onSelectAsset = null
     }
   },
   watch: {

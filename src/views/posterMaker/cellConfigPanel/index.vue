@@ -138,15 +138,25 @@ const vueComponent = {
                 this.commonAssets.map(asset => {
                   return (
                     <div class="asset-body">
-                      <div class="asset-img-body" vOn:click={() => this.setBackgroundImage(asset)}>
+                      <div class="asset-img-body" vOn:click={() => this.handleAssetClick(asset)}>
                         <img src={asset.asset_content}/>
                         {asset.uploading && <div class="uploading-tag">上传中</div>}
+                        {this.onSelectAsset === asset && <div class="asset-selected"/>}
                       </div>
                     </div>
                   )
                 })
               }
             </div>
+            <div class="operation-buttons-body">
+              {this.onSelectAsset &&
+              <div class="operation-buttons">
+                <el-button type="danger" on-click={() => this.deleteAsset(this.onSelectAsset)}>删除</el-button>
+                <el-button type="primary" on-click={() => this.setBackgroundImage(this.onSelectAsset)}>确认</el-button>
+              </div>
+              }
+            </div>
+
           </div>
         </el-dialog>
       )
@@ -297,7 +307,7 @@ export default vueComponent
       height: 600px;
       display: flex;
       flex-flow: row wrap;
-      overflow-y: scroll;
+      overflow-y: auto;
 
       .asset-body {
         height: 250px;
@@ -329,8 +339,29 @@ export default vueComponent
             height: 100%;
             background: rgba(0, 0, 0, 0.3);
           }
+
+          .asset-selected {
+            position: absolute;
+            bottom: 0;
+            width: 70%;
+            height: 3px;
+            background: rgba(0, 0, 0, .7);
+          }
         }
       }
     }
+
+    .operation-buttons-body {
+      height: 40px;
+
+      .operation-buttons {
+        height: 100%;
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 40px;
+        margin-top: 30px;
+      }
+    }
+
   }
 </style>

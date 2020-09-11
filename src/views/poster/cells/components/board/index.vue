@@ -1,6 +1,6 @@
 <template>
   <div class="cell-container-mid">
-    <div class="default-cell" :style="style" ref="targetDom">
+    <div class="default-cell" :style="{...style}" ref="targetDom">
 
     </div>
   </div>
@@ -11,7 +11,13 @@ import animation from '../../mixins/animation'
 import style from '../../mixins/style'
 import panelList from '@/views/posterMaker/cellConfigPanel/panelList'
 
-const panelCellList = Object.values({...panelList, inputText: null, verticalDirection: null, fontsize: null})
+const panelCellList = Object.values({
+  ...panelList,
+  inputText: null,
+  verticalDirection: null,
+  color: null,
+  fontsize: null
+})
 
 export default {
   name: "cell-board",

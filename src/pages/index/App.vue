@@ -38,9 +38,9 @@ export default {
 
   .default-cell {
     position: absolute;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-position: center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
   }
 </style>
 <style lang="scss">

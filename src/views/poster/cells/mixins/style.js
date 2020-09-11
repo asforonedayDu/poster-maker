@@ -25,10 +25,14 @@ export default {
       }
       this.position.height && (style.height = `${this.position.height}%`)
       this.position.width && (style.width = `${this.position.width}%`)
-      this.background && (style.background = `${this.background}`)
+      if (this.background || this.backgroundImage) {
+        style.background = `${this.backgroundImage && `url(${this.backgroundImage})`} ${this.background && `${this.background}`}`
+        console.log('style.background', style.background)
+      }
+      // this.background && (style.background = `${this.background}`)
       this.color && (style.color = `${this.color}`)
       this.fontsize && (style.fontSize = `${this.fontsize}rem`)
-      this.backgroundImage && (style.backgroundImage = `${this.backgroundImage}`)
+      // this.backgroundImage && (style.backgroundImage = `${this.backgroundImage}`)
       return style
     }
   }
