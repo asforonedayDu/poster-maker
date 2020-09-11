@@ -7,7 +7,7 @@ export default ({request, tools}) => ({
   async GET_COMMON_ASSETS() {
     // 接口请求
     return await request({
-      url: setting.api_prefix + 'queryAllPicAssets',
+      url: setting.node_server + 'queryAllPicAssets',
       method: 'get',
       params: {}
     })
@@ -18,7 +18,7 @@ export default ({request, tools}) => ({
   async DELETE_COMMON_ASSETS(id) {
     // 接口请求
     return await request({
-      url: setting.api_prefix + 'removeAsset',
+      url: setting.node_server + 'removeAsset',
       method: 'get',
       params: {
         asset_id: id
@@ -31,7 +31,7 @@ export default ({request, tools}) => ({
   async SAVE_ASSETS(asset_name, asset_content) {
     // 接口请求
     return await request({
-      url: setting.api_prefix + 'addAsset',
+      url: setting.node_server + 'addAsset',
       method: 'get',
       params: {
         create_user_id: 1,

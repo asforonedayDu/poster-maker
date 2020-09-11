@@ -39,9 +39,10 @@ export default {
         {
           text: '删除',
           onClick: (item, index) => {
+            const i = this.pages.indexOf(item)
+            this.pages.splice(i, 1)
             this.onSelectPage = null
             this.onSelectCell = null
-            this.pages.splice(index, 1)
           }
         },
       ]

@@ -1,5 +1,6 @@
 export default {
   api_prefix: '/nodeServer/v1/',
+  node_server: process.env.NODE_ENV === 'development' ? '/nodeServer/v1/' : 'http://nodeserver.jryaodian.com/nodeServer/v1/',
   isDev: process.env.NODE_ENV === 'development',
   // 在读取持久化数据失败时默认页面
   page: {
