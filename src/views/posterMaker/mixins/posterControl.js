@@ -16,6 +16,17 @@ export default {
     }
   },
   methods: {
+    async deletePosterData() {
+      if (this.onSelectExistedPoster === null) {
+        this.$message('请选择一个海报')
+        return
+      }
+      const result = await this.$api.DELETE_POSTER_LIST(this.posterList[this.onSelectExistedPoster].poster_id)
+      this.posterList.splice(this.onSelectExistedPoster, 1)
+      this.onSelectExistedPoster = null
+      this.requestedPosterList = false
+      this.$message('删除成功')
+    },
     showPosterManageWindow() {
       this.isShowDialogPosterManageWindow = true
     },
@@ -35,9 +46,15 @@ export default {
         return
       }
       const data = _.cloneDeep(this.pages)
+      const poster = this.posterList[this.onSelectSaveTargetPoster]
       const result = await this.$api.UPDATE_POSTER({
-        poster_id: this.posterList[this.onSelectSaveTargetPoster].poster_id, poster_data: JSON.stringify(data)
+        poster_id: poster.poster_id,
+        create_user_id: poster.create_user_id,
+        poster_name: poster.poster_name,
+        poster_type: poster.poster_type,
+        poster_data: JSON.stringify(data),
       })
+      this.requestedPosterList = false
       this.$message('保存成功')
       this.isShowDialogPosterManageWindow = false
     },
@@ -70,6 +87,8 @@ export default {
         create_user_id: 1, poster_name: this.inputNewPosterName, poster_type: 1, poster_data: JSON.stringify(data)
       })
       this.$message('保存成功')
+      this.poster.poster_id = result.insertId
+      this.requestedPosterList = false
       this.isShowDialogPosterManageWindow = false
     }
   },
@@ -84,6 +103,7 @@ export default {
           return
         }
         Vue.set(this, 'posterList', data)
+        this.requestedPosterList = true
       }
     }
   }

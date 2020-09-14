@@ -14,6 +14,19 @@ export default ({request, tools}) => ({
     })
   },
   /**
+   * @description 删除海报
+   */
+  async DELETE_POSTER_LIST(poster_id) {
+    // 接口请求
+    return await request({
+      url: setting.node_server + 'removePoster',
+      method: 'get',
+      params: {
+        poster_id
+      }
+    })
+  },
+  /**
    * @description 更新现有海报
    */
   async UPDATE_POSTER(params) {

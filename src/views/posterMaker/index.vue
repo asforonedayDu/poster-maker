@@ -27,7 +27,7 @@
         <div class="manage-container">
           <div class="pick-poster-body">
             <div class="pick-title">
-              .选择一个海报导入
+              .导入\删除海报数据
             </div>
             <div class="poster-pick-list">
               <el-radio v-for="(poster,index) in posterList" class="pick-poster-item" v-model="onSelectExistedPoster"
@@ -36,7 +36,8 @@
               </el-radio>
             </div>
             <div class="pick-bottom">
-              <el-button type="primary" @click="setPosterData">确认</el-button>
+              <el-button type="danger" @click="deletePosterData">删除</el-button>
+              <el-button type="primary" @click="setPosterData">导入</el-button>
             </div>
           </div>
 
@@ -53,7 +54,7 @@
               </el-radio>
             </div>
             <div class="pick-bottom">
-              <el-button type="primary" @click="savePosterData">确认</el-button>
+              <el-button type="primary" @click="savePosterData">更新</el-button>
             </div>
           </div>
 
@@ -65,7 +66,7 @@
               <el-input v-model="inputNewPosterName" placeholder="输入自定义海报名字"></el-input>
             </div>
             <div class="pick-bottom">
-              <el-button type="primary" class="create-new-button" @click="handleCreatePoster">确 定</el-button>
+              <el-button type="primary" class="create-new-button" @click="handleCreatePoster">创建</el-button>
             </div>
           </div>
         </div>
