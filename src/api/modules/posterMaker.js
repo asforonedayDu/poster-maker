@@ -3,6 +3,39 @@ import jsonp from 'jsonp'
 
 export default ({request, tools}) => ({
   /**
+   * @description 获取海报库资源
+   */
+  async GET_POSTER_LIST() {
+    // 接口请求
+    return await request({
+      url: setting.node_server + 'queryAllPoster',
+      method: 'get',
+      params: {}
+    })
+  },
+  /**
+   * @description 更新现有海报
+   */
+  async UPDATE_POSTER(params) {
+    // 接口请求
+    return await request({
+      url: setting.node_server + 'alterPoster',
+      method: 'get',
+      params
+    })
+  },
+  /**
+   * @description 新建海报
+   */
+  async CREATE_POSTER(params) {
+    // 接口请求
+    return await request({
+      url: setting.node_server + 'addPosterData',
+      method: 'get',
+      params
+    })
+  },
+  /**
    * @description 获取素材库资源
    */
   async GET_COMMON_ASSETS() {

@@ -3,14 +3,14 @@
     <div class="cells-body">
       <tree-container :data="treeData" :options="treeOptions" ref="treeContainer">
         <template v-slot:header>
-          <div class="header-body" @click="handleCreateNewPage">
-            新建页面
-          </div>
           <div class="header-body" @click="dialogPreviewVisible=true">
             预览
           </div>
-          <div class="header-body" @click="showPageData">
-            查看数据
+          <div class="header-body" @click="showPosterManageWindow">
+            数据管理(导入、保存、新建)
+          </div>
+          <div class="header-body" @click="handleCreateNewPage">
+            新建页面
           </div>
         </template>
       </tree-container>
@@ -21,6 +21,56 @@
     <div class="cell-config-body">
       <cell-config-panel v-if="onSelectCell" :onSelectCell.sync="onSelectCell"/>
     </div>
+    <el-dialog title="海报管理" :visible.sync="isShowDialogPosterManageWindow" custom-class="poster-manage-dialog"
+               :close-on-click-modal="false">
+      <div class="poster-manage-body">
+        <div class="manage-container">
+          <div class="pick-poster-body">
+            <div class="pick-title">
+              .选择一个海报导入
+            </div>
+            <div class="poster-pick-list">
+              <el-radio v-for="(poster,index) in posterList" class="pick-poster-item" v-model="onSelectExistedPoster"
+                        :label="index" :key="poster.poster_id">
+                {{poster.poster_name}}
+              </el-radio>
+            </div>
+            <div class="pick-bottom">
+              <el-button type="primary" @click="setPosterData">确认</el-button>
+            </div>
+          </div>
+
+          <div class="pick-poster-body">
+            <div class="pick-title">
+              .保存当前海报数据到指定数据源
+            </div>
+            <div class="poster-pick-list">
+              <el-radio v-for="(_poster,index) in posterList" class="pick-poster-item"
+                        v-model="onSelectSaveTargetPoster"
+                        :label="index" :key="_poster.poster_id">
+                <span v-if="poster.poster_id===_poster.poster_id" style="color:red;">(当前海报)</span>
+                {{_poster.poster_name}}
+              </el-radio>
+            </div>
+            <div class="pick-bottom">
+              <el-button type="primary" @click="savePosterData">确认</el-button>
+            </div>
+          </div>
+
+          <div class="create-poster-body">
+            <div class="pick-title">
+              .保存新海报
+            </div>
+            <div class="create-poster-content">
+              <el-input v-model="inputNewPosterName" placeholder="输入自定义海报名字"></el-input>
+            </div>
+            <div class="pick-bottom">
+              <el-button type="primary" class="create-new-button" @click="handleCreatePoster">确 定</el-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
     <el-dialog title="添加模板元素" :visible.sync="dialogAddCellVisible" :close-on-click-modal="false">
       <el-input v-model="onSelectAddCell.inputCellName" placeholder="输入自定义名字"></el-input>
       <el-radio class="radio-add-cell" v-model="onSelectAddCell.cell" v-for="(cell,index) in cellList" :label="cell"
@@ -51,6 +101,7 @@ import treeContainer from '@/components/tree-container'
 import cells from '../poster/cells/index.js'
 import pageControl from './mixins/pageControl'
 import cellControl from './mixins/cellControl'
+import posterControl from './mixins/posterControl'
 import demoContainer from './demoContainer'
 import cellConfigPanel from './cellConfigPanel'
 import poster from '@/views/poster/index'
@@ -84,7 +135,7 @@ export default {
     'cell-config-panel': cellConfigPanel,
     'poster': poster,
   },
-  mixins: [pageControl, cellControl],
+  mixins: [pageControl, cellControl, posterControl],
   created() {
     this.animateList = util.getAnimationList()
     // let htmlWidth = document.documentElement.clientWidth || document.body.clientWidth
@@ -94,86 +145,7 @@ export default {
   },
   data() {
     return {
-      pages: [
-        {
-          "id": 0, "name": "第一页", "cells": [{
-            "name": "背景图",
-            "id": "0_0",
-            "createType": "_CELL",
-            "type": "cell-flex-board",
-            "descriptor": "弹性块(随目标设备屏幕宽高拉伸，用于全屏自适应背景元素)",
-            "props": {
-              "position": {"width": 100, "height": 100, "left": 0, "top": 0},
-              "animationDuration": 1,
-              "animationDelay": 0,
-              "animationCount": 1,
-              "animationFillMode": "forwards",
-              "hideAfterAnimation": true,
-              "background": "rgba(165,52,141,1)"
-            },
-            "panelList": [{"method": "rBackground", "propKey": "background"}, {
-              "method": "rBackgroundImage",
-              "propKey": "backgroundImage"
-            }, {"method": "rColor", "propKey": "color"}, {
-              "method": "rAnimationActions",
-              "propKey": "animationActions"
-            }, {"method": "rHideAfterAnimation", "propKey": "hideAfterAnimation"}, {
-              "method": "rAnimationDuration",
-              "propKey": "animationDuration"
-            }, {"method": "rAnimationCount", "propKey": "animationCount"}, {
-              "method": "rAnimationFillMode",
-              "propKey": "animationFillMode"
-            }, {"method": "rAnimationDelay", "propKey": "animationDelay"}],
-            "$level": 1,
-            "$position": [0, 0],
-            "$hasChild": false,
-            "$parentId": 0,
-            "$namePath": "第一页"
-          }], "createType": "_PAGE", "$level": 0, "$position": [0], "$hasChild": true, "$parentId": -1, "$namePath": ""
-        }, {
-          "id": 1,
-          "name": "第2页",
-          "createType": "_PAGE",
-          "$level": 0,
-          "$position": [1],
-          "$hasChild": true,
-          "$parentId": -1,
-          "$namePath": "",
-          "cells": [{
-            "name": "背景",
-            "id": "1_0",
-            "createType": "_CELL",
-            "type": "cell-flex-board",
-            "descriptor": "弹性块(随目标设备屏幕宽高拉伸，用于全屏自适应背景元素)",
-            "props": {
-              "position": {"width": 101.8, "height": 101.125, "left": -1.4000000000000001, "top": -0.5},
-              "animationDuration": 1,
-              "animationDelay": 0,
-              "animationCount": 1,
-              "animationFillMode": "forwards",
-              "hideAfterAnimation": true,
-              "background": "rgba(71,73,63,1)"
-            },
-            "panelList": [{"method": "rBackground", "propKey": "background"}, {
-              "method": "rBackgroundImage",
-              "propKey": "backgroundImage"
-            }, {"method": "rAnimationActions", "propKey": "animationActions"}, {
-              "method": "rHideAfterAnimation",
-              "propKey": "hideAfterAnimation"
-            }, {"method": "rAnimationDuration", "propKey": "animationDuration"}, {
-              "method": "rAnimationCount",
-              "propKey": "animationCount"
-            }, {"method": "rAnimationFillMode", "propKey": "animationFillMode"}, {
-              "method": "rAnimationDelay",
-              "propKey": "animationDelay"
-            }],
-            "$level": 1,
-            "$position": [1, 0],
-            "$hasChild": false,
-            "$parentId": 1,
-            "$namePath": "第2页"
-          }]
-        }],
+      pages: [],
       cellList: cellList,
     }
   },
@@ -218,20 +190,16 @@ export default {
       }
     }
   },
-  methods: {
-    showPageData() {
-      this.$alert(_.cloneDeep(this.pages), '数据', {
-        confirmButtonText: '确定',
-        callback: action => {
-        }
-      });
-    }
-  }
+  methods: {}
 }
 </script>
 <style lang="scss">
   .content-row {
     font-size: 18px;
+  }
+
+  .poster-manage-dialog {
+    width: 80%;
   }
 </style>
 <style lang="scss" scoped>
@@ -296,5 +264,64 @@ export default {
       }
     }
 
+    .poster-manage-body {
+      width: 100%;
+      overflow: auto;
+
+      .manage-container {
+        min-width: 850px;
+        display: flex;
+        justify-content: space-around;
+
+
+        .pick-bottom {
+          display: flex;
+          padding-right: 50px;
+          justify-content: flex-end;
+        }
+
+        .pick-title {
+          font-weight: 500;
+          color: #1f2f3d;
+          margin-bottom: 20px;
+        }
+
+        .pick-poster-body {
+          min-width: 250px;
+          padding: 0 5px;
+          box-sizing: border-box;
+          border-left: 1px solid rgba(0, 0, 0, .4);
+          flex-shrink: 1;
+
+          .poster-pick-list {
+            height: 500px;
+            overflow: auto;
+
+            .pick-poster-item {
+              display: block;
+              margin: 15px 0;
+              font-weight: 400;
+              color: #1f2f3d;
+            }
+          }
+        }
+
+        .create-poster-body {
+          min-width: 300px;
+          box-sizing: border-box;
+          display: flex;
+          flex-flow: column nowrap;
+
+          .create-poster-content {
+            flex: 1;
+          }
+
+          .create-new-button {
+            width: auto;
+          }
+        }
+      }
+
+    }
   }
 </style>
