@@ -121,12 +121,12 @@ export default {
     rAnimationFillMode(h, config) {
       return (
         <div class="input-main">
-          <span>动画结束时的状态:</span>
+          <span>动画适配控制:</span>
           <el-radio-group vModel={this.configProps[config.propKey]}>
             <el-radio class="radio-label-body" label={'none'}>无</el-radio>
-            <el-radio label={'forwards'}>维持结束状态</el-radio>
-            <el-radio label={'both'}>both</el-radio>
-            <el-radio label={'backwards'}>backwards</el-radio>
+            <el-radio class="radio-label-body" label={'forwards'}>适配结束状态</el-radio>
+            <el-radio class="radio-label-body" label={'both'}>全部自适应</el-radio>
+            <el-radio class="radio-label-body" label={'backwards'}>适配初始状态</el-radio>
           </el-radio-group>
         </div>
       )

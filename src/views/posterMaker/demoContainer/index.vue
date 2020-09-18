@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     renderCell(h, item) {
-      return h(`${item.type}`, {props: {...item.props}, ref: item.id})
+      return h(`${item.type}`, {props: {...item.props, designMode: true}, ref: item.id})
     },
     renderEditWindow(h) {
       if (!this.onSelectCell || !this.showEditWindow) return ''

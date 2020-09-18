@@ -101,7 +101,7 @@ const DEV_SERVER = {
       }
     ],
   },
-  // port: 8888,
+  port: 9080,
   // host: '192.168.0.39',
 }
 

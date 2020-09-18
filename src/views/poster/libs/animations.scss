@@ -63,30 +63,23 @@ $animationPrefix: animate__;
 
 @keyframes hingeRight {
   0% {
-
     transform-origin: top left;
-    -webkit-animation-timing-function: ease-in-out;
     animation-timing-function: ease-in-out
   }
   20%, 60% {
 
     transform: rotate(80deg);
-
     transform-origin: top left;
-    -webkit-animation-timing-function: ease-in-out;
     animation-timing-function: ease-in-out
   }
   40%, 80% {
 
     transform: rotate(60deg);
-
     transform-origin: top left;
-    -webkit-animation-timing-function: ease-in-out;
     animation-timing-function: ease-in-out;
     opacity: 1
   }
   to {
-
     transform: translate3d(0, 700px, 0);
     opacity: 0
   }
@@ -570,8 +563,7 @@ $animationPrefix: animate__;
 
 @keyframes opacityFadeInLeft {
   0% {
-    opacity: 1;
-
+    opacity: 0;
     transform: translate3d(-200px, 0, 0)
   }
   to {
@@ -586,9 +578,8 @@ $animationPrefix: animate__;
 }
 
 @keyframes opacityFadeInRight {
-  0% {
-    opacity: 1;
-
+  from {
+    opacity: 0;
     transform: translate3d(200px, 0, 0)
   }
   to {
@@ -604,8 +595,7 @@ $animationPrefix: animate__;
 
 @keyframes opacityFadeInUp {
   0% {
-    opacity: 1;
-
+    opacity: 0;
     transform: translate3d(0, 200px, 0)
   }
   to {
@@ -621,8 +611,7 @@ $animationPrefix: animate__;
 
 @keyframes opacityFadeInDown {
   0% {
-    opacity: 1;
-
+    opacity: 0;
     transform: translate3d(0, -200px, 0)
   }
   to {
@@ -1559,6 +1548,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__scaleUp {
+  animation-name: scaleUp
+}
+
 @keyframes scaleDown {
   0% {
     transform: scale(1.5)
@@ -1566,6 +1559,10 @@ $animationPrefix: animate__;
   to {
     transform: scale(1)
   }
+}
+
+.animate__scaleDown {
+  animation-name: scaleDown
 }
 
 @keyframes blur {
@@ -1577,6 +1574,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__blur {
+  animation-name: blur
+}
+
 @keyframes sharp {
   0% {
     -webkit-filter: blur(8px)
@@ -1586,6 +1587,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__sharp {
+  animation-name: sharp
+}
+
 @keyframes particles {
   0% {
     -webkit-filter: blur(2px)
@@ -1593,6 +1598,10 @@ $animationPrefix: animate__;
   to {
     -webkit-filter: blur(0)
   }
+}
+
+.animate__particles {
+  animation-name: particles
 }
 
 
@@ -1638,6 +1647,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__wobble {
+  animation-name: wobble
+}
+
 
 @keyframes shake {
   0%, to {
@@ -1654,6 +1667,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__shake {
+  animation-name: shake
+}
+
 
 @keyframes gradientFadeOutLeft {
   0% {
@@ -1666,6 +1683,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__gradientFadeOutLeft {
+  animation-name: gradientFadeOutLeft
+}
+
 @keyframes gradientFadeOutRight {
   0% {
     transform: translateX(0) scaleX(2)
@@ -1674,6 +1695,10 @@ $animationPrefix: animate__;
     opacity: .1;
     transform: translateX(-190%) scaleX(2)
   }
+}
+
+.animate__gradientFadeOutRight {
+  animation-name: gradientFadeOutRight
 }
 
 @keyframes gradientFadeOutBottom {
@@ -1686,6 +1711,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__gradientFadeOutBottom {
+  animation-name: gradientFadeOutBottom
+}
+
 @keyframes gradientFadeOutTop {
   0% {
     transform: translateY(0) scaleY(2)
@@ -1694,6 +1723,10 @@ $animationPrefix: animate__;
     opacity: .1;
     transform: translateY(190%) scaleY(2)
   }
+}
+
+.animate__gradientFadeOutTop {
+  animation-name: gradientFadeOutTop
 }
 
 @keyframes gradientScale {
@@ -1708,6 +1741,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__gradientScale {
+  animation-name: gradientScale
+}
+
 
 @keyframes outer_circle_move {
   0% {
@@ -1716,6 +1753,10 @@ $animationPrefix: animate__;
   to {
     transform: rotate(1turn)
   }
+}
+
+.animate__outer_circle_move {
+  animation-name: outer_circle_move
 }
 
 @keyframes scanmove {
@@ -1744,6 +1785,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__scanmove {
+  animation-name: scanmove
+}
+
 
 @keyframes landRotate {
   0% {
@@ -1754,6 +1799,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__landRotate {
+  animation-name: landRotate
+}
+
 @keyframes eggRotate {
   0% {
     transform: rotate(0deg)
@@ -1761,6 +1810,10 @@ $animationPrefix: animate__;
   to {
     transform: rotate(-100turn)
   }
+}
+
+.animate__eggRotate {
+  animation-name: eggRotate
 }
 
 @keyframes zIndex {
@@ -1778,12 +1831,19 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__zIndex {
+  animation-name: zIndex
+}
+
 @keyframes hammer {
   50% {
     transform: rotate(15deg)
   }
 }
 
+.animate__hammer {
+  animation-name: hammer
+}
 
 @keyframes bounceInDown {
   0% {
@@ -1801,6 +1861,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__bounceInDown {
+  animation-name: bounceInDown
+}
+
 @keyframes magicCubeRotate {
   0% {
     transform: rotateX(0deg) rotateY(0deg)
@@ -1813,6 +1877,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__magicCubeRotate {
+  animation-name: magicCubeRotate
+}
+
 @keyframes carouselRotate {
   0% {
     transform: translateZ(-400px) rotateY(1turn)
@@ -1820,6 +1888,10 @@ $animationPrefix: animate__;
   to {
     transform: translateZ(-400px) rotateY(0deg)
   }
+}
+
+.animate__carouselRotate {
+  animation-name: carouselRotate
 }
 
 @keyframes panoramaRotate {
@@ -1834,6 +1906,10 @@ $animationPrefix: animate__;
 
     transform: translateZ(50px) rotateY(-2turn) rotate(0deg)
   }
+}
+
+.animate__panoramaRotate {
+  animation-name: panoramaRotate
 }
 
 @keyframes start {
@@ -1851,6 +1927,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__start {
+  animation-name: start
+}
+
 @keyframes rightflip {
   0%, 30% {
     opacity: 0;
@@ -1866,6 +1946,10 @@ $animationPrefix: animate__;
   }
 }
 
+.animate__rightflip {
+  animation-name: rightflip
+}
+
 @keyframes leftflip {
   0%, 30% {
     opacity: 0;
@@ -1879,5 +1963,9 @@ $animationPrefix: animate__;
     opacity: 0;
     transform: translate(10px)
   }
+}
+
+.animate__leftflip {
+  animation-name: leftflip
 }
 

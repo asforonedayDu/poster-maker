@@ -28,7 +28,7 @@ const vueComponent = {
   data() {
     return {
       configProps: {},
-      showAnimatePickWindow: false,
+      showAnimatePickWindow: true,
       selectedAnimation: [],
       showBackgroundColorPick: false,
       showTextColorPick: false,
@@ -78,7 +78,6 @@ const vueComponent = {
       this.selectedAnimation = this.configProps[panelList.animationActions.propKey] || []
     },
     handleAnimationSelectChange(value) {
-      console.log('value', value)
       animateQueueCell(this.$refs.example, value)
     },
     setAnimation() {
@@ -93,7 +92,8 @@ const vueComponent = {
     },
     renderAnimatePickWindow(h) {
       return (
-        <el-dialog title="选择动画" visible={this.showAnimatePickWindow} show-close={false}>
+        <el-dialog title="选择动画" visible={this.showAnimatePickWindow} custom-class="dialog-select-animation"
+                   show-close={false}>
           <div class="pick-window-body">
             <div class="pick-list">
               <el-checkbox-group vModel={this.selectedAnimation} on-change={this.handleAnimationSelectChange}>
@@ -108,15 +108,33 @@ const vueComponent = {
             </div>
             <div class="example-body">
               <div class="example-container">
-                <div class="example" ref="example">
-                  Animation
+                <div class="example-phone-container">
+                  <div class="example" ref="example">
+                    Animation
+                  </div>
+                </div>
+                <div class="button-bottom">
+                  <el-button type="primary" vOn:click={this.setAnimation}>确认</el-button>
+                  <el-button vOn:click={() => this.showAnimatePickWindow = false}>取消</el-button>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="button-bottom">
-            <el-button type="primary" vOn:click={this.setAnimation}>确认</el-button>
-            <el-button vOn:click={() => this.showAnimatePickWindow = false}>取消</el-button>
+            <div class="selected-animation-body">
+              <span> 当前选择动画:</span>
+              <div class="example-animate-body">
+                {this.selectedAnimation.map((animate, index) => {
+                  return (
+                    <span>
+                      <el-tag key={index} closable={true} vOn:close={() => {
+                        this.selectedAnimation.splice(index, 1)
+                      }}>
+                        {animate}
+                      </el-tag>
+                    </span>
+                  )
+                })}
+              </div>
+            </div>
           </div>
         </el-dialog>
       )
@@ -165,12 +183,18 @@ const vueComponent = {
 }
 export default vueComponent
 </script>
-
+<style lang="scss">
+  .dialog-select-animation {
+    min-width: 850px;
+    /*width: auto;*/
+  }
+</style>
 <style lang="scss" scoped>
 
   .cell-config-panel {
     width: 100%;
     height: 100%;
+    overflow: auto;
     box-sizing: border-box;
     display: flex;
     flex-flow: column nowrap;
@@ -186,7 +210,7 @@ export default vueComponent
     }
 
     .radio-label-body {
-      margin: 15px 0;
+      margin: 15px 15px;
     }
 
     .panel-item-body {
@@ -220,9 +244,9 @@ export default vueComponent
     }
 
     .pick-window-body {
-      width: 700px;
       height: 600px;
       display: flex;
+      justify-content: space-around;
 
       .pick-list {
         width: 300px;
@@ -237,37 +261,62 @@ export default vueComponent
         }
       }
 
-      .example-body {
-        flex: 1;
-        height: 100%;
+      .selected-animation-body {
         display: flex;
-        justify-content: center;
-        align-items: center;
+        flex-flow: column nowrap;
+        min-width: 200px;
+
+        .example-animate-body {
+          margin: 0 0 5px 0;
+          overflow: auto;
+          width: 100%;
+          min-height: 45px;
+          display: flex;
+          flex-flow: column nowrap;
+        }
+      }
+
+      .example-body {
+        display: inline-flex;
+        flex-flow: column nowrap;
+        margin: 0 15px;
+        justify-content: flex-start;
+        align-items: flex-start;
 
         .example-container {
-          width: 300px;
-          height: 480px;
-          position: relative;
-          border: 1px solid rgba(0, 0, 0, .3);
-          border-radius: 30px;
-          margin-left: 50px;
+          width: 100%;
+          flex: 1;
           display: flex;
+          flex-flow: column nowrap;
+          justify-content: flex-start;
           align-items: center;
-          justify-content: center;
+
+          .example-phone-container {
+            width: 300px;
+            height: 480px;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, .3);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
 
           .example {
             text-align: center;
             animation-duration: 1s;
           }
+
+          .button-bottom {
+            box-sizing: border-box;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px 20px;
+            align-self: flex-end;
+            margin: auto 0 0 0;
+          }
         }
       }
-    }
-
-    .button-bottom {
-      box-sizing: border-box;
-      display: flex;
-      justify-content: flex-end;
-      padding: 10px 20px;
     }
 
     .color-pick-body {

@@ -86,6 +86,7 @@ export default {
       const result = await this.$api.CREATE_POSTER({
         create_user_id: 1, poster_name: this.inputNewPosterName, poster_type: 1, poster_data: JSON.stringify(data)
       })
+      this.inputNewPosterName = ''
       this.$message('保存成功')
       this.poster.poster_id = result.insertId
       this.requestedPosterList = false

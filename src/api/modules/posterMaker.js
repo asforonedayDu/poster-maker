@@ -33,19 +33,19 @@ export default ({request, tools}) => ({
     // 接口请求
     return await request({
       url: setting.node_server + 'alterPoster',
-      method: 'get',
-      params
+      method: 'post',
+      data: params
     })
   },
   /**
    * @description 新建海报
    */
-  async CREATE_POSTER(params) {
+  async CREATE_POSTER(data) {
     // 接口请求
     return await request({
       url: setting.node_server + 'addPosterData',
-      method: 'get',
-      params
+      method: 'post',
+      data
     })
   },
   /**

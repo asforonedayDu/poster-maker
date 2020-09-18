@@ -9,6 +9,9 @@ export default {
   name: "page",
   components,
   props: {
+    designMode: {
+      default: false,
+    },
     pageData: {
       type: Object,
       default: {}
@@ -31,6 +34,12 @@ export default {
   },
   render(h, context) {
     const self = this
+    if (!this.isCurrentPage) {
+      const translateY = Math.abs(this.translateY)
+      if (translateY === 0 || translateY === 100) {
+        return ''
+      }
+    }
     return (
       <div class={`page-body ${this.pageClass}`} style={this.styleTranslateY}>
         {this.pageData.cells.map(cell => {
@@ -60,25 +69,28 @@ export default {
     pageClass() {
       let cls
       if (this.isPrePage) {
-        cls = 'pre-page'
+        cls = 'pre-page base-page'
       } else if (this.isNextPage) {
-        cls = 'next-page'
+        cls = 'next-page base-page'
       } else if (this.isCurrentPage) {
         cls = ''
       } else {
-        cls = 'hide-page'
+        cls = 'hide-page base-page'
       }
       return cls
     }
   },
   methods: {
     renderCell(h, cell) {
-      return h(`${cell.type}`, {props: cell.props})
+      return h(`${cell.type}`, {props: {...cell.props, designMode: this.designMode}})
     }
   }
 }
 </script>
 <style>
+  .base-page {
+  }
+
   .pre-page {
     transform: translateY(-100%);
     z-index: 1 !important;

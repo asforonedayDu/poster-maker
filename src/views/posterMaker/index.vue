@@ -3,7 +3,7 @@
     <div class="cells-body">
       <tree-container :data="treeData" :options="treeOptions" ref="treeContainer">
         <template v-slot:header>
-          <div class="header-body" @click="dialogPreviewVisible=true">
+          <div class="header-body" @click="previewAllPage">
             预览
           </div>
           <div class="header-body" @click="showPosterManageWindow">
@@ -87,7 +87,7 @@
       <div>
         <div class="preview-example-body">
           <div class="example-container">
-            <poster :pageData="pages"/>
+            <poster :pageData="previewData" :rootWidth="baseConfig.designWidth"/>
           </div>
         </div>
       </div>
@@ -148,6 +148,7 @@ export default {
     return {
       pages: [],
       cellList: cellList,
+      baseConfig
     }
   },
   computed: {

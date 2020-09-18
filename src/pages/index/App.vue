@@ -38,6 +38,9 @@ export default {
 
   .default-cell {
     position: absolute;
+    user-select: none;
+    perspective: 100px;
+    transform-style: preserve-3d;
     background-position: center !important;
     background-size: cover !important;
     background-repeat: no-repeat !important;

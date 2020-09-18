@@ -6,106 +6,42 @@ export default {
   props: {
     pageData: {
       default: () => {
-        return {}
+        return []
       }
+    },
+    rootWidth: {
+      default: 0,
     }
   },
   components: {
     page
   },
   created() {
-    if (this.pageData && this.pageData.length > 0) {
+    if (this.pageData) {
       console.log('pageData')
       this.pages = this.pageData
-    } else {
-      let htmlWidth = document.documentElement.clientWidth || document.body.clientWidth
-      let htmlDom = document.getElementsByTagName('html')[0]
-      htmlDom.style.fontSize = (htmlWidth / 100) + 'px'
     }
+    let rootWidth = this.rootWidth
+    if (!rootWidth) {
+      rootWidth = document.documentElement.clientWidth || document.body.clientWidth
+    }
+    let htmlDom = document.getElementsByTagName('html')[0]
+    htmlDom.style.fontSize = (rootWidth / 100) + 'px'
     this._isModbile = !!navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+    // 全局抬手监听
+    this.touchEndHandler = (e) => {
+      this.dragging = false
+    }
+    window.addEventListener('mouseup', this.touchEndHandler)
+    window.addEventListener('touchend', this.touchEndHandler)
+  },
+  destroyed() {
+    window.removeEventListener('mouseup', this.touchEndHandler)
+    window.removeEventListener('touchend', this.touchEndHandler)
   },
   data() {
     return {
-      pages: [
-        {
-          "id": 0, "name": "第一页", "cells": [{
-            "name": "背景图",
-            "id": "0_0",
-            "createType": "_CELL",
-            "type": "cell-flex-board",
-            "descriptor": "弹性块(随目标设备屏幕宽高拉伸，用于全屏自适应背景元素)",
-            "props": {
-              "position": {"width": 100, "height": 100, "left": 0, "top": 0},
-              "animationDuration": 1,
-              "animationDelay": 0,
-              "animationCount": 1,
-              "animationFillMode": "forwards",
-              "hideAfterAnimation": true,
-              "background": "rgba(165,52,141,1)"
-            },
-            "panelList": [{"method": "rBackground", "propKey": "background"}, {
-              "method": "rBackgroundImage",
-              "propKey": "backgroundImage"
-            }, {"method": "rColor", "propKey": "color"}, {
-              "method": "rAnimationActions",
-              "propKey": "animationActions"
-            }, {"method": "rHideAfterAnimation", "propKey": "hideAfterAnimation"}, {
-              "method": "rAnimationDuration",
-              "propKey": "animationDuration"
-            }, {"method": "rAnimationCount", "propKey": "animationCount"}, {
-              "method": "rAnimationFillMode",
-              "propKey": "animationFillMode"
-            }, {"method": "rAnimationDelay", "propKey": "animationDelay"}],
-            "$level": 1,
-            "$position": [0, 0],
-            "$hasChild": false,
-            "$parentId": 0,
-            "$namePath": "第一页"
-          }], "createType": "_PAGE", "$level": 0, "$position": [0], "$hasChild": true, "$parentId": -1, "$namePath": ""
-        }, {
-          "id": 1,
-          "name": "第2页",
-          "createType": "_PAGE",
-          "$level": 0,
-          "$position": [1],
-          "$hasChild": true,
-          "$parentId": -1,
-          "$namePath": "",
-          "cells": [{
-            "name": "背景",
-            "id": "1_0",
-            "createType": "_CELL",
-            "type": "cell-flex-board",
-            "descriptor": "弹性块(随目标设备屏幕宽高拉伸，用于全屏自适应背景元素)",
-            "props": {
-              "position": {"width": 101.8, "height": 101.125, "left": -1.4000000000000001, "top": -0.5},
-              "animationDuration": 1,
-              "animationDelay": 0,
-              "animationCount": 1,
-              "animationFillMode": "forwards",
-              "hideAfterAnimation": true,
-              "background": "rgba(71,73,63,1)"
-            },
-            "panelList": [{"method": "rBackground", "propKey": "background"}, {
-              "method": "rBackgroundImage",
-              "propKey": "backgroundImage"
-            }, {"method": "rAnimationActions", "propKey": "animationActions"}, {
-              "method": "rHideAfterAnimation",
-              "propKey": "hideAfterAnimation"
-            }, {"method": "rAnimationDuration", "propKey": "animationDuration"}, {
-              "method": "rAnimationCount",
-              "propKey": "animationCount"
-            }, {"method": "rAnimationFillMode", "propKey": "animationFillMode"}, {
-              "method": "rAnimationDelay",
-              "propKey": "animationDelay"
-            }],
-            "$level": 1,
-            "$position": [1, 0],
-            "$hasChild": false,
-            "$parentId": 1,
-            "$namePath": "第2页"
-          }]
-        }],
+      pages: [],
       clientHeight: 0,
       currentPage: 0,
       translateY: 0,
@@ -157,8 +93,8 @@ export default {
   },
   methods: {
     handleTouchMove(e) {
-      console.log('handleTouchMove', e)
       if (this.dragging && !this.rolling) {
+        console.log('handleTouchMove', e)
         const offsetY = (e.clientY || e.targetTouches[0].clientY) - this.touchClientY
         const pre = offsetY < 0
         if (pre && this.currentPage === this.pages.length - 1) return;
@@ -199,7 +135,7 @@ export default {
       if (this.translateY !== 0) {
         this.rolling = true
         // 回滚
-        if (Math.abs(this.translateY) < 35 && Math.abs(this.speed) < 0.5) {
+        if (Math.abs(this.translateY) < 27 && Math.abs(this.speed) < 0.5) {
           console.log('roll back')
           this.speed = this.translateY > 0 ? 0.5 : -0.5
           const timer = () => {
@@ -216,22 +152,34 @@ export default {
         } else {
           // 滚动一屏
           console.log('roll a page')
-          this.speed = Math.abs(this.speed) * 2
+          this.speed = Math.max(Math.abs(this.speed), 0.8) * 2
           this.speed = pre ? -this.speed : this.speed
           const timer = () => {
-            if ((pre && this.translateY > -100) || (!pre && this.translateY < 100)) {
-              this.translateY = this.translateY + this.speed
-              console.log('this.translateY', this.translateY)
-              requestAnimationFrame(timer)
-            } else {
-              if (pre) {
-                this.currentPage += 1
-              } else {
-                this.currentPage -= 1
-              }
-              this.translateY = 0
-              this.rolling = false
+            if (this.dragging) {
+              return
             }
+            if (pre && this.translateY > -100) {
+              this.translateY = Math.max(-100, this.translateY + this.speed)
+              console.log('this.translateY', this.translateY)
+              if (this.translateY > -100) {
+                requestAnimationFrame(timer)
+                return;
+              }
+            } else if (!pre && this.translateY < 100) {
+              this.translateY = Math.min(100, this.translateY + this.speed)
+              console.log('this.translateY', this.translateY)
+              if (this.translateY < 100) {
+                requestAnimationFrame(timer)
+                return;
+              }
+            }
+            if (pre) {
+              this.currentPage += 1
+            } else {
+              this.currentPage -= 1
+            }
+            this.translateY = 0
+            this.rolling = false
           }
           requestAnimationFrame(timer)
         }

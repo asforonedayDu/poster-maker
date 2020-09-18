@@ -11,9 +11,14 @@ export default {
         cell: ''
       },
       onSelectPage: {},
+      previewData: []
     }
   },
   methods: {
+    previewAllPage() {
+      this.previewData = this.pages
+      this.dialogPreviewVisible = true
+    },
     handleClickPage(item, index) {
       this.onSelectCell = null
       this.onSelectPage = item
@@ -29,6 +34,18 @@ export default {
     getPageOptions(item, index) {
       this.$refs.treeContainer.setClickItemByIndex(index)
       return [
+        {
+          text: '预览本页',
+          onClick: (item, index) => {
+            const pageIndex = this.pages.indexOf(item)
+            if (pageIndex === -1) {
+              console.log('this.pages.indexOf(item) 错误')
+              return
+            }
+            this.previewData = [this.pages[pageIndex]]
+            this.dialogPreviewVisible = true
+          }
+        },
         {
           text: '添加子元素',
           onClick: (item, index) => {
