@@ -1,5 +1,5 @@
 <script type="text/jsx">
-import cells from '../../poster/cells/index.js'
+import cells from '../../../components/poster/cells/index.js'
 import VueDraggableResizable from 'vue-draggable-resizable'
 // optionally import default styles
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'

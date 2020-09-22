@@ -1,4 +1,4 @@
-import {animateCell, animateQueueCell} from '../../libs/animate-help'
+import {animateCell, animateQueueCell} from '@/libs/animate-help'
 
 export default {
   props: {

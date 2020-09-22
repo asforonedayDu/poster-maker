@@ -1,5 +1,5 @@
 <script type="text/jsx">
-import page from "./page";
+import page from "./page/index";
 
 export default {
   name: "poster",
@@ -194,7 +194,6 @@ export default {
 }
 </script>
 <style lang="scss">
-  @import "../poster/libs/animations";
 
   .cell-container-mid {
     width: 100%;
@@ -223,7 +222,7 @@ export default {
   }
 </style>
 <style lang="scss" scoped>
-  @import "~animate.css";
+  /*@import "./libs/animate.compat.css";*/
 
   .main-body {
     width: 100%;

@@ -53,7 +53,7 @@ let pages = {
       template: 'public/index.html',
       title: '',
       filename: 'index.html',
-      cdn: ['vue', 'vue-router', 'vuex', 'axios', 'lodash', 'js-cookie'],// 'screenfull'
+      cdn: ['vue', 'vue-router', 'vuex', 'axios', 'lodash', 'element-ui', 'js-cookie'],// 'screenfull'
       //'chunk-vendors', 'chunk-common', 'vendors~index', 'chunk-vue-router', 'chunk-vuex', 'chunk-elementUI', 'chunk-axios',
       chunks: ['chunk-vendors', 'chunk-common', 'chunk-elementUI', 'index',]
     },
@@ -223,12 +223,12 @@ module.exports = {
       })
     )
     // 去除生产环境控制台代码
-    config.when(!isDevelopment, config => {
-      config.optimization.minimizer('terser').tap(options => {
-        options[0].terserOptions.compress.drop_console = true
-        return options
-      })
-    })
+    // config.when(!isDevelopment, config => {
+    //   config.optimization.minimizer('terser').tap(options => {
+    //     options[0].terserOptions.compress.drop_console = true
+    //     return options
+    //   })
+    // })
     // markdown
     config.module
     .rule('md')
@@ -299,12 +299,12 @@ module.exports = {
             chunks: 'initial',
             reuseExistingChunk: false
           },
-          elementUI: {
-            enforce: true,
-            name: 'chunk-elementUI',
-            priority: 20,
-            test: /[\\/]node_modules[\\/](element-ui)/,
-          },
+          // elementUI: {
+          //   enforce: true,
+          //   name: 'chunk-elementUI',
+          //   priority: 20,
+          //   test: /[\\/]node_modules[\\/](element-ui)/,
+          // },
           /**
            * 单独打包lodash会导致 babel的core-js等代码被重复打包 原因暂未知
            * 目前使用cdn

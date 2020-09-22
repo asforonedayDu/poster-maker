@@ -13,17 +13,6 @@ export default ({request, tools}) => ({
     })
   },
   /**
-   * @description 获取单个海报数据
-   */
-  async GET_POSTER_DETAIL(poster_id) {
-    // 接口请求
-    return await request({
-      url: setting.node_server + 'queryPosterDetail',
-      method: 'get',
-      params: {poster_id}
-    })
-  },
-  /**
    * @description 删除海报
    */
   async DELETE_POSTER_LIST(poster_id) {

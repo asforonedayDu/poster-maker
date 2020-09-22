@@ -7,12 +7,15 @@
 </template>
 
 <script>
-import poster from '@/views/poster/index'
 import {urlParse} from "@/libs/util.dependent";
+import {get_poster_detail} from "@/api/modules/system";
+// import poster from '@/components/poster/index'
 
 export default {
   name: "posterShow",
-  components: {poster},
+  components: {
+    poster: () => import('@/components/poster/index')
+  },
   data() {
     return {
       posterData: [],
@@ -21,18 +24,15 @@ export default {
   },
   async created() {
     const urlParams = urlParse()
-    if (!urlParams.id) {
-      return
-    }
     const poster_id = urlParams.id
     if (!poster_id) {
-      this.$message('参数错误')
+      console.log('参数错误')
     }
     let result
     try {
-      result = await this.$api.GET_POSTER_DETAIL(poster_id)
+      result = await get_poster_detail(poster_id)
     } catch (e) {
-      this.$message('请求错误')
+      console.log('请求错误')
       return
     }
     const windowWidth = document.documentElement.clientWidth || document.body.clientWidth
@@ -41,6 +41,7 @@ export default {
       this.rootWidth = windowHeight * 5 / 8
     }
     this.posterData = JSON.parse(result.poster_data)
+    console.log('this.posterData', this.posterData)
   },
 }
 </script>

@@ -9,7 +9,7 @@ const fs = require('fs')
 //   app.listen(3333)
 // }
 function getAnimationList() {
-  const content = fs.readFileSync(path.resolve(__dirname, './src/views/poster/libs/animations.scss'), 'utf-8')
+  const content = fs.readFileSync(path.resolve(__dirname, './src/components/poster/libs/animations.scss'), 'utf-8')
   const regResult = content.match(/@keyframes (.*?) \{/gm)
   const data = []
   regResult.forEach(item => {

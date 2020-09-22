@@ -38,12 +38,12 @@ module.exports = [
   /**
    * 按需加载 不使用 cdn
    */
-  // {
-  //   name: 'element-ui',
-  //   library: 'ELEMENT',
-  //   js: 'https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js',
-  //   css: 'https://cdn.jsdelivr.net/npm/element-ui@2.13.0/lib/theme-chalk/index.css'
-  // },
+  {
+    name: 'element-ui',
+    library: 'ELEMENT',
+    js: 'https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js',
+    css: 'https://cdn.jsdelivr.net/npm/element-ui@2.13.0/lib/theme-chalk/index.css'
+  },
   {
     name: 'axios-mock-adapter',
     library: 'AxiosMockAdapter',

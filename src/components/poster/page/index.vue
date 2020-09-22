@@ -1,5 +1,5 @@
 <script type="text/jsx">
-import cells from '../cells/index.js'
+import cells from '../cells'
 
 const components = {}
 cells.forEach(component => {

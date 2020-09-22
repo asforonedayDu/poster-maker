@@ -1,7 +1,7 @@
 <script type="text/jsx">
 import Vue from 'vue'
 import util from "@/views/posterMaker/libs/utils";
-import {animateCell, animateQueueCell} from '@/views/poster/libs/animate-help'
+import {animateCell, animateQueueCell} from '@/libs/animate-help'
 import panelList from "@/views/posterMaker/cellConfigPanel/panelList";
 import assetsManage from "@/views/posterMaker/cellConfigPanel/assetsManage";
 import panelRender from "@/views/posterMaker/cellConfigPanel/panelRender";

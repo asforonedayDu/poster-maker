@@ -99,13 +99,13 @@
 import util from './libs/utils'
 import {flattenObj} from '@/libs/util'
 import treeContainer from '@/components/tree-container'
-import cells from '../poster/cells/index.js'
+import cells from '../../components/poster/cells/index.js'
 import pageControl from './mixins/pageControl'
 import cellControl from './mixins/cellControl'
 import posterControl from './mixins/posterControl'
 import demoContainer from './demoContainer'
 import cellConfigPanel from './cellConfigPanel'
-import poster from '@/views/poster/index'
+import poster from '@/components/poster/index'
 
 export const treeDataType = {
   CELL: '_CELL',
