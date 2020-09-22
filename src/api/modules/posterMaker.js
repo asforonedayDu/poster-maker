@@ -1,5 +1,4 @@
 import setting from "@/setting";
-import jsonp from 'jsonp'
 
 export default ({request, tools}) => ({
   /**

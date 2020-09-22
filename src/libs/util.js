@@ -7,6 +7,24 @@ const util = {
   db,
   log
 }
+
+function urlParse() {
+  let url = window.location.search;
+  let obj = {};
+  let reg = /[?&][^?&]+=[^?&]+/g;
+  let arr = url.match(reg);
+  if (arr) {
+    arr.forEach((item) => {
+      let tempArr = item.substring(1).split('=');
+      let key = decodeURIComponent(tempArr[0]);
+      let val = decodeURIComponent(tempArr[1]);
+      obj[key] = val;
+    });
+  }
+  return obj;
+}
+
+util.urlParse = urlParse
 //检测是否是iphone
 util.checkIsIphone = function checkIsIphone() {
   return /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase())
@@ -151,7 +169,7 @@ export function stopMouseEventPop(e) {
 /**
  * @description 获取窗口可视高度
  */
-export function getClientHeight() {
+function getClientHeight() {
   let clientHeight = 0;
   if (document.body.clientHeight && document.documentElement.clientHeight) {
     clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
@@ -161,4 +179,8 @@ export function getClientHeight() {
   return clientHeight;
 }
 
+export {
+  getClientHeight,
+  urlParse,
+}
 export default util

@@ -27,7 +27,7 @@ export default {
       this.position.width && (style.width = `${this.position.width}%`)
       if (this.background || this.backgroundImage) {
         style.background = `${this.backgroundImage && `url(${this.backgroundImage})`} ${this.background && `${this.background}`}`
-        console.log('style.background', style.background)
+        // console.log('style.background', style.background)
       }
       // this.background && (style.background = `${this.background}`)
       this.color && (style.color = `${this.color}`)

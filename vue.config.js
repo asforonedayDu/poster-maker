@@ -57,16 +57,15 @@ let pages = {
       //'chunk-vendors', 'chunk-common', 'vendors~index', 'chunk-vue-router', 'chunk-vuex', 'chunk-elementUI', 'chunk-axios',
       chunks: ['chunk-vendors', 'chunk-common', 'chunk-elementUI', 'index',]
     },
-  // index:
-  //   {
-  //     entry: 'src/pages/index/main.js',
-  //     template: 'public/index.html',
-  //     title: '',
-  //     filename: 'index.html',
-  //     cdn: ['vue', 'vue-router', 'vuex', 'axios', 'lodash', 'js-cookie'],// 'screenfull'
-  //     //'chunk-vendors', 'chunk-common', 'vendors~index', 'chunk-vue-router', 'chunk-vuex', 'chunk-elementUI', 'chunk-axios',
-  //     chunks: ['chunk-vendors', 'chunk-common', 'chunk-elementUI', 'index',]
-  //   },
+  posterShow:
+    {
+      entry: 'src/pages/posterShow/main.js',
+      template: 'public/index.html',
+      filename: 'posterShow/index.html',
+      cdn: ['vue', 'axios'],// 'screenfull'
+      //'chunk-vendors', 'chunk-common', 'vendors~index', 'chunk-vue-router', 'chunk-vuex', 'chunk-elementUI', 'chunk-axios',
+      chunks: ['chunk-vendors', 'chunk-common', 'posterShow',]
+    },
 }
 
 // pages = undefined

@@ -4,7 +4,7 @@
       已保存的海报列表:
     </div>
     <div class="poster-li-body" v-for="(poster,index) in posterList" :key="index">
-      <router-link :to="`/posterShow?id=${poster.poster_id}`">{{poster.poster_name}}</router-link>
+      <a :href="`${$router.options.base}/posterShow?id=${poster.poster_id}`">{{poster.poster_name}}</a>
     </div>
   </div>
 </template>

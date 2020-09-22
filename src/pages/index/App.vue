@@ -17,35 +17,7 @@ export default {
   methods: {}
 }
 </script>
-<style lang="scss">
-  @import "../../views/poster/libs/animations";
 
-  .cell-container-mid {
-    width: 100%;
-    height: 160rem;
-    top: 50%;
-    transform: translateY(-50%);
-    position: absolute;
-    overflow: hidden;
-  }
-
-  .cell-container-flex {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    overflow: hidden;
-  }
-
-  .default-cell {
-    position: absolute;
-    user-select: none;
-    perspective: 100px;
-    transform-style: preserve-3d;
-    background-position: center !important;
-    background-size: cover !important;
-    background-repeat: no-repeat !important;
-  }
-</style>
 <style lang="scss">
   @import '~@/assets/style/public-class.scss';
 

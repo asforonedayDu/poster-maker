@@ -44,7 +44,7 @@ export default {
       this.animationDelay && targetDom.style.setProperty('animation-delay', `${this.animationDelay}s`);
       if (this.animationActions.length > 0) {
         this.animateQueueCell(this.$refs.targetDom, this.animationActions).then(response => {
-          if (this.hideAfterAnimation) targetDom.style.display = 'none'
+          if (this.hideAfterAnimation) targetDom.style.opacity = '0'
         })
       }
     }

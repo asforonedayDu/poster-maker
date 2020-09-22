@@ -111,7 +111,7 @@ export default {
     height: 100%;
     position: absolute;
     z-index: 0;
-
+    overflow: hidden;
 
     /*.cell-container {*/
     /*  position: absolute;*/

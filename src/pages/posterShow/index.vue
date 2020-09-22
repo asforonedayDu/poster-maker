@@ -9,6 +9,7 @@
 <script>
 import Vue from "vue";
 import poster from '@/views/poster/index'
+import {urlParse} from "@/libs/util";
 
 export default {
   name: "posterShow",
@@ -20,7 +21,11 @@ export default {
     }
   },
   async created() {
-    const poster_id = this.$route.query.id
+    const urlParams = urlParse()
+    if (!urlParams.id) {
+      return
+    }
+    const poster_id = urlParams.id
     if (!poster_id) {
       this.$message('参数错误')
     }
