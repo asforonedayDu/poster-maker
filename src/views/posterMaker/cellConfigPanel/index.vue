@@ -28,7 +28,7 @@ const vueComponent = {
   data() {
     return {
       configProps: {},
-      showAnimatePickWindow: true,
+      showAnimatePickWindow: false,
       selectedAnimation: [],
       showBackgroundColorPick: false,
       showTextColorPick: false,

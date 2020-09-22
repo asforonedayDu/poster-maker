@@ -40,13 +40,22 @@ const frameIn = [
         component: resolveComponentPath('editor')
       },
       {
-        path: '/poster',
-        name: 'poster',
+        path: '/posterCenter',
+        name: 'posterCenter',
         meta: {
-          title: '海报',
+          title: '海报中心',
           auth: false
         },
-        component: resolveComponentPath('poster')
+        component: resolveComponentPath('posterCenter')
+      },
+      {
+        path: '/posterShow',
+        name: 'posterShow',
+        meta: {
+          title: '展示页',
+          auth: false
+        },
+        component: resolveComponentPath('posterShow')
       },
       {
         path: '/posterMaker',

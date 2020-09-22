@@ -30,15 +30,28 @@ export default {
     showPosterManageWindow() {
       this.isShowDialogPosterManageWindow = true
     },
-    setPosterData() {
+    async setPosterData() {
       if (this.onSelectExistedPoster === null) {
         this.$message('请选择一个海报')
         return
       }
-      Vue.set(this, 'pages', JSON.parse(this.posterList[this.onSelectExistedPoster].poster_data))
+      const loading = this.$loading({background: 'rgba(0,0,0,0.3)'})
+      let posterData
+      try {
+        posterData = await this.$api.GET_POSTER_DETAIL(this.posterList[this.onSelectExistedPoster].poster_id)
+      } catch (e) {
+        loading.close()
+        this.$message('请求错误~')
+        loading.close()
+        return
+      }
+      loading.close()
+      this.posterList[this.onSelectExistedPoster].poster_data = JSON.parse(posterData.poster_data)
+      Vue.set(this, 'pages', this.posterList[this.onSelectExistedPoster].poster_data)
       this.poster.poster_id = this.posterList[this.onSelectExistedPoster].poster_id
       this.onSelectExistedPoster = null
       this.isShowDialogPosterManageWindow = false
+      this.onSelectPage = null
     },
     async savePosterData() {
       if (this.onSelectSaveTargetPoster === null) {

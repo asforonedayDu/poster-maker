@@ -135,7 +135,7 @@ export default {
       if (this.translateY !== 0) {
         this.rolling = true
         // 回滚
-        if (Math.abs(this.translateY) < 27 && Math.abs(this.speed) < 0.5) {
+        if (Math.abs(this.translateY) < 8 && Math.abs(this.speed) < 0.5) {
           console.log('roll back')
           this.speed = this.translateY > 0 ? 0.5 : -0.5
           const timer = () => {

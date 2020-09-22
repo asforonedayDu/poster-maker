@@ -43,6 +43,7 @@ export default {
           // 保存到数据库
           const result = await this.$api.SAVE_ASSETS(fileName, url)
           item.asset_id = result.insertId
+          item.asset_content = url
           item.uploading = false
         } catch (error) {
           this.$message('照片上传失败~')

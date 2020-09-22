@@ -34,7 +34,8 @@ module.exports = {
       // }
     },
     '/nodeServer': {
-      target: 'http://127.0.0.1/',
+      target: 'http://127.0.0.1:7001/',
+      // target: 'http://127.0.0.1/',
       // target: 'http://39.96.43.154:8080/',
       changeOrigin: true,
       // pathRewrite: {
