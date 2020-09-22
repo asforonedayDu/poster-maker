@@ -62,7 +62,7 @@ let pages = {
       entry: 'src/pages/posterShow/main.js',
       template: 'public/index.html',
       filename: 'posterShow/index.html',
-      cdn: ['vue', 'axios'],// 'screenfull'
+      cdn: ['vue', 'axios', 'lodash'],// 'screenfull'
       //'chunk-vendors', 'chunk-common', 'vendors~index', 'chunk-vue-router', 'chunk-vuex', 'chunk-elementUI', 'chunk-axios',
       chunks: ['chunk-vendors', 'chunk-common', 'posterShow',]
     },
@@ -138,8 +138,9 @@ module.exports = {
   pages,
   configureWebpack: config => {
     const configNew = {}
+    configNew.externals = externals
     if (!isDevelopment) {
-      configNew.externals = externals
+      // configNew.externals = externals
       configNew.plugins = [
         // gzip
         new CompressionWebpackPlugin({
@@ -159,23 +160,22 @@ module.exports = {
      * 添加 CDN 参数到 htmlWebpackPlugin 配置中
      * 适配多页
      */
-    if (!isDevelopment) {
-      Object.keys(pages).forEach(name => {
-        const page = pages[name]
-        config.plugin('html-' + name).tap(options => {
-          // set(options, '[0].cdn', process.env.NODE_ENV === 'production' ? cdn : [])
-          // set(options, '[0].cdn', {
-          //   js: cdn_js.filter(i_js => page.cdn.includes(i_js.name)).map(e => e.js),
-          //   css: cdn_css.filter(i_css => page.cdn.includes(i_css.name)).map(e => e.css),
-          // })
-          options[0]['cdn'] = {
-            js: cdn_js.filter(i_js => page.cdn.includes(i_js.name)).map(e => e.js),
-            css: cdn_css.filter(i_css => page.cdn.includes(i_css.name)).map(e => e.css),
-          }
-          return options
-        })
+    Object.keys(pages).forEach(name => {
+      const page = pages[name]
+      config.plugin('html-' + name).tap(options => {
+        // set(options, '[0].cdn', process.env.NODE_ENV === 'production' ? cdn : [])
+        // set(options, '[0].cdn', {
+        //   js: cdn_js.filter(i_js => page.cdn.includes(i_js.name)).map(e => e.js),
+        //   css: cdn_css.filter(i_css => page.cdn.includes(i_css.name)).map(e => e.css),
+        // })
+        options[0]['cdn'] = {
+          js: cdn_js.filter(i_js => page.cdn.includes(i_js.name)).map(e => e.js),
+          css: cdn_css.filter(i_css => page.cdn.includes(i_css.name)).map(e => e.css),
+        }
+        return options
       })
-    }
+    })
+    // if (!isDevelopment) {}
     /**
      * 把动画库的keyFrames转换成数组传到项目里面
      */
@@ -222,6 +222,13 @@ module.exports = {
         propName: process.env.VUE_APP_SOURCE_VIEWER_PROP_NAME
       })
     )
+    // 去除生产环境控制台代码
+    config.when(!isDevelopment, config => {
+      config.optimization.minimizer('terser').tap(options => {
+        options[0].terserOptions.compress.drop_console = true
+        return options
+      })
+    })
     // markdown
     config.module
     .rule('md')

@@ -7,9 +7,8 @@
 </template>
 
 <script>
-import Vue from "vue";
 import poster from '@/views/poster/index'
-import {urlParse} from "@/libs/util";
+import {urlParse} from "@/libs/util.dependent";
 
 export default {
   name: "posterShow",
