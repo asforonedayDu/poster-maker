@@ -194,6 +194,8 @@ export default {
 }
 </script>
 <style lang="scss">
+  /*@import "./libs/animate.compat.css";*/
+  @import "./libs/animations.scss";
 
   .cell-container-mid {
     width: 100%;
@@ -222,7 +224,6 @@ export default {
   }
 </style>
 <style lang="scss" scoped>
-  /*@import "./libs/animate.compat.css";*/
 
   .main-body {
     width: 100%;

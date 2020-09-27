@@ -9,6 +9,7 @@
       </div>
     </vue-draggable-resizable>
     <div class="buttons">
+      <el-button class="button-export" @click="importContent">导入内容</el-button>
       <el-button class="button-export" @click="toClipBoard($event)">复制到剪切板</el-button>
       <el-button class="button-export" @click="showContent">查看内容</el-button>
       <div class="color-set-body">
@@ -17,6 +18,21 @@
         <div class="label-color">(设置background属性)</div>
       </div>
     </div>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="50%">
+      <el-input
+        type="textarea"
+        :autosize="{ minRows: 2, maxRows: 4}"
+        placeholder="请输入内容"
+        v-model="toImportContent">
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleImportContent">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -34,13 +50,24 @@ export default {
   },
   data() {
     return {
+      toImportContent: '',
       phoneMode: false,
       editorContent: '',
       editHeight: 750,
       colorValue: 'white',
+      dialogVisible: false,
     }
   },
   methods: {
+    importContent() {
+      this.dialogVisible = true
+    },
+    handleImportContent() {
+      this.editor.txt.html(this.toImportContent)
+      console.log('this.edi', this.editorContent)
+      this.toImportContent = ''
+      this.dialogVisible = false
+    },
     toClipBoard($event) {
       clipboard(this.editorContent, $event)
     },
@@ -52,11 +79,11 @@ export default {
     }
   },
   mounted() {
-    const editor = new E(this.$refs.toolbar, this.$refs.editor)
-    editor.customConfig.onchange = (html) => {
+    this.editor = new E(this.$refs.toolbar, this.$refs.editor)
+    this.editor.customConfig.onchange = (html) => {
       this.editorContent = html
     }
-    editor.create()
+    this.editor.create()
   }
 
 }

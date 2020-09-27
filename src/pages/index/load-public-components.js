@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-// import 'element-ui/lib/theme-chalk/index.css'
+import 'element-ui/lib/theme-chalk/index.css'
 // flex 布局库
 import 'flex.css'
 // 组件
@@ -12,6 +12,7 @@ import Toast from '@/components/common/toast/index.js'
 
 // Element
 import element from 'element-ui'
+
 Vue.use(element)
 // import {
 //   Button,

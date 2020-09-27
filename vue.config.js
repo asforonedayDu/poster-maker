@@ -138,9 +138,9 @@ module.exports = {
   pages,
   configureWebpack: config => {
     const configNew = {}
-    configNew.externals = externals
+    // configNew.externals = externals
     if (!isDevelopment) {
-      // configNew.externals = externals
+      configNew.externals = externals
       configNew.plugins = [
         // gzip
         new CompressionWebpackPlugin({
@@ -160,22 +160,23 @@ module.exports = {
      * 添加 CDN 参数到 htmlWebpackPlugin 配置中
      * 适配多页
      */
-    Object.keys(pages).forEach(name => {
-      const page = pages[name]
-      config.plugin('html-' + name).tap(options => {
-        // set(options, '[0].cdn', process.env.NODE_ENV === 'production' ? cdn : [])
-        // set(options, '[0].cdn', {
-        //   js: cdn_js.filter(i_js => page.cdn.includes(i_js.name)).map(e => e.js),
-        //   css: cdn_css.filter(i_css => page.cdn.includes(i_css.name)).map(e => e.css),
-        // })
-        options[0]['cdn'] = {
-          js: cdn_js.filter(i_js => page.cdn.includes(i_js.name)).map(e => e.js),
-          css: cdn_css.filter(i_css => page.cdn.includes(i_css.name)).map(e => e.css),
-        }
-        return options
+    if (!isDevelopment) {
+      Object.keys(pages).forEach(name => {
+        const page = pages[name]
+        config.plugin('html-' + name).tap(options => {
+          // set(options, '[0].cdn', process.env.NODE_ENV === 'production' ? cdn : [])
+          // set(options, '[0].cdn', {
+          //   js: cdn_js.filter(i_js => page.cdn.includes(i_js.name)).map(e => e.js),
+          //   css: cdn_css.filter(i_css => page.cdn.includes(i_css.name)).map(e => e.css),
+          // })
+          options[0]['cdn'] = {
+            js: cdn_js.filter(i_js => page.cdn.includes(i_js.name)).map(e => e.js),
+            css: cdn_css.filter(i_css => page.cdn.includes(i_css.name)).map(e => e.css),
+          }
+          return options
+        })
       })
-    })
-    // if (!isDevelopment) {}
+    }
     /**
      * 把动画库的keyFrames转换成数组传到项目里面
      */

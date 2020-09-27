@@ -2,7 +2,6 @@ const prefix = 'animate__'
 const animateCell = (node, animation = '', index, eventHandler) => {
   return new Promise((resolve, reject) => {
     node.classList.add(`${prefix}animated`, `${prefix}${animation}`);
-
     // When the animation ends, we clean the classes and resolve the Promise
     function handleAnimationEnd() {
       node.classList.remove(`${prefix}animated`, `${prefix}${animation}`);

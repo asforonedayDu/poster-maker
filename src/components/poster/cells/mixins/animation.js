@@ -38,10 +38,22 @@ export default {
   mounted() {
     if (!this.designMode) {
       const targetDom = this.$refs.targetDom
-      this.animationDuration && targetDom.style.setProperty('--animate-duration', `${this.animationDuration}s`);
-      this.animationCount && targetDom.style.setProperty('animation-iteration-count', `${this.animationCount}`);
-      this.animationFillMode && targetDom.style.setProperty('animation-fill-mode', `${this.animationFillMode}`);
-      this.animationDelay && targetDom.style.setProperty('animation-delay', `${this.animationDelay}s`);
+      if (this.animationDuration) {
+        targetDom.style.setProperty('animate-duration', `${this.animationDuration}s`);
+        targetDom.style.setProperty('-webkit-animation-duration', `${this.animationDuration}s`);
+      }
+      if (this.animationCount) {
+        targetDom.style.setProperty('animation-iteration-count', `${this.animationCount}`);
+        targetDom.style.setProperty('-webkit-animation-iteration-count', `${this.animationCount}`);
+      }
+      if (this.animationFillMode) {
+        targetDom.style.setProperty('animation-fill-mode', `${this.animationFillMode}`);
+        targetDom.style.setProperty('-webkit-animation-fill-mode', `${this.animationFillMode}`);
+      }
+      if (this.animationDelay) {
+        targetDom.style.setProperty('animation-delay', `${this.animationDelay}`);
+        targetDom.style.setProperty('-webkit-animation-delay', `${this.animationDelay}`);
+      }
       if (this.animationActions.length > 0) {
         this.animateQueueCell(this.$refs.targetDom, this.animationActions).then(response => {
           if (this.hideAfterAnimation) targetDom.style.opacity = '0'
