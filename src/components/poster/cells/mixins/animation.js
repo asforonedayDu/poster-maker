@@ -51,8 +51,8 @@ export default {
         targetDom.style.setProperty('-webkit-animation-fill-mode', `${this.animationFillMode}`);
       }
       if (this.animationDelay) {
-        targetDom.style.setProperty('animation-delay', `${this.animationDelay}`);
-        targetDom.style.setProperty('-webkit-animation-delay', `${this.animationDelay}`);
+        targetDom.style.setProperty('animation-delay', `${this.animationDelay}s`);
+        targetDom.style.setProperty('-webkit-animation-delay', `${this.animationDelay}s`);
       }
       if (this.animationActions.length > 0) {
         this.animateQueueCell(this.$refs.targetDom, this.animationActions).then(response => {
