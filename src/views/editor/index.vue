@@ -72,7 +72,13 @@ export default {
       clipboard(this.editorContent, $event)
     },
     showContent() {
-      this.$msgbox(this.editorContent)
+      this.$msgbox({
+          message: this.editorContent,
+          title: '富文本内容',
+          confirmButtonText: '确定',
+          customClass: 'customMsgBoxClass'
+        }
+      )
     },
     onResize(x, y, width, height) {
       this.editHeight = height - 50
@@ -89,6 +95,19 @@ export default {
 }
 </script>
 
+<style lang="scss">
+  // 让编辑器的菜单 显示在element ui的 messagebox下层
+  .w-e-menu {
+    z-index: 1000 !important;
+  }
+
+  .customMsgBoxClass {
+    width: 60%;
+    max-height: 80%;
+    overflow-y: scroll;
+    margin: auto auto;
+  }
+</style>
 <style lang="scss" scoped>
   .main-container {
     width: 100%;

@@ -66,6 +66,24 @@ const frameIn = [
         },
         component: resolveComponentPath('posterMaker')
       },
+      {
+        path: '/mouseWheelSpeed',
+        name: 'mouseWheelSpeed',
+        meta: {
+          title: 'mouseWheelSpeed',
+          auth: false
+        },
+        component: resolveComponentPath('mouseWheelSpeed')
+      },
+      {
+        path: '/weiTest',
+        name: 'weiTest',
+        meta: {
+          title: '微信网页分享测试',
+          auth: false
+        },
+        component: resolveComponentPath('weiTest')
+      },
     ]
   }
 ]
