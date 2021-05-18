@@ -4,7 +4,7 @@
     <router-link to="/editor">富文本编辑页</router-link>
     <router-link to="/posterCenter">海报库</router-link>
     <router-link to="/posterMaker">制作海报</router-link>
-    <router-link to="/weiTest">测试微信网页分享</router-link>
+    <router-link to="/dataCreator">乡村数据生成</router-link>
   </div>
 </template>
 

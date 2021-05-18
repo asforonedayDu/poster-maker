@@ -76,13 +76,13 @@ const frameIn = [
         component: resolveComponentPath('mouseWheelSpeed')
       },
       {
-        path: '/weiTest',
-        name: 'weiTest',
+        path: '/dataCreator',
+        name: 'dataCreator',
         meta: {
-          title: '微信网页分享测试',
+          title: '乡村数据生成',
           auth: false
         },
-        component: resolveComponentPath('weiTest')
+        component: resolveComponentPath('dataCreator')
       },
     ]
   }
