@@ -22,15 +22,6 @@ const frameIn = [
         component: resolveComponentPath('system/index')
       },
       {
-        path: '/wordMaker',
-        name: 'wordMaker',
-        meta: {
-          title: '组词',
-          auth: false
-        },
-        component: resolveComponentPath('wordMaker')
-      },
-      {
         path: '/editor',
         name: 'editor',
         meta: {
@@ -74,15 +65,6 @@ const frameIn = [
           auth: false
         },
         component: resolveComponentPath('mouseWheelSpeed')
-      },
-      {
-        path: '/dataCreator',
-        name: 'dataCreator',
-        meta: {
-          title: '乡村数据生成',
-          auth: false
-        },
-        component: resolveComponentPath('dataCreator')
       },
     ]
   }
