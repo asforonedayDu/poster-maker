@@ -102,6 +102,17 @@ export default {
         </div>
       )
     },
+    rFlexHeight(h, config) {
+      return (
+        <div>
+          <span>高度随屏幕拉伸(宽高比不固定): </span>
+          <el-radio-group vModel={this.configProps[config.propKey]}>
+            <el-radio label={true}>是</el-radio>
+            <el-radio label={false}>否</el-radio>
+          </el-radio-group>
+        </div>
+      )
+    },
     rAnimationDuration(h, config) {
       return (
         <div class="input-main">

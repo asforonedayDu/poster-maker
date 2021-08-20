@@ -9,7 +9,7 @@
           return {pages: [], audio: {}}
         }
       },
-      rootWidth: {
+      htmlFontSize: {
         default: 0,
       }
     },
@@ -22,12 +22,13 @@
         this.pages = this.posterData.pages
         this.posterData.audio && (Object.assign(this.audio, this.posterData.audio))
       }
-      let rootWidth = this.rootWidth
-      if (!rootWidth) {
-        rootWidth = document.documentElement.clientWidth || document.body.clientWidth
+      // 设定高度是宽度1.6倍 cell-container-mid 中设置的高度是80rem 动态根据屏幕高度设置body fontsize
+      // 因为移动端浏览器对html的font size最小值有限制 这里让html fontsize变大了一倍
+      if (!this.htmlFontSize) {
+        const rootWidth = document.documentElement.clientWidth || document.body.clientWidth
+        let htmlDom = document.getElementsByTagName('html')[0]
+        htmlDom.style.fontSize = (rootWidth / 50) + 'px'
       }
-      let htmlDom = document.getElementsByTagName('html')[0]
-      htmlDom.style.fontSize = (rootWidth / 100) + 'px'
 
       // 全局抬手监听
       this.touchEndHandler = (e) => {
@@ -79,6 +80,7 @@
           {this.audio.href &&
           <audio src={`${this.audio.href}`} autoPlay={!!this.audio.autoPlay} loop={!!this.audio.loop} onPlay={() => {
             this.audioPlaying = true
+            clearInterval(this.audioTimer)
           }} onPause={() => {
             this.audioPlaying = false
           }} ref={'audio'}/>}
@@ -87,6 +89,16 @@
     },
     mounted() {
       this.$nextTick(() => {
+        // 自动播放
+        if (this.audio.autoPlay && this.audio.href) {
+          this.audioTimer = setInterval(() => {
+            if (this.audioPlaying) {
+              clearInterval(this.audioTimer)
+              return
+            }
+            this.$refs.audio && this.$refs.audio.play()
+          }, 300)
+        }
         this.clientHeight = this.$refs.container.clientHeight
         //
         this._isModbile = !!navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
@@ -116,6 +128,7 @@
     // },
     methods: {
       triggerMusic() {
+        if (!this.audio.href) return
         if (this.$refs.audio.paused) {
           this.$refs.audio.play();
         } else {
@@ -217,7 +230,10 @@
           }
         }
       }
-    }
+    },
+    beforeDestroy() {
+      clearInterval(this.audioTimer)
+    },
   }
 </script>
 <style lang="scss">
@@ -226,7 +242,7 @@
 
   .cell-container-mid {
     width: 100%;
-    height: 160rem;
+    height: 80rem;
     top: 50%;
     transform: translateY(-50%);
     position: absolute;
@@ -285,6 +301,7 @@
       border: 0.1px solid rgba(0, 0, 0, 0);
       overflow: hidden;
       animation-play-state: paused;
+      z-index: 99999;
 
       img {
         width: 100%;

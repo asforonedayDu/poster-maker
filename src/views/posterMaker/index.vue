@@ -90,7 +90,7 @@
       <div>
         <div class="preview-example-body">
           <div class="example-container">
-            <poster :posterData="previewData" :rootWidth="baseConfig.designWidth"/>
+            <poster :posterData="previewData" :htmlFontSize="1"/>
           </div>
         </div>
       </div>
@@ -130,15 +130,7 @@
   import demoContainer from './demoContainer'
   import cellConfigPanel from './cellConfigPanel'
   import poster from '@/components/poster/index'
-
-  export const treeDataType = {
-    CELL: '_CELL',
-    PAGE: '_PAGE',
-  }
-  export const baseConfig = {
-    designWidth: 500,
-    designHeight: 800,
-  }
+  import {treeDataType, baseConfig} from './libs/static'
 
   const cellList = cells.map(component => {
     return {
@@ -146,9 +138,10 @@
       descriptor: component.descriptor || '未描述组件',
       // 作为默认属性
       props: {
-        ...(component.defaultProps ? component.defaultProps : {})
+        ...(component.defaultProps ? component.defaultProps : {}),
+        locked: false,
       },
-      panelList: component.panelList.filter(e => e),
+      // panelList: component.panelList.filter(e => e),
     }
   })
 
@@ -163,10 +156,10 @@
     mixins: [pageControl, cellControl, posterControl],
     created() {
       this.animateList = util.getAnimationList()
+      // baseConfig.designWidth
       // let htmlWidth = document.documentElement.clientWidth || document.body.clientWidth
       let htmlDom = document.getElementsByTagName('html')[0]
-      htmlDom.style.fontSize = '5px'
-
+      htmlDom.style.fontSize = `${baseConfig.designWidth / 50}px`
     },
     data() {
       return {

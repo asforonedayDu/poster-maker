@@ -1,4 +1,8 @@
 export default {
+  switchFlexHeight: {
+    method: 'rFlexHeight',
+    propKey: 'flexHeight',
+  },
   inputText: {
     method: 'rInputText',
     propKey: 'content',

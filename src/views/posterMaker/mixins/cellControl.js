@@ -28,6 +28,18 @@ export default {
           this.$set(parent.cells, i - 1, item)
         }
       }
+      const lock = {
+        text: '锁定移动',
+        onClick: (item) => {
+          this.$set(item.props, 'locked', true)
+        }
+      }
+      const unLock = {
+        text: '解除锁定',
+        onClick: (item) => {
+          this.$set(item.props, 'locked', false)
+        }
+      }
       const moveDown = {
         text: '下移',
         onClick: (item, index) => {
@@ -53,6 +65,7 @@ export default {
       if (position < (parent.cells.length - 1)) {
         options.push(moveDown)
       }
+      options.push(item.props.locked ? unLock : lock)
       return options
     }
   }

@@ -5,6 +5,7 @@
   import panelList from "@/views/posterMaker/cellConfigPanel/panelList";
   import assetsManage from "@/views/posterMaker/cellConfigPanel/assetsManage";
   import panelRender from "@/views/posterMaker/cellConfigPanel/panelRender";
+  import cells from '@/components/poster/cells'
 
   const watcher = {}
   Object.keys(panelList).forEach(key => {
@@ -28,6 +29,7 @@
     data() {
       return {
         configProps: {},
+        targetCell: {},
         showAnimatePickWindow: false,
         selectedAnimation: [],
         showBackgroundColorPick: false,
@@ -45,20 +47,16 @@
       },
     },
     render(h, context) {
-      if (!this.onSelectCell.panelList) {
+      if (!this.targetCell.panelList) {
         return '无配置项'
       }
-      const cellPanelList = this.onSelectCell.panelList || []
       return (
         <div class="cell-config-panel">
           <div class="panel-item-body">
             <p>{this.onSelectCell.type}</p>
           </div>
-          {Object.values(panelList).map(li => {
-            const config = cellPanelList.find(item => item.method === li.method)
-            if (!config) {
-              return ''
-            }
+          {Object.values(this.targetCell.panelList).map(config => {
+            if (!config) return ''
             return (
               <div class="panel-item-body">
                 {this[`${config.method}`](h, config)}
@@ -72,8 +70,10 @@
     },
     methods: {
       setConfigData(onSelectCell) {
-        if (onSelectCell.panelList) {
-          onSelectCell.panelList.forEach(config => {
+        this.targetCell = cells.find(cell => cell.name === onSelectCell.type)
+        if (this.targetCell.panelList) {
+          this.targetCell.panelList.forEach(config => {
+            if (!config) return
             const value = onSelectCell.props[config.propKey]
             Vue.set(this.configProps, config.propKey, value)
           })

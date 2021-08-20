@@ -3,7 +3,7 @@
   import VueDraggableResizable from 'vue-draggable-resizable'
   // optionally import default styles
   import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
-  import {baseConfig} from '@/views/posterMaker/index.vue'
+  import {baseConfig} from '@/views/posterMaker/libs/static'
 
   const components = {}
   cells.forEach(component => {
@@ -57,17 +57,16 @@
       },
       renderEditWindow(h) {
         if (!this.onSelectCell || !this.showEditWindow) return ''
+        // console.log('this.onSelectCell.props locked', this?.onSelectCell?.props?.locked)
         const position = this.onSelectCell.props.position
         const left = (baseConfig.designWidth * (position.left || 0)) / 100
         const top = (baseConfig.designHeight * (position.top || 0)) / 100
-        const style = {top: `0`, left: `0`}
+        const style = {top: `0`, left: `0`, 'pointer-events': `${this?.onSelectCell?.props?.locked ? 'none' : 'auto'}`}
         return (
           <vue-draggable-resizable style={style} class="vue-draggable"
                                    props={{
-                                     onResize: this.handleResize, onDrag: this.handleDrag
-                                   }}
-                                   disable-user-select={true}
-                                   w={this.editWidth} h={this.editHeight} x={left} y={top}>
+                                     onResize: this.handleResize, onDrag: this.handleDrag,
+                                   }} w={this.editWidth} h={this.editHeight} x={left} y={top}>
           </vue-draggable-resizable>
         )
       },
@@ -139,7 +138,9 @@
     overflow: hidden;
 
     .vue-draggable {
-      /*border: 1px solid black;*/
+      border: 1.5px dashed #000;
+
+      /*transform:scale(2,2.5);*/
     }
   }
 

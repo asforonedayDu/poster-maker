@@ -1,5 +1,4 @@
-import Vue from "vue";
-import {treeDataType} from '../index'
+import {treeDataType} from '../libs/static'
 
 export default {
   data() {
@@ -42,7 +41,7 @@ export default {
               console.log('this.pages.indexOf(item) 错误')
               return
             }
-            this.previewData = {pages: this.pages[pageIndex]}
+            this.previewData = {pages: [this.pages[pageIndex]]}
             this.dialogPreviewVisible = true
           }
         },

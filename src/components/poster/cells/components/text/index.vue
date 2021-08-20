@@ -1,5 +1,5 @@
 <template>
-  <div class="cell-container-mid">
+  <div class="cell-container-flex">
     <div class="default-cell" :style="{...style}" ref="targetDom" @click="handleClick">
       <div :class="`cell-text-body ${verticalDirection?'vertical':''}`">
         {{content}}
@@ -16,7 +16,7 @@
 
   export default {
     name: "cell-text",
-    descriptor: '文字元素(文字专用)',
+    descriptor: '文字内容',
     defaultProps: {
       position: {
         left: 40,
@@ -30,9 +30,10 @@
       content: 'TEXT',
       fontsize: 8,
       hideAfterAnimation: false,
+      flexHeight: true,
     },
     panelList: [panelList.inputText, panelList.verticalDirection, panelList.fontsize, panelList.color, panelList.background,
-      panelList.hideAfterAnimation, panelList.animationActions, panelList.animationCount, panelList.animationDelay, panelList.animationDuration, panelList.animationFillMode],
+      panelList.switchFlexHeight, panelList.hideAfterAnimation, panelList.animationActions, panelList.animationCount, panelList.animationDelay, panelList.animationDuration, panelList.animationFillMode],
     mixins: [animation, style, base],
     props: {
       content: {

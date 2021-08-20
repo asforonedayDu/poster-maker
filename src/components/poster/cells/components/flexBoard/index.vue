@@ -20,7 +20,7 @@
 
   export default {
     name: "cell-flex-board",
-    descriptor: '弹性块(随目标设备屏幕宽高拉伸，如全屏自适应背景图)',
+    descriptor: '图片或纯色',
     defaultProps: {
       position: {
         width: 70,
@@ -28,11 +28,13 @@
         left: 15,
         top: 15
       },
+      background: 'rgba(78,19,42,1)',
       animationDuration: 1,
       animationDelay: 0,
       animationCount: 1,
       animationFillMode: 'both',
       hideAfterAnimation: false,
+      flexHeight: true,
     },
     panelList: panelCellList,
     mixins: [style, base],
