@@ -23,9 +23,10 @@ export default {
       this.onSelectPage = item
     },
     handleCreateNewPage() {
-      const length = Object.keys(this.pages).length
+      const length = this.pages.length
+      const maxId = Math.max(...this.pages.map(page => page.id))
       this.pages.push({
-        id: length,
+        id: maxId + 1,
         name: `第${length + 1}页`,
         createType: treeDataType.PAGE
       })
@@ -78,9 +79,12 @@ export default {
       }
       this.dialogAddCellVisible = false
       if (!this.onSelectPage.cells) this.$set(this.onSelectPage, 'cells', [])
+      const maxId = Math.max(...this.onSelectPage.cells.map(cell => {
+        return cell.id.split('_')[1]
+      }))
       this.onSelectPage.cells.push(_.cloneDeep({
         name: this.onSelectAddCell.inputCellName,
-        id: this.onSelectPage.id + '_' + this.onSelectPage.cells.length,
+        id: this.onSelectPage.id + '_' + (maxId + 1),
         createType: treeDataType.CELL,
         ...this.onSelectAddCell.cell
       }))
