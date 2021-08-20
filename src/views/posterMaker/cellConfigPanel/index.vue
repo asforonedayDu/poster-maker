@@ -1,187 +1,190 @@
 <script type="text/jsx">
-import Vue from 'vue'
-import util from "@/views/posterMaker/libs/utils";
-import {animateCell, animateQueueCell} from '@/libs/animate-help'
-import panelList from "@/views/posterMaker/cellConfigPanel/panelList";
-import assetsManage from "@/views/posterMaker/cellConfigPanel/assetsManage";
-import panelRender from "@/views/posterMaker/cellConfigPanel/panelRender";
+  import Vue from 'vue'
+  import util from "@/views/posterMaker/libs/utils";
+  import {animateCell, animateQueueCell} from '@/libs/animate-help'
+  import panelList from "@/views/posterMaker/cellConfigPanel/panelList";
+  import assetsManage from "@/views/posterMaker/cellConfigPanel/assetsManage";
+  import panelRender from "@/views/posterMaker/cellConfigPanel/panelRender";
 
-const watcher = {}
-Object.keys(panelList).forEach(key => {
-  const propKey = panelList[key]['propKey']
-  const watchTarget = `configProps.${propKey}`
-  watcher[watchTarget] = function (val, oldValue) {
-    if (val !== null) {
-      // console.log('watcher[watchTarget]', watchTarget, val)
-      this.$set(this.onSelectCell.props, propKey, _.cloneDeep(val))
-    }
-  }
-})
-const vueComponent = {
-  name: "cell-config-panel",
-  mixins: [assetsManage, panelRender],
-  props: {
-    onSelectCell: {
-      default: null
-    }
-  },
-  data() {
-    return {
-      configProps: {},
-      showAnimatePickWindow: false,
-      selectedAnimation: [],
-      showBackgroundColorPick: false,
-      showTextColorPick: false,
-    }
-  },
-  created() {
-    this.setConfigData(this.onSelectCell)
-    this.animateList = util.getAnimationList()
-  },
-  watch: {
-    ...watcher,
-    onSelectCell(val) {
-      this.setConfigData(val)
-    },
-  },
-  render(h, context) {
-    if (!this.onSelectCell.panelList) {
-      return '无配置项'
-    }
-    const cellPanelList = this.onSelectCell.panelList || []
-    return (
-      <div class="cell-config-panel">
-        {Object.values(panelList).map(li => {
-          const config = cellPanelList.find(item => item.method === li.method)
-          if (!config) {
-            return ''
-          }
-          return (
-            <div class="panel-item-body">
-              {this[`${config.method}`](h, config)}
-            </div>
-          )
-        })}
-        {this.renderAnimatePickWindow(h)}
-        {this.renderAssetsWindow(h)}
-      </div>
-    )
-  },
-  methods: {
-    setConfigData(onSelectCell) {
-      if (onSelectCell.panelList) {
-        onSelectCell.panelList.forEach(config => {
-          const value = onSelectCell.props[config.propKey]
-          Vue.set(this.configProps, config.propKey, value)
-        })
+  const watcher = {}
+  Object.keys(panelList).forEach(key => {
+    const propKey = panelList[key]['propKey']
+    const watchTarget = `configProps.${propKey}`
+    watcher[watchTarget] = function (val, oldValue) {
+      if (val !== null) {
+        // console.log('watcher[watchTarget]', watchTarget, val)
+        this.$set(this.onSelectCell.props, propKey, _.cloneDeep(val))
       }
-      this.selectedAnimation = this.configProps[panelList.animationActions.propKey] || []
-    },
-    handleAnimationSelectChange(value) {
-      animateQueueCell(this.$refs.example, value)
-    },
-    setAnimation() {
-      if (this.selectedAnimation) {
-        this.configProps.animationActions = this.selectedAnimation
-        // if (!this.configProps.animationActions) {
-        //   Vue.set(this.configProps, 'animationActions', [])
-        // }
-        // Vue.set(this.configProps.animationActions, 0, this.selectedAnimation)
+    }
+  })
+  const vueComponent = {
+    name: "cell-config-panel",
+    mixins: [assetsManage, panelRender],
+    props: {
+      onSelectCell: {
+        default: null
       }
-      this.showAnimatePickWindow = false
     },
-    renderAnimatePickWindow(h) {
+    data() {
+      return {
+        configProps: {},
+        showAnimatePickWindow: false,
+        selectedAnimation: [],
+        showBackgroundColorPick: false,
+        showTextColorPick: false,
+      }
+    },
+    created() {
+      this.setConfigData(this.onSelectCell)
+      this.animateList = util.getAnimationList()
+    },
+    watch: {
+      ...watcher,
+      onSelectCell(val) {
+        this.setConfigData(val)
+      },
+    },
+    render(h, context) {
+      if (!this.onSelectCell.panelList) {
+        return '无配置项'
+      }
+      const cellPanelList = this.onSelectCell.panelList || []
       return (
-        <el-dialog title="选择动画" visible={this.showAnimatePickWindow} custom-class="dialog-select-animation"
-                   show-close={false}>
-          <div class="pick-window-body">
-            <div class="pick-list">
-              <el-checkbox-group vModel={this.selectedAnimation} on-change={this.handleAnimationSelectChange}>
-                {
-                  this.animateList.map(animateName => {
-                    return (
-                      <el-checkbox class="pick-animate-item" label={animateName}>{animateName}</el-checkbox>
-                    )
-                  })
-                }
-              </el-checkbox-group>
-            </div>
-            <div class="example-body">
-              <div class="example-container">
-                <div class="example-phone-container">
-                  <div class="example" ref="example">
-                    Animation
+        <div class="cell-config-panel">
+          <div class="panel-item-body">
+            <p>{this.onSelectCell.type}</p>
+          </div>
+          {Object.values(panelList).map(li => {
+            const config = cellPanelList.find(item => item.method === li.method)
+            if (!config) {
+              return ''
+            }
+            return (
+              <div class="panel-item-body">
+                {this[`${config.method}`](h, config)}
+              </div>
+            )
+          })}
+          {this.renderAnimatePickWindow(h)}
+          {this.renderAssetsWindow(h)}
+        </div>
+      )
+    },
+    methods: {
+      setConfigData(onSelectCell) {
+        if (onSelectCell.panelList) {
+          onSelectCell.panelList.forEach(config => {
+            const value = onSelectCell.props[config.propKey]
+            Vue.set(this.configProps, config.propKey, value)
+          })
+        }
+        this.selectedAnimation = this.configProps[panelList.animationActions.propKey] || []
+      },
+      handleAnimationSelectChange(value) {
+        animateQueueCell(this.$refs.example, value)
+      },
+      setAnimation() {
+        if (this.selectedAnimation) {
+          this.configProps.animationActions = this.selectedAnimation
+          // if (!this.configProps.animationActions) {
+          //   Vue.set(this.configProps, 'animationActions', [])
+          // }
+          // Vue.set(this.configProps.animationActions, 0, this.selectedAnimation)
+        }
+        this.showAnimatePickWindow = false
+      },
+      renderAnimatePickWindow(h) {
+        return (
+          <el-dialog title="选择动画" visible={this.showAnimatePickWindow} custom-class="dialog-select-animation"
+                     show-close={false}>
+            <div class="pick-window-body">
+              <div class="pick-list">
+                <el-checkbox-group vModel={this.selectedAnimation} on-change={this.handleAnimationSelectChange}>
+                  {
+                    this.animateList.map(animateName => {
+                      return (
+                        <el-checkbox class="pick-animate-item" label={animateName}>{animateName}</el-checkbox>
+                      )
+                    })
+                  }
+                </el-checkbox-group>
+              </div>
+              <div class="example-body">
+                <div class="example-container">
+                  <div class="example-phone-container">
+                    <div class="example" ref="example">
+                      Animation
+                    </div>
+                  </div>
+                  <div class="button-bottom">
+                    <el-button type="primary" vOn:click={this.setAnimation}>确认</el-button>
+                    <el-button vOn:click={() => this.showAnimatePickWindow = false}>取消</el-button>
                   </div>
                 </div>
-                <div class="button-bottom">
-                  <el-button type="primary" vOn:click={this.setAnimation}>确认</el-button>
-                  <el-button vOn:click={() => this.showAnimatePickWindow = false}>取消</el-button>
-                </div>
               </div>
-            </div>
-            <div class="selected-animation-body">
-              <span> 当前选择动画:</span>
-              <div class="example-animate-body">
-                {this.selectedAnimation.map((animate, index) => {
-                  return (
-                    <span>
+              <div class="selected-animation-body">
+                <span> 当前选择动画:</span>
+                <div class="example-animate-body">
+                  {this.selectedAnimation.map((animate, index) => {
+                    return (
+                      <span>
                       <el-tag key={index} closable={true} vOn:close={() => {
                         this.selectedAnimation.splice(index, 1)
                       }}>
                         {animate}
                       </el-tag>
                     </span>
-                  )
-                })}
+                    )
+                  })}
+                </div>
               </div>
             </div>
-          </div>
-        </el-dialog>
-      )
-    },
-    renderAssetsWindow(h) {
-      return (
-        <el-dialog title="选择素材"
-                   visible={this.showAssetsWindow} {...{on: {'update:visible': () => this.showAssetsWindow = false}}}
-                   class="assets-body" width="80%">
-          <div class="upload-img-body">
-            <input ref="uploadInput" class="upload-button-input" type="file"
-                   accept="image/jpg,image/jpeg,image/png,image/gif,*.svg"
-                   on-change={this.handleImgFileChange}/>
-            <el-button class="upload-button" onClick={() => this.$refs.uploadInput.click()}>上传素材</el-button>
-          </div>
-          <div>
-            <div class="assets-list">
-              {
-                this.commonAssets.map(asset => {
-                  return (
-                    <div class="asset-body">
-                      <div class="asset-img-body" vOn:click={() => this.handleAssetClick(asset)}>
-                        <img src={asset.asset_content}/>
-                        {asset.uploading && <div class="uploading-tag">上传中</div>}
-                        {this.onSelectAsset === asset && <div class="asset-selected"/>}
+          </el-dialog>
+        )
+      },
+      renderAssetsWindow(h) {
+        return (
+          <el-dialog title="选择素材"
+                     visible={this.showAssetsWindow} {...{on: {'update:visible': () => this.showAssetsWindow = false}}}
+                     class="assets-body" width="80%">
+            <div class="upload-img-body">
+              <input ref="uploadInput" class="upload-button-input" type="file"
+                     accept="image/jpg,image/jpeg,image/png,image/gif,*.svg"
+                     on-change={this.handleImgFileChange}/>
+              <el-button class="upload-button" onClick={() => this.$refs.uploadInput.click()}>上传素材</el-button>
+            </div>
+            <div>
+              <div class="assets-list">
+                {
+                  this.commonAssets.map(asset => {
+                    return (
+                      <div class="asset-body">
+                        <div class="asset-img-body" vOn:click={() => this.handleAssetClick(asset)}>
+                          <img src={asset.asset_content}/>
+                          {asset.uploading && <div class="uploading-tag">上传中</div>}
+                          {this.onSelectAsset === asset && <div class="asset-selected"/>}
+                        </div>
                       </div>
-                    </div>
-                  )
-                })
-              }
-            </div>
-            <div class="operation-buttons-body">
-              {this.onSelectAsset &&
-              <div class="operation-buttons">
-                <el-button type="danger" on-click={() => this.deleteAsset(this.onSelectAsset)}>删除</el-button>
-                <el-button type="primary" on-click={() => this.setBackgroundImage(this.onSelectAsset)}>确认</el-button>
+                    )
+                  })
+                }
               </div>
-              }
-            </div>
+              <div class="operation-buttons-body">
+                {this.onSelectAsset &&
+                <div class="operation-buttons">
+                  <el-button type="danger" on-click={() => this.deleteAsset(this.onSelectAsset)}>删除</el-button>
+                  <el-button type="primary" on-click={() => this.setBackgroundImage(this.onSelectAsset)}>确认</el-button>
+                </div>
+                }
+              </div>
 
-          </div>
-        </el-dialog>
-      )
-    },
+            </div>
+          </el-dialog>
+        )
+      },
+    }
   }
-}
-export default vueComponent
+  export default vueComponent
 </script>
 <style lang="scss">
   .dialog-select-animation {

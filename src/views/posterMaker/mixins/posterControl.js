@@ -5,6 +5,17 @@ export default {
   data() {
     return {
       isShowDialogPosterManageWindow: false,
+      isShowSetAudioWindow: false,
+      audio: {
+        href: '',
+        loop: true,
+        autoPlay: true,
+      },
+      audioTmp: {
+        href: '',
+        loop: true,
+        autoPlay: true,
+      },
       posterList: [],
       onSelectExistedPoster: null,
       onSelectSaveTargetPoster: null,
@@ -16,6 +27,14 @@ export default {
     }
   },
   methods: {
+    showSetAudioWindow() {
+      Object.assign(this.audioTmp, this.audio)
+      this.isShowSetAudioWindow = true
+    },
+    handleSaveAudioData() {
+      Object.assign(this.audio, this.audioTmp)
+      this.isShowSetAudioWindow = false
+    },
     async deletePosterData() {
       if (this.onSelectExistedPoster === null) {
         this.$message('请选择一个海报')
@@ -46,8 +65,13 @@ export default {
         return
       }
       loading.close()
-      this.posterList[this.onSelectExistedPoster].poster_data = JSON.parse(posterData.poster_data)
-      Vue.set(this, 'pages', this.posterList[this.onSelectExistedPoster].poster_data)
+      posterData = JSON.parse(posterData.poster_data)
+      this.posterList[this.onSelectExistedPoster].poster_data = posterData
+      Vue.set(this, 'pages', posterData.pages)
+      if (posterData.audio) {
+        Object.assign(this.audio, posterData.audio);
+        Object.assign(this.audioTmp, posterData.audio);
+      }
       this.poster.poster_id = this.posterList[this.onSelectExistedPoster].poster_id
       this.onSelectExistedPoster = null
       this.isShowDialogPosterManageWindow = false
@@ -65,7 +89,10 @@ export default {
         create_user_id: poster.create_user_id,
         poster_name: poster.poster_name,
         poster_type: poster.poster_type,
-        poster_data: JSON.stringify(data),
+        poster_data: JSON.stringify({
+          pages: data,
+          audio: {...this.audio},
+        }),
       })
       this.requestedPosterList = false
       this.$message('保存成功')
@@ -83,7 +110,6 @@ export default {
       //   callback: action => {
       //   }
       // });
-      console.log('poster data', data)
       return data
     },
     async handleCreatePoster() {
@@ -97,7 +123,10 @@ export default {
         return
       }
       const result = await this.$api.CREATE_POSTER({
-        create_user_id: 1, poster_name: this.inputNewPosterName, poster_type: 1, poster_data: JSON.stringify(data)
+        create_user_id: 1, poster_name: this.inputNewPosterName, poster_type: 1, poster_data: JSON.stringify({
+          pages: data,
+          audio: {...this.audio},
+        })
       })
       this.inputNewPosterName = ''
       this.$message('保存成功')

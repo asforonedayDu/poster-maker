@@ -11,12 +11,12 @@ export default {
         cell: ''
       },
       onSelectPage: {},
-      previewData: []
+      previewData: {}
     }
   },
   methods: {
     previewAllPage() {
-      this.previewData = this.pages
+      this.previewData = {pages: this.pages, audio: {...this.audio}}
       this.dialogPreviewVisible = true
     },
     handleClickPage(item, index) {
@@ -42,7 +42,7 @@ export default {
               console.log('this.pages.indexOf(item) 错误')
               return
             }
-            this.previewData = [this.pages[pageIndex]]
+            this.previewData = {pages: this.pages[pageIndex]}
             this.dialogPreviewVisible = true
           }
         },
@@ -51,6 +51,10 @@ export default {
           onClick: (item, index) => {
             this.onSelectPage = item
             this.dialogAddCellVisible = true
+            if (!item.$hasChild) {
+              const treeComponent = this.$refs.treeContainer
+              treeComponent.handleClickTriangle(treeComponent, item, index)
+            }
           }
         },
         {

@@ -12,6 +12,9 @@
           <div class="header-body" @click="handleCreateNewPage">
             新建页面
           </div>
+          <div class="header-body" @click="showSetAudioWindow">
+            设置背景音乐
+          </div>
         </template>
       </tree-container>
     </div>
@@ -87,8 +90,29 @@
       <div>
         <div class="preview-example-body">
           <div class="example-container">
-            <poster :pageData="previewData" :rootWidth="baseConfig.designWidth"/>
+            <poster :posterData="previewData" :rootWidth="baseConfig.designWidth"/>
           </div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog title="设置背景音乐" v-if="isShowSetAudioWindow" :visible.sync="isShowSetAudioWindow">
+      <div>
+        <div class="preview-example-body">
+          <el-form ref="form" :model="audio" label-width="100px" style="width: 500px">
+            <el-form-item label="音频链接地址">
+              <el-input v-model="audioTmp.href"></el-input>
+            </el-form-item>
+            <el-form-item label="循环播放">
+              <el-switch v-model="audioTmp.loop"></el-switch>
+            </el-form-item>
+            <el-form-item label="自动播放">
+              <el-switch v-model="audioTmp.autoPlay"></el-switch>
+            </el-form-item>
+            <el-form-item>
+              <el-button @click="isShowSetAudioWindow = false">取消</el-button>
+              <el-button type="primary" @click="handleSaveAudioData">保存</el-button>
+            </el-form-item>
+          </el-form>
         </div>
       </div>
     </el-dialog>
@@ -96,104 +120,106 @@
 </template>
 
 <script>
-import util from './libs/utils'
-import {flattenObj} from '@/libs/util'
-import treeContainer from '@/components/tree-container'
-import cells from '../../components/poster/cells/index.js'
-import pageControl from './mixins/pageControl'
-import cellControl from './mixins/cellControl'
-import posterControl from './mixins/posterControl'
-import demoContainer from './demoContainer'
-import cellConfigPanel from './cellConfigPanel'
-import poster from '@/components/poster/index'
+  import util from './libs/utils'
+  import {flattenObj} from '@/libs/util'
+  import treeContainer from '@/components/tree-container'
+  import cells from '../../components/poster/cells/index.js'
+  import pageControl from './mixins/pageControl'
+  import cellControl from './mixins/cellControl'
+  import posterControl from './mixins/posterControl'
+  import demoContainer from './demoContainer'
+  import cellConfigPanel from './cellConfigPanel'
+  import poster from '@/components/poster/index'
 
-export const treeDataType = {
-  CELL: '_CELL',
-  PAGE: '_PAGE',
-}
-export const baseConfig = {
-  designWidth: 500,
-  designHeight: 800,
-}
-
-const cellList = cells.map(component => {
-  return {
-    type: component.name,
-    descriptor: component.descriptor || '未描述组件',
-    // 作为默认属性
-    props: {
-      ...(component.defaultProps ? component.defaultProps : {})
-    },
-    panelList: component.panelList.filter(e => e),
+  export const treeDataType = {
+    CELL: '_CELL',
+    PAGE: '_PAGE',
   }
-})
+  export const baseConfig = {
+    designWidth: 500,
+    designHeight: 800,
+  }
 
-export default {
-  name: "posterMaker",
-  components: {
-    'tree-container': treeContainer,
-    'demo-container': demoContainer,
-    'cell-config-panel': cellConfigPanel,
-    'poster': poster,
-  },
-  mixins: [pageControl, cellControl, posterControl],
-  created() {
-    this.animateList = util.getAnimationList()
-    // let htmlWidth = document.documentElement.clientWidth || document.body.clientWidth
-    let htmlDom = document.getElementsByTagName('html')[0]
-    htmlDom.style.fontSize = '5px'
-
-  },
-  data() {
+  const cellList = cells.map(component => {
     return {
-      pages: [],
-      cellList: cellList,
-      baseConfig
+      type: component.name,
+      descriptor: component.descriptor || '未描述组件',
+      // 作为默认属性
+      props: {
+        ...(component.defaultProps ? component.defaultProps : {})
+      },
+      panelList: component.panelList.filter(e => e),
     }
-  },
-  computed: {
-    treeData() {
-      const values = this.pages
-      if (values && Object.keys(values).length > 0) {
-        return flattenObj({targetObj: values, childrenKey: 'cells'})
-      } else {
-        return []
+  })
+
+  export default {
+    name: "posterMaker",
+    components: {
+      'tree-container': treeContainer,
+      'demo-container': demoContainer,
+      'cell-config-panel': cellConfigPanel,
+      'poster': poster,
+    },
+    mixins: [pageControl, cellControl, posterControl],
+    created() {
+      this.animateList = util.getAnimationList()
+      // let htmlWidth = document.documentElement.clientWidth || document.body.clientWidth
+      let htmlDom = document.getElementsByTagName('html')[0]
+      htmlDom.style.fontSize = '5px'
+
+    },
+    data() {
+      return {
+        pages: [],
+        cellList: cellList,
+        baseConfig
       }
     },
-    treeOptions() {
-      const self = this
-      return {
-        search: {
-          placeholder: '根据名称搜索',
-          useLocalSearch: true
-        },
-        style: {
-          contentWidth: '380',
-          contentMinWidth: '300',
-          backgroundColor: 'white'
-        },
-        handleClickItem: function (item, index) {
-          if (item.createType === treeDataType.PAGE) {
-            return this.handleClickPage(item, index)
-          } else if (item.createType === treeDataType.CELL) {
-            return this.handleClickCell(item, index)
-          }
-        }.bind(self),
-        moreOption: {
-          getOption: (item, index) => {
+    mounted() {
+    },
+    computed: {
+      treeData() {
+        const values = this.pages
+        if (values && Object.keys(values).length > 0) {
+          return flattenObj({targetObj: values, childrenKey: 'cells'})
+        } else {
+          return []
+        }
+      },
+      treeOptions() {
+        const self = this
+        return {
+          search: {
+            placeholder: '根据名称搜索',
+            useLocalSearch: true
+          },
+          style: {
+            contentWidth: '380',
+            contentMinWidth: '300',
+            backgroundColor: 'white'
+          },
+          handleClickItem: function (item, index) {
             if (item.createType === treeDataType.PAGE) {
-              return this.getPageOptions(item, index)
+              return this.handleClickPage(item, index)
             } else if (item.createType === treeDataType.CELL) {
-              return this.getCellOptions(item, index)
+              return this.handleClickCell(item, index)
             }
-            return []
-          }
-        },
+          }.bind(self),
+          moreOption: {
+            getOption: (item, index) => {
+              if (item.createType === treeDataType.PAGE) {
+                return this.getPageOptions(item, index)
+              } else if (item.createType === treeDataType.CELL) {
+                return this.getCellOptions(item, index)
+              }
+              return []
+            }
+          },
+        }
       }
-    }
-  },
-  methods: {}
-}
+    },
+    methods: {}
+  }
 </script>
 <style lang="scss">
   .content-row {

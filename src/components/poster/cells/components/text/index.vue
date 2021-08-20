@@ -1,6 +1,6 @@
 <template>
   <div class="cell-container-mid">
-    <div class="default-cell" :style="{...style}" ref="targetDom">
+    <div class="default-cell" :style="{...style}" ref="targetDom" @click="handleClick">
       <div :class="`cell-text-body ${verticalDirection?'vertical':''}`">
         {{content}}
       </div>
@@ -9,47 +9,48 @@
 </template>
 
 <script>
-import animation from '../../mixins/animation'
-import style from '../../mixins/style'
-import panelList from '@/views/posterMaker/cellConfigPanel/panelList'
+  import animation from '../../mixins/animation'
+  import style from '../../mixins/style'
+  import panelList from '@/views/posterMaker/cellConfigPanel/panelList'
+  import base from '../../mixins/base'
 
-export default {
-  name: "cell-text",
-  descriptor: '文字元素(文字专用)',
-  defaultProps: {
-    position: {
-      left: 40,
-      top: 40
+  export default {
+    name: "cell-text",
+    descriptor: '文字元素(文字专用)',
+    defaultProps: {
+      position: {
+        left: 40,
+        top: 40
+      },
+      verticalDirection: false,
+      animationDuration: 1,
+      animationDelay: 0,
+      animationCount: 1,
+      animationFillMode: 'both',
+      content: 'TEXT',
+      fontsize: 8,
+      hideAfterAnimation: false,
     },
-    verticalDirection: false,
-    animationDuration: 1,
-    animationDelay: 0,
-    animationCount: 1,
-    animationFillMode: 'both',
-    content: 'TEXT',
-    fontsize: 8,
-    hideAfterAnimation: false,
-  },
-  panelList: [panelList.inputText, panelList.verticalDirection, panelList.fontsize, panelList.color, panelList.background,
-    panelList.hideAfterAnimation, panelList.animationActions, panelList.animationCount, panelList.animationDelay, panelList.animationDuration, panelList.animationFillMode],
-  mixins: [animation, style],
-  props: {
-    content: {
-      required: true
+    panelList: [panelList.inputText, panelList.verticalDirection, panelList.fontsize, panelList.color, panelList.background,
+      panelList.hideAfterAnimation, panelList.animationActions, panelList.animationCount, panelList.animationDelay, panelList.animationDuration, panelList.animationFillMode],
+    mixins: [animation, style, base],
+    props: {
+      content: {
+        required: true
+      },
+      verticalDirection: {
+        type: Boolean,
+        default: false
+      },
     },
-    verticalDirection: {
-      type: Boolean,
-      default: false
+    data() {
+      return {}
     },
-  },
-  data() {
-    return {}
-  },
-  mounted() {
-    // this.animateCell(this.$refs.targetDom, this.animation.actions || [])
-  },
-  computed: {}
-}
+    mounted() {
+      // this.animateCell(this.$refs.targetDom, this.animation.actions || [])
+    },
+    computed: {}
+  }
 </script>
 
 <style lang="scss" scoped>

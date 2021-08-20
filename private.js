@@ -34,9 +34,7 @@ module.exports = {
       // }
     },
     '/nodeServer': {
-      target: 'http://testweb.jryaodian.com/',
-      // target: 'http://127.0.0.1/',
-      // target: 'http://39.96.43.154:8080/',
+      target: 'http://127.0.0.1:7001/',
       changeOrigin: true,
       // pathRewrite: {
       //   '^/api_h5': '/api'

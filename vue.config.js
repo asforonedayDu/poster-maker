@@ -18,7 +18,7 @@ process.env.VUE_APP_VERSION = require('./package.json').version
 // process.env.VUE_APP_BUILD_TIME = require('dayjs')().format('YYYY-M-D HH:mm:ss')
 process.env.VUE_APP_BUILD_TIME = '2020-8-15 12:00:00'
 // 基础路径 注意发布之前要先修改这里
-const publicPath = process.env.VUE_APP_PUBLIC_PATH || '/company/'
+const publicPath = process.env.VUE_APP_PUBLIC_PATH || '/poster/'
 
 // 设置不参与构建的库 生产模式有效
 const externals = {}
@@ -55,7 +55,7 @@ let pages = {
       filename: 'index.html',
       cdn: ['vue', 'vue-router', 'vuex', 'axios', 'lodash', 'element-ui', 'js-cookie'],// 'screenfull'
       //'chunk-vendors', 'chunk-common', 'vendors~index', 'chunk-vue-router', 'chunk-vuex', 'chunk-elementUI', 'chunk-axios',
-      chunks: ['chunk-vendors', 'chunk-common', 'chunk-elementUI', 'index',]
+      chunks: ['chunk-vendors', 'chunk-common', 'chunk-elementUI', 'index']
     },
   posterShow:
     {
@@ -64,7 +64,7 @@ let pages = {
       filename: 'posterShow/index.html',
       cdn: ['vue', 'axios', 'lodash'],// 'screenfull'
       //'chunk-vendors', 'chunk-common', 'vendors~index', 'chunk-vue-router', 'chunk-vuex', 'chunk-elementUI', 'chunk-axios',
-      chunks: ['chunk-vendors', 'chunk-common', 'posterShow',]
+      chunks: ['chunk-vendors', 'chunk-common', 'posterShow']
     },
 }
 
@@ -181,10 +181,10 @@ module.exports = {
      * 把动画库的keyFrames转换成数组传到项目里面
      */
     config.plugin('define')
-    .tap(args => {
-      args[0].ANIMATE_LIST = JSON.stringify(PRV_CONFIG.getAnimationList())
-      return args
-    })
+      .tap(args => {
+        args[0].ANIMATE_LIST = JSON.stringify(PRV_CONFIG.getAnimationList())
+        return args
+      })
     /**
      * 删除懒加载模块的 prefetch preload，降低带宽压力
      * https://cli.vuejs.org/zh/guide/html-and-static-assets.html#prefetch
@@ -192,15 +192,15 @@ module.exports = {
      * 而且预渲染时生成的 prefetch 标签是 modern 版本的，低版本浏览器是不需要的
      */
     config.plugins
-    .delete('prefetch')
-    .delete('preload')
+      .delete('prefetch')
+      .delete('preload')
     for (let key in pages) {
       config.plugins.delete('prefetch-' + key + '')
       config.plugins.delete('preload-' + key + '')
     }
     // 解决 cli3 热更新失效 https://github.com/vuejs/vue-cli/issues/1559
     config.resolve
-    .symlinks(true)
+      .symlinks(true)
     // config
     // .plugin('theme-color-replacer')
     // .use(ThemeColorReplacer, [{
@@ -212,17 +212,17 @@ module.exports = {
     //   changeSelector: forElementUI.changeSelector
     // }])
     config
-    // 开发环境 sourcemap 不包含列信息
-    .when(isDevelopment,
-      config => config.devtool('cheap-source-map')
-    )
-    // 预览环境构建 vue-loader 添加 filename
-    .when(
-      process.env.VUE_APP_SCOURCE_LINK === 'TRUE',
-      config => VueFilenameInjector(config, {
-        propName: process.env.VUE_APP_SOURCE_VIEWER_PROP_NAME
-      })
-    )
+      // 开发环境 sourcemap 不包含列信息
+      .when(isDevelopment,
+        config => config.devtool('cheap-source-map')
+      )
+      // 预览环境构建 vue-loader 添加 filename
+      .when(
+        process.env.VUE_APP_SCOURCE_LINK === 'TRUE',
+        config => VueFilenameInjector(config, {
+          propName: process.env.VUE_APP_SOURCE_VIEWER_PROP_NAME
+        })
+      )
     // 去除生产环境控制台代码
     // config.when(!isDevelopment, config => {
     //   config.optimization.minimizer('terser').tap(options => {
@@ -232,44 +232,44 @@ module.exports = {
     // })
     // markdown
     config.module
-    .rule('md')
-    .test(/\.md$/)
-    .use('text-loader')
-    .loader('text-loader')
-    .end()
+      .rule('md')
+      .test(/\.md$/)
+      .use('text-loader')
+      .loader('text-loader')
+      .end()
     // svg
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
     svgRule
-    .include
-    .add(resolve('src/assets/svg-icons/icons'))
-    .end()
-    .use('svg-sprite-loader')
-    .loader('svg-sprite-loader')
-    .options({
-      symbolId: 'd2-[name]'
-    })
-    .end()
+      .include
+      .add(resolve('src/assets/svg-icons/icons'))
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'd2-[name]'
+      })
+      .end()
     // image exclude
     const imagesRule = config.module.rule('images')
     imagesRule
-    .test(/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/)
-    .exclude
-    .add(resolve('src/assets/svg-icons/icons'))
-    .end()
+      .test(/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/)
+      .exclude
+      .add(resolve('src/assets/svg-icons/icons'))
+      .end()
     // 重新设置 alias
     config.resolve.alias
-    .set('@', resolve('src'))
-    .set('@api', resolve('src/api'))
+      .set('@', resolve('src'))
+      .set('@api', resolve('src/api'))
     // 分析工具
     if (process.env.npm_config_report) {
       config
-      .plugin('webpack-bundle-analyzer')
-      .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+        .plugin('webpack-bundle-analyzer')
+        .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
     }
     if (!isDevelopment) {
       config
-      .optimization.splitChunks({
+        .optimization.splitChunks({
         chunks: 'all',
         // minSize: 10000, // 提取出的新chunk在两次压缩(打包压缩和服务器压缩)之前要大于**kb
         // minChunks: 1, // 被提取的chunk最少需要被多少chunks共同引入
