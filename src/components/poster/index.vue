@@ -11,6 +11,9 @@
       },
       htmlFontSize: {
         default: 0,
+      },
+      rootWidth: {
+        default: 0,
       }
     },
     components: {
@@ -25,7 +28,7 @@
       // 设定高度是宽度1.6倍 cell-container-mid 中设置的高度是80rem 动态根据屏幕高度设置body fontsize
       // 因为移动端浏览器对html的font size最小值有限制 这里让html fontsize变大了一倍
       if (!this.htmlFontSize) {
-        const rootWidth = document.documentElement.clientWidth || document.body.clientWidth
+        const rootWidth = this.rootWidth || document.documentElement.clientWidth || document.body.clientWidth
         let htmlDom = document.getElementsByTagName('html')[0]
         htmlDom.style.fontSize = (rootWidth / 50) + 'px'
       }

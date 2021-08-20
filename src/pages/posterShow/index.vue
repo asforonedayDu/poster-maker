@@ -41,7 +41,7 @@
         this.rootWidth = windowHeight * 5 / 8
       }
       this.posterData = JSON.parse(result.poster_data)
-      console.log('this.posterData', this.posterData)
+      // console.log('this.posterData', this.posterData)
     },
   }
 </script>
