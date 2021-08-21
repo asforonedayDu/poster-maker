@@ -131,6 +131,7 @@
     position: absolute;
     z-index: 0;
     overflow: hidden;
+    pointer-events: none;
 
     /*.cell-container {*/
     /*  position: absolute;*/

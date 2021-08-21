@@ -1,9 +1,7 @@
 <template>
-  <div class="cell-container-flex">
-    <div class="default-cell" :style="{...style}" ref="targetDom">
-      <div :class="`cell-text-body ${verticalDirection?'vertical':''}`">
-        {{content}}
-      </div>
+  <div class="default-cell" :style="{...style}" ref="targetDom">
+    <div :class="`cell-text-body ${verticalDirection?'vertical':''}`">
+      {{content}}
     </div>
   </div>
 </template>
@@ -32,8 +30,8 @@
       hideAfterAnimation: false,
       flexHeight: true,
     },
-    panelList: [panelList.inputText, panelList.verticalDirection, panelList.fontsize, panelList.color, panelList.background,
-      panelList.switchFlexHeight, panelList.hideAfterAnimation, panelList.animationActions, panelList.animationCount, panelList.animationDelay, panelList.animationDuration, panelList.animationFillMode],
+    panelList: [panelList.switchFlexHeight, panelList.inputText, panelList.verticalDirection, panelList.fontsize, panelList.color, panelList.background,
+      panelList.hideAfterAnimation, panelList.animationActions, panelList.animationCount, panelList.animationDelay, panelList.animationDuration, panelList.animationFillMode],
     mixins: [animation, style, base],
     props: {
       content: {
@@ -48,9 +46,8 @@
       return {}
     },
     // mounted() {
-      // this.animateCell(this.$refs.targetDom, this.animation.actions || [])
+    // this.animateCell(this.$refs.targetDom, this.animation.actions || [])
     // },
-    computed: {}
   }
 </script>
 

@@ -3,8 +3,6 @@ export default {
   mounted() {
     if (this.designMode) {
       this.$refs.targetDom.addEventListener('click', this.handleClick)
-    }else {
-      console.log('designMode',this.designMode)
     }
   },
   methods: {

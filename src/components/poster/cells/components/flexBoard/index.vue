@@ -1,7 +1,5 @@
 <template>
-  <div class="cell-container-flex">
-    <div class="default-cell" :style="style" ref="targetDom">
-    </div>
+  <div class="default-cell" :style="style" ref="targetDom">
   </div>
 </template>
 
@@ -9,6 +7,7 @@
   import style from '../../mixins/style'
   import panelList from '@/views/posterMaker/cellConfigPanel/panelList'
   import base from '../../mixins/base'
+  import animation from "../../mixins/animation";
 
   const panelCellList = Object.values({
     ...panelList,
@@ -17,7 +16,6 @@
     color: null,
     fontsize: null
   })
-
   export default {
     name: "cell-flex-board",
     descriptor: '图片或纯色',
@@ -37,7 +35,7 @@
       flexHeight: true,
     },
     panelList: panelCellList,
-    mixins: [style, base],
+    mixins: [animation, style, base],
     props: {}
   }
 </script>

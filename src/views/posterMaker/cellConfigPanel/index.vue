@@ -48,7 +48,8 @@
     },
     render(h, context) {
       if (!this.targetCell.panelList) {
-        return '无配置项'
+        console.log('无配置项')
+        return ''
       }
       return (
         <div class="cell-config-panel">

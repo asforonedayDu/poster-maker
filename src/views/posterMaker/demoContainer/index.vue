@@ -30,12 +30,16 @@
       }
     },
     render(h, context) {
+      let items = []
+      for (let item of this.demoCells) {
+        items.push(this.renderCell(h, item, context))
+        if (item === this.onSelectCell) {
+          items.push(this.renderEditWindow(h))
+        }
+      }
       return (
         <div class="demo-container-body">
-          {this.demoCells.map(item => {
-            return this.renderCell(h, item, context)
-          })}
-          {this.renderEditWindow(h)}
+          {items}
         </div>
       )
     },
