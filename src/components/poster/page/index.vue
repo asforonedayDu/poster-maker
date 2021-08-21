@@ -9,9 +9,6 @@
     name: "page",
     components,
     props: {
-      designMode: {
-        default: false,
-      },
       pageData: {
         type: Object,
         default: {}
@@ -37,9 +34,16 @@
     },
     render(h, context) {
       // const self = this
+      let show = true
+      if (!this.isCurrentPage) {
+        const translateY = Math.abs(this.translateY)
+        if (translateY === 0 || translateY === 100) {
+          show = false
+        }
+      }
       return (
         <div class={`page-body ${this.pageClass}`} style={this.styleTranslateY}>
-          {this.pageData.cells && this.pageData.cells.map(cell => {
+          {this.pageData.cells && show && this.pageData.cells.map(cell => {
             return this.renderCell(h, cell)
           })}
         </div>
@@ -47,7 +51,7 @@
     },
     computed: {
       isPrePage() {
-        console.log('this.currentPage', this.currentPage, this.pageLength)
+        // console.log('this.currentPage', this.currentPage, this.pageLength)
         if (this.pageLength === 2) {
           return this.pageIndex !== this.currentPage
         } else if (this.pageLength === 1) {
@@ -81,12 +85,6 @@
         return ''
       },
       pageClass() {
-        // if (!this.isCurrentPage) {
-        //   const translateY = Math.abs(this.translateY)
-        //   if (translateY === 0 || translateY === 100) {
-        //     return ''
-        //   }
-        // }
         let cls
         if (this.isPrePage) {
           cls = 'pre-page base-page'
@@ -102,7 +100,7 @@
     },
     methods: {
       renderCell(h, cell) {
-        return h(`${cell.type}`, {props: {...cell.props, designMode: this.designMode}})
+        return h(`${cell.type}`, {props: {...cell.props}})
       }
     }
   }

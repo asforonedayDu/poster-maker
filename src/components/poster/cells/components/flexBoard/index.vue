@@ -1,6 +1,6 @@
 <template>
   <div class="cell-container-flex">
-    <div class="default-cell" :style="style" ref="targetDom" @click="handleClick">
+    <div class="default-cell" :style="style" ref="targetDom">
     </div>
   </div>
 </template>

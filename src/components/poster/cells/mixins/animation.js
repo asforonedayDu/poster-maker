@@ -62,15 +62,15 @@ export default {
     }
   },
   watch: {
-    animationActions(val) {
-      console.log('animationActions val', val)
-      if (val) {
-        // animateCell(this.$refs.targetDom, this.animationActions[0])
-        // this.animateQueueCell(this.$refs.targetDom, this.animationActions).then(response => {
-        //   if (this.hideAfterAnimation) this.$refs.targetDom.style.display = 'none'
-        // })
-      }
-    }
+    // animationActions(val) {
+    //   console.log('animationActions val', val)
+    //   if (val) {
+    //     animateCell(this.$refs.targetDom, this.animationActions[0])
+    //     this.animateQueueCell(this.$refs.targetDom, this.animationActions).then(response => {
+    //       if (this.hideAfterAnimation) this.$refs.targetDom.style.display = 'none'
+    //     })
+    //   }
+    // }
   },
   computed: {
     // animateStyle() {

@@ -1,6 +1,6 @@
 <template>
   <div class="cell-container-flex">
-    <div class="default-cell" :style="{...style}" ref="targetDom" @click="handleClick">
+    <div class="default-cell" :style="{...style}" ref="targetDom">
       <div :class="`cell-text-body ${verticalDirection?'vertical':''}`">
         {{content}}
       </div>
@@ -47,9 +47,9 @@
     data() {
       return {}
     },
-    mounted() {
+    // mounted() {
       // this.animateCell(this.$refs.targetDom, this.animation.actions || [])
-    },
+    // },
     computed: {}
   }
 </script>
