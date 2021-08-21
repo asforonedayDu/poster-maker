@@ -27,19 +27,16 @@
       translateY: {
         required: true,
         type: Number
+      },
+      pageLength: {
+        default: 0,
       }
     },
     data() {
       return {}
     },
     render(h, context) {
-      const self = this
-      if (!this.isCurrentPage) {
-        const translateY = Math.abs(this.translateY)
-        if (translateY === 0 || translateY === 100) {
-          return ''
-        }
-      }
+      // const self = this
       return (
         <div class={`page-body ${this.pageClass}`} style={this.styleTranslateY}>
           {this.pageData.cells && this.pageData.cells.map(cell => {
@@ -50,9 +47,26 @@
     },
     computed: {
       isPrePage() {
+        console.log('this.currentPage', this.currentPage, this.pageLength)
+        if (this.pageLength === 2) {
+          return this.pageIndex !== this.currentPage
+        } else if (this.pageLength === 1) {
+          return false
+        }
+        if (this.currentPage === 0) {
+          return this.pageIndex === this.pageLength - 1
+        }
         return this.pageIndex === this.currentPage - 1
       },
       isNextPage() {
+        if (this.pageLength === 2) {
+          return this.pageIndex !== this.currentPage
+        } else if (this.pageLength === 1) {
+          return false
+        }
+        if (this.pageIndex === this.pageLength - 1) {
+          return this.pageIndex === 0
+        }
         return this.pageIndex === this.currentPage + 1
       },
       isCurrentPage() {
@@ -67,13 +81,19 @@
         return ''
       },
       pageClass() {
+        // if (!this.isCurrentPage) {
+        //   const translateY = Math.abs(this.translateY)
+        //   if (translateY === 0 || translateY === 100) {
+        //     return ''
+        //   }
+        // }
         let cls
         if (this.isPrePage) {
           cls = 'pre-page base-page'
         } else if (this.isNextPage) {
           cls = 'next-page base-page'
         } else if (this.isCurrentPage) {
-          cls = ''
+          cls = 'base-page'
         } else {
           cls = 'hide-page base-page'
         }
@@ -89,6 +109,7 @@
 </script>
 <style>
   .base-page {
+    z-index: 0;
   }
 
   .pre-page {
@@ -102,7 +123,7 @@
   }
 
   .hide-page {
-    display: none;
+    visibility: hidden;
   }
 </style>
 <style lang="scss" scoped>

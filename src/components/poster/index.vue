@@ -6,7 +6,7 @@
     props: {
       posterData: {
         default: () => {
-          return {pages: [], audio: {}}
+          return {pages: [], audio: {}, loopPage: false}
         }
       },
       htmlFontSize: {
@@ -73,7 +73,7 @@
         <div class="main-body" ref="container">
           {this.pages.map((pageData, index) => {
             return (
-              <page pageData={pageData} currentPage={this.currentPage} pageIndex={index}
+              <page pageData={pageData} currentPage={this.currentPage} pageIndex={index} pageLength={this.pages.length}
                     translateY={this.translateY} key={index}/>
             )
           })}
@@ -143,9 +143,9 @@
         if (this.dragging && !this.rolling) {
           // console.log('move')
           const offsetY = (e.clientY || e.targetTouches[0].clientY) - this.touchClientY
-          const pre = offsetY < 0
-          if (pre && this.currentPage === this.pages.length - 1) return;
-          if (!pre && this.currentPage === 0) return;
+          // const pre = offsetY < 0
+          // if (pre && this.currentPage === this.pages.length - 1) return;
+          // if (!pre && this.currentPage === 0) return;
           this.translateY = (offsetY / this.clientHeight) * 100
           // 计算速度
           const now = Date.now()
@@ -170,16 +170,16 @@
       },
       handleTouchUp(e) {
         // e.preventDefault()
+        this.dragging = false
         if (this.pages.length < 2) return
         const offsetY = (e.clientY || e.changedTouches[0].clientY) - this.touchClientY
         const pre = offsetY < 0
-        if (pre && this.currentPage === this.pages.length - 1) return;
-        if (!pre && this.currentPage === 0) return;
+        // if (pre && this.currentPage === this.pages.length - 1) return;
+        // if (!pre && this.currentPage === 0) return;
         this.translateY = (offsetY / this.clientHeight) * 100
         this.speed = (offsetY - this.lastPosition.offsetY) / (Date.now() - this.lastPosition.time)
         this.lastPosition.offsetY = 0
         this.lastPosition.time = 0
-        this.dragging = false
         if (this.translateY !== 0) {
           this.rolling = true
           // 回滚
@@ -200,7 +200,7 @@
           } else {
             // 滚动一屏
             this.speed = 2 + ((Math.max(Math.abs(this.speed), 0.8) * 2.5 - 2) / 7)
-            console.log('this.speed', this.speed)
+            // console.log('this.speed', this.speed)
             this.speed = pre ? -this.speed : this.speed
             const timer = () => {
               if (this.dragging) {
@@ -222,9 +222,9 @@
                 }
               }
               if (pre) {
-                this.currentPage += 1
+                this.currentPage = (this.currentPage === this.pages.length - 1) ? 0 : this.currentPage + 1
               } else {
-                this.currentPage -= 1
+                this.currentPage = (this.currentPage === 0) ? (this.pages.length - 1) : this.currentPage - 1
               }
               this.translateY = 0
               this.rolling = false

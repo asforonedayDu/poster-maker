@@ -13,7 +13,7 @@
             新建页面
           </div>
           <div class="header-body" @click="showSetAudioWindow">
-            设置背景音乐
+            全局设置（背景音等）
           </div>
         </template>
       </tree-container>
@@ -95,18 +95,18 @@
         </div>
       </div>
     </el-dialog>
-    <el-dialog title="设置背景音乐" v-if="isShowSetAudioWindow" :visible.sync="isShowSetAudioWindow">
+    <el-dialog title="全局设置" v-if="isShowSetAudioWindow" :visible.sync="isShowSetAudioWindow">
       <div>
         <div class="preview-example-body">
-          <el-form ref="form" :model="audio" label-width="100px" style="width: 500px">
+          <el-form ref="form" :model="tempData" label-width="100px" style="width: 500px">
             <el-form-item label="音频链接地址">
-              <el-input v-model="audioTmp.href"></el-input>
+              <el-input v-model="tempData.href"></el-input>
             </el-form-item>
             <el-form-item label="循环播放">
-              <el-switch v-model="audioTmp.loop"></el-switch>
+              <el-switch v-model="tempData.loop"></el-switch>
             </el-form-item>
             <el-form-item label="自动播放">
-              <el-switch v-model="audioTmp.autoPlay"></el-switch>
+              <el-switch v-model="tempData.autoPlay"></el-switch>
             </el-form-item>
             <el-form-item>
               <el-button @click="isShowSetAudioWindow = false">取消</el-button>

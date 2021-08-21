@@ -11,7 +11,7 @@ export default {
         loop: true,
         autoPlay: true,
       },
-      audioTmp: {
+      tempData: {
         href: '',
         loop: true,
         autoPlay: true,
@@ -28,11 +28,11 @@ export default {
   },
   methods: {
     showSetAudioWindow() {
-      Object.assign(this.audioTmp, this.audio)
+      Object.assign(this.tempData, this.audio)
       this.isShowSetAudioWindow = true
     },
     handleSaveAudioData() {
-      Object.assign(this.audio, this.audioTmp)
+      Object.assign(this.audio, this.tempData)
       this.isShowSetAudioWindow = false
     },
     async deletePosterData() {
@@ -70,7 +70,7 @@ export default {
       Vue.set(this, 'pages', posterData.pages)
       if (posterData.audio) {
         Object.assign(this.audio, posterData.audio);
-        Object.assign(this.audioTmp, posterData.audio);
+        Object.assign(this.tempData, posterData.audio);
       }
       this.poster.poster_id = this.posterList[this.onSelectExistedPoster].poster_id
       this.onSelectExistedPoster = null
