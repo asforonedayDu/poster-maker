@@ -193,7 +193,11 @@
           },
           handleClickItem: function (item, index) {
             if (item.createType === treeDataType.PAGE) {
-              return this.handleClickPage(item, index)
+              this.handleClickPage(item, index)
+              if (item.$hasChild) {
+                const treeComponent = this.$refs.treeContainer
+                treeComponent.handleClickTriangle(treeComponent, item, index)
+              }
             } else if (item.createType === treeDataType.CELL) {
               return this.handleClickCell(item, index)
             }
