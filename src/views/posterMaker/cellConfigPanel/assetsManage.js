@@ -39,7 +39,7 @@ export default {
         this.commonAssets.unshift(item)
         try {
           const uploadResult = await uploadImage(_formData)
-          const {url} = uploadResult.data
+          const {url} = uploadResult
           // 保存到数据库
           const result = await this.$api.SAVE_ASSETS(fileName, url)
           item.asset_id = result.insertId

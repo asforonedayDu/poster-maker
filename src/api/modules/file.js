@@ -3,7 +3,7 @@ import setting from '@/setting'
 
 const uploadImage = function (data) {
   const options = {
-    url: '/../api_h5/post_upload_image.php',
+    url: setting.node_server + 'postUploadImage',
     method: 'post',
     headers: {
       dataType: 'json',

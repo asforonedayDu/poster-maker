@@ -94,8 +94,8 @@ export default ({request, tools}) => ({
     // 接口请求
     return await request({
       url: setting.node_server + 'addAsset',
-      method: 'get',
-      params: {
+      method: 'post',
+      data: {
         create_user_id: 1,
         asset_name,
         asset_type: 1,
