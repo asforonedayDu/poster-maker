@@ -32,6 +32,7 @@
     render(h, context) {
       let items = []
       for (let item of this.demoCells) {
+        if (item.props.hideInDesign) continue
         items.push(this.renderCell(h, item, context))
         if (item === this.onSelectCell) {
           items.push(this.renderEditWindow(h))
@@ -110,7 +111,8 @@
     },
     watch: {
       onSelectCell(val) {
-        if (val) {
+        console.log('val',val)
+        if (val && !val.props.hideInDesign) {
           this.$nextTick(vm => {
             const targetComponent = this.$refs[val.id]
             if (!targetComponent) {

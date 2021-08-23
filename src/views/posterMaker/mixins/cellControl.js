@@ -40,6 +40,18 @@ export default {
           this.$set(item.props, 'locked', false)
         }
       }
+      const hideInDesign = {
+        text: '编辑时隐藏',
+        onClick: (item) => {
+          this.$set(item.props, 'hideInDesign', true)
+        }
+      }
+      const unLockHideInDesign = {
+        text: '解除隐藏',
+        onClick: (item) => {
+          this.$set(item.props, 'hideInDesign', false)
+        }
+      }
       const moveDown = {
         text: '下移',
         onClick: (item, index) => {
@@ -66,6 +78,7 @@ export default {
         options.push(moveDown)
       }
       options.push(item.props.locked ? unLock : lock)
+      options.push(item.props.hideInDesign ? unLockHideInDesign : hideInDesign)
       return options
     }
   }

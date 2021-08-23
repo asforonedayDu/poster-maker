@@ -139,7 +139,7 @@
       // 作为默认属性
       props: {
         ...(component.defaultProps ? component.defaultProps : {}),
-        locked: false,
+        locked: false, hideInDesign: false,
       },
       // panelList: component.panelList.filter(e => e),
     }

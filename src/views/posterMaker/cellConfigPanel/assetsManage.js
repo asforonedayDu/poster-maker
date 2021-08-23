@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     async handleImgFileChange(e) {
-      console.log('file', e.target)
+      // console.log('file', e.target)
       if (!e.target.files || e.target.files.length === 0) return
       const file = e.target.files[0]
       const fileName = file.name
