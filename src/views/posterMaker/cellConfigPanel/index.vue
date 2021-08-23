@@ -117,6 +117,7 @@
         }
       },
       addAnimation(index) {
+        if (!this.onSelectCell.props[this.animationPropkey]) this.onSelectCell.props[this.animationPropkey] = []
         this.onEditAnimationIndex = this.onSelectCell.props[this.animationPropkey].length
         Object.assign(this.tempAnimationData, {
           name: '',
