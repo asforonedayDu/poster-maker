@@ -1,23 +1,40 @@
 const prefix = 'animate__'
-const animateCell = (node, animation = '', index, eventHandler) => {
+const animateCell = (node, animationName = '', index, eventHandler) => {
   return new Promise((resolve, reject) => {
-    node.classList.add(`${prefix}animated`, `${prefix}${animation}`);
     // When the animation ends, we clean the classes and resolve the Promise
     function handleAnimationEnd() {
-      node.classList.remove(`${prefix}animated`, `${prefix}${animation}`);
+      node.classList.remove(`${prefix}animated`, `${prefix}${animationName}`);
       node.removeEventListener('animationend', handleAnimationEnd);
       if (eventHandler) eventHandler(index)
       resolve('Animation ended');
     }
 
     node.addEventListener('animationend', handleAnimationEnd);
+    node.classList.add(`${prefix}animated`, `${prefix}${animationName}`);
   });
 }//animate__animated animate__slideUp
+
 const animateQueueCell = async function (node, animations = [], eventHandler) {
   if (!animations instanceof Array) throw new Error('animations 参数必须是数组类型')
   for (let i = 0; i < animations.length; i++) {
     const animation = animations[i]
-    await animateCell(node, animation, i, eventHandler)
+    if (animation.animationDuration) {
+      node.style.setProperty('animate-duration', `${animation.animationDuration}s`);
+      node.style.setProperty('-webkit-animation-duration', `${animation.animationDuration}s`);
+    }
+    if (animation.animationCount) {
+      node.style.setProperty('animation-iteration-count', `${animation.animationCount}`);
+      node.style.setProperty('-webkit-animation-iteration-count', `${animation.animationCount}`);
+    }
+    if (animation.animationFillMode) {
+      node.style.setProperty('animation-fill-mode', `${animation.animationFillMode}`);
+      node.style.setProperty('-webkit-animation-fill-mode', `${animation.animationFillMode}`);
+    }
+    if (animation.animationDelay) {
+      node.style.setProperty('animation-delay', `${animation.animationDelay}s`);
+      node.style.setProperty('-webkit-animation-delay', `${animation.animationDelay}s`);
+    }
+    await animateCell(node, animation.name, i, eventHandler)
   }
   return ''
 }

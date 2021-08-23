@@ -31,7 +31,14 @@
         configProps: {},
         targetCell: {},
         showAnimatePickWindow: false,
-        selectedAnimation: [],
+        tempAnimationData: {
+          name: '',
+          animationDuration: 1,
+          animationDelay: 0,
+          animationCount: 1,
+          animationFillMode: 'both',
+        },
+        onEditAnimationIndex: 0,
         showBackgroundColorPick: false,
         showTextColorPick: false,
       }
@@ -45,6 +52,15 @@
       onSelectCell(val) {
         this.setConfigData(val)
       },
+      'tempAnimationData.name': {
+        handler(val) {
+          if (this.showAnimatePickWindow && val) {
+            this.$nextTick(() => {
+              this.handleAnimationSelectChange(val)
+            })
+          }
+        }
+      }
     },
     render(h, context) {
       if (!this.targetCell.panelList) {
@@ -70,45 +86,67 @@
       )
     },
     methods: {
+      handlerAnimationDelete(index) {
+        this.onSelectCell.props[this.animationPropkey].splice(index, 1)
+      },
       setConfigData(onSelectCell) {
         this.targetCell = cells.find(cell => cell.name === onSelectCell.type)
         if (this.targetCell.panelList) {
           this.targetCell.panelList.forEach(config => {
             if (!config) return
+            if (config.method === 'rAnimationActions') {
+              this.animationPropkey = config.propKey
+            }
             const value = onSelectCell.props[config.propKey]
             Vue.set(this.configProps, config.propKey, value)
           })
         }
-        this.selectedAnimation = this.configProps[panelList.animationActions.propKey] || []
       },
       handleAnimationSelectChange(value) {
-        animateQueueCell(this.$refs.example, value)
+        animateCell(this.$refs.example, value)
       },
-      setAnimation() {
-        if (this.selectedAnimation) {
-          this.configProps.animationActions = this.selectedAnimation
-          // if (!this.configProps.animationActions) {
-          //   Vue.set(this.configProps, 'animationActions', [])
-          // }
-          // Vue.set(this.configProps.animationActions, 0, this.selectedAnimation)
-        }
+      saveAnimation() {
         this.showAnimatePickWindow = false
+        if (!this.tempAnimationData.name) {
+          return
+        }
+        if (this.onEditAnimationIndex >= this.onSelectCell.props[this.animationPropkey].length) {
+          this.onSelectCell.props[this.animationPropkey].push(_.cloneDeep(this.tempAnimationData))
+        } else {
+          Object.assign(this.onSelectCell.props[this.animationPropkey][this.onEditAnimationIndex], _.cloneDeep(this.tempAnimationData))
+        }
+      },
+      addAnimation(index) {
+        this.onEditAnimationIndex = this.onSelectCell.props[this.animationPropkey].length
+        Object.assign(this.tempAnimationData, {
+          name: '',
+          animationDuration: 1,
+          animationDelay: 0,
+          animationCount: 1,
+          animationFillMode: 'both',
+        })
+        this.showAnimatePickWindow = true
+      },
+      editAnimationDetail(index) {
+        this.onEditAnimationIndex = index
+        Object.assign(this.tempAnimationData, this.onSelectCell.props[this.animationPropkey][index])
+        this.showAnimatePickWindow = true
       },
       renderAnimatePickWindow(h) {
         return (
-          <el-dialog title="选择动画" visible={this.showAnimatePickWindow} custom-class="dialog-select-animation"
+          <el-dialog title="选择动画" custom-class="dialog-select-animation" visible={this.showAnimatePickWindow}
                      show-close={false}>
             <div class="pick-window-body">
               <div class="pick-list">
-                <el-checkbox-group vModel={this.selectedAnimation} on-change={this.handleAnimationSelectChange}>
+                <el-radio-group v-model={this.tempAnimationData.name}>
                   {
                     this.animateList.map(animateName => {
                       return (
-                        <el-checkbox class="pick-animate-item" label={animateName}>{animateName}</el-checkbox>
-                      )
+                        <el-radio style={{display: 'block', margin: '15px 0'}}
+                                  label={animateName}>{animateName}</el-radio>)
                     })
                   }
-                </el-checkbox-group>
+                </el-radio-group>
               </div>
               <div class="example-body">
                 <div class="example-container">
@@ -118,25 +156,38 @@
                     </div>
                   </div>
                   <div class="button-bottom">
-                    <el-button type="primary" vOn:click={this.setAnimation}>确认</el-button>
+                    <el-button type="primary" vOn:click={this.saveAnimation}>确认</el-button>
                     <el-button vOn:click={() => this.showAnimatePickWindow = false}>取消</el-button>
                   </div>
                 </div>
               </div>
               <div class="selected-animation-body">
-                <span> 当前选择动画:</span>
                 <div class="example-animate-body">
-                  {this.selectedAnimation.map((animate, index) => {
-                    return (
-                      <span>
-                      <el-tag key={index} closable={true} vOn:close={() => {
-                        this.selectedAnimation.splice(index, 1)
-                      }}>
-                        {animate}
-                      </el-tag>
-                    </span>
-                    )
-                  })}
+                  <div class="input-main">
+                    <span>当前选择:</span>
+                    <el-input vModel={this.tempAnimationData.name} placeholder={this.tempAnimationData.name}/>
+                  </div>
+                  <div class="input-main">
+                    <span>动画执行时间(数字 单位秒):</span>
+                    <el-input vModel={this.tempAnimationData.animationDuration} placeholder="数字 单位秒"/>
+                  </div>
+                  <div class="input-main">
+                    <span>动画执行次数(数字或者infinite表示无限循环):</span>
+                    <el-input vModel={this.tempAnimationData.animationCount} placeholder="数字"/>
+                  </div>
+                  <div class="input-main">
+                    <span>动画结束状态控制:</span>
+                    <el-radio-group vModel={this.tempAnimationData.animationFillMode}>
+                      <el-radio class="radio-label-body" label={'none'}>无</el-radio>
+                      <el-radio class="radio-label-body" label={'forwards'}>保持结束状态</el-radio>
+                      <el-radio class="radio-label-body" label={'backwards'}>回复初始状态</el-radio>
+                      <el-radio class="radio-label-body" label={'both'}>兼顾以上两种</el-radio>
+                    </el-radio-group>
+                  </div>
+                  <div class="input-main">
+                    <span>动画执行延时:</span>
+                    <el-input vModel={this.tempAnimationData.animationDelay} placeholder="数字 单位秒"/>
+                  </div>
                 </div>
               </div>
             </div>
@@ -183,13 +234,13 @@
           </el-dialog>
         )
       },
-    }
+    },
   }
   export default vueComponent
 </script>
 <style lang="scss">
   .dialog-select-animation {
-    min-width: 850px;
+    min-width: 1150px;
     /*width: auto;*/
   }
 </style>
@@ -236,6 +287,7 @@
       justify-content: flex-start;
       align-items: center;
       box-sizing: border-box;
+      flex-flow: row wrap;
 
       .button-front {
         margin-right: 15px;
@@ -268,7 +320,7 @@
       .selected-animation-body {
         display: flex;
         flex-flow: column nowrap;
-        min-width: 200px;
+        width: 300px;
 
         .example-animate-body {
           margin: 0 0 5px 0;

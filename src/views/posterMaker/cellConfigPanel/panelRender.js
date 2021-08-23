@@ -78,16 +78,21 @@ export default {
       )
     },
     rAnimationActions(h, config) {
-      const actions = this.configProps[config.propKey]
+      const actions = this.onSelectCell.props.animationActions
       return (
         <div class="input-main">
-          <span style={{display: 'inline-block'}}>当前动画:(可以多选，动画会依次播放)</span>
+          <span style={{display: 'inline-block'}}>当前动画列表，多个动画依次生效:(点击编辑)</span>
           <div class="inline-content">
-            {actions && actions.map((name, index) => {
-              return (<el-tag key={index}>{name}</el-tag>)
+            {actions && actions.map((animationDetail, index) => {
+              return (
+                <el-tag style={{cursor: 'pointer'}} key={index} closable={true} vOn:close={() => {
+                  this.handlerAnimationDelete(index)
+                }} vOn:click={() => this.editAnimationDetail(index)}>
+                  {animationDetail.name}
+                </el-tag>)
             })}
           </div>
-          <el-button onClick={() => this.showAnimatePickWindow = true}>选择动画:</el-button>
+          <el-button onClick={() => this.addAnimation()}>添加动画</el-button>
         </div>
       )
     },
@@ -109,43 +114,6 @@ export default {
             <el-radio label={true}>是</el-radio>
             <el-radio label={false}>否</el-radio>
           </el-radio-group>
-        </div>
-      )
-    },
-    rAnimationDuration(h, config) {
-      return (
-        <div class="input-main">
-          <span>动画执行时间(数字 单位秒):</span>
-          <el-input vModel={this.configProps[config.propKey]} placeholder="数字 单位秒"/>
-        </div>
-      )
-    },
-    rAnimationCount(h, config) {
-      return (
-        <div class="input-main">
-          <span>动画执行次数(数字或者infinite表示无限循环):</span>
-          <el-input vModel={this.configProps[config.propKey]} placeholder="数字"/>
-        </div>
-      )
-    },
-    rAnimationFillMode(h, config) {
-      return (
-        <div class="input-main">
-          <span>动画适配控制:</span>
-          <el-radio-group vModel={this.configProps[config.propKey]}>
-            <el-radio class="radio-label-body" label={'none'}>无</el-radio>
-            <el-radio class="radio-label-body" label={'forwards'}>适配结束状态</el-radio>
-            <el-radio class="radio-label-body" label={'both'}>全部自适应</el-radio>
-            <el-radio class="radio-label-body" label={'backwards'}>适配初始状态</el-radio>
-          </el-radio-group>
-        </div>
-      )
-    },
-    rAnimationDelay(h, config) {
-      return (
-        <div class="input-main">
-          <span>动画执行延时:</span>
-          <el-input vModel={this.configProps[config.propKey]} placeholder="数字 单位秒"/>
         </div>
       )
     },

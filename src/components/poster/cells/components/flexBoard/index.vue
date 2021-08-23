@@ -27,10 +27,6 @@
         top: 15
       },
       background: 'rgba(78,19,42,1)',
-      animationDuration: 1,
-      animationDelay: 0,
-      animationCount: 1,
-      animationFillMode: 'both',
       hideAfterAnimation: -1,
       flexHeight: true,
     },

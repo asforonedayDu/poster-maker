@@ -39,22 +39,6 @@ export default {
   async mounted() {
     if (!this.designMode) {
       const targetDom = this.$refs.targetDom
-      if (this.animationDuration) {
-        targetDom.style.setProperty('animate-duration', `${this.animationDuration}s`);
-        targetDom.style.setProperty('-webkit-animation-duration', `${this.animationDuration}s`);
-      }
-      if (this.animationCount) {
-        targetDom.style.setProperty('animation-iteration-count', `${this.animationCount}`);
-        targetDom.style.setProperty('-webkit-animation-iteration-count', `${this.animationCount}`);
-      }
-      if (this.animationFillMode) {
-        targetDom.style.setProperty('animation-fill-mode', `${this.animationFillMode}`);
-        targetDom.style.setProperty('-webkit-animation-fill-mode', `${this.animationFillMode}`);
-      }
-      if (this.animationDelay) {
-        targetDom.style.setProperty('animation-delay', `${this.animationDelay}s`);
-        targetDom.style.setProperty('-webkit-animation-delay', `${this.animationDelay}s`);
-      }
       const waitTime = parseFloat(this.hideAfterAnimation)
       if (this.animationActions.length > 0) {
         await this.animateQueueCell(this.$refs.targetDom, this.animationActions)
