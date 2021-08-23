@@ -31,7 +31,7 @@
       animationDelay: 0,
       animationCount: 1,
       animationFillMode: 'both',
-      hideAfterAnimation: false,
+      hideAfterAnimation: -1,
       flexHeight: true,
     },
     panelList: panelCellList,

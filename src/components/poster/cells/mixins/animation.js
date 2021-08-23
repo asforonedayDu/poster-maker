@@ -1,4 +1,5 @@
 import {animateCell, animateQueueCell} from '@/libs/animate-help'
+import el from "element-ui/src/locale/lang/el";
 
 export default {
   props: {
@@ -23,7 +24,7 @@ export default {
       default: true,
     },
     hideAfterAnimation: {
-      default: false,
+      default: -1,
     },
     designMode: {
       default: false,
@@ -35,7 +36,7 @@ export default {
   created() {
 
   },
-  mounted() {
+  async mounted() {
     if (!this.designMode) {
       const targetDom = this.$refs.targetDom
       if (this.animationDuration) {
@@ -55,9 +56,19 @@ export default {
         targetDom.style.setProperty('-webkit-animation-delay', `${this.animationDelay}s`);
       }
       if (this.animationActions.length > 0) {
-        this.animateQueueCell(this.$refs.targetDom, this.animationActions).then(response => {
-          if (this.hideAfterAnimation) targetDom.style.display = 'none'
-        })
+        await this.animateQueueCell(this.$refs.targetDom, this.animationActions)
+        const waitTime = parseFloat(this.hideAfterAnimation)
+        if (waitTime.toString() !== "NaN") {
+          if (waitTime === 0) {
+            targetDom.style.display = 'none'
+          } else if (waitTime > 0) {
+            setTimeout(() => {
+              targetDom.style.display = 'none'
+            }, 1000)
+          }
+        } else {
+          waitTime && (targetDom.style.display = 'none')
+        }
       }
     }
   },

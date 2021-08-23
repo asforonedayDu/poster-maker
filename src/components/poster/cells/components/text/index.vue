@@ -27,7 +27,7 @@
       animationFillMode: 'both',
       content: 'TEXT',
       fontsize: 8,
-      hideAfterAnimation: false,
+      hideAfterAnimation: -1,
       flexHeight: true,
     },
     panelList: [panelList.switchFlexHeight, panelList.inputText, panelList.verticalDirection, panelList.fontsize, panelList.color, panelList.background,

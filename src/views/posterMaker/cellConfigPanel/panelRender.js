@@ -94,11 +94,10 @@ export default {
     rHideAfterAnimation(h, config) {
       return (
         <div>
-          <span>动画结束后是否隐藏:  </span>
-          <el-radio-group vModel={this.configProps[config.propKey]}>
-            <el-radio label={true}>是</el-radio>
-            <el-radio label={false}>否</el-radio>
-          </el-radio-group>
+          <span>
+            动画结束几秒后隐藏(负数则不处理):
+              <el-input className="input-right" vModel={this.configProps[config.propKey]} placeholder="0"/>
+          </span>
         </div>
       )
     },
