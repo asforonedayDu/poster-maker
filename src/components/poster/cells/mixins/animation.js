@@ -55,20 +55,24 @@ export default {
         targetDom.style.setProperty('animation-delay', `${this.animationDelay}s`);
         targetDom.style.setProperty('-webkit-animation-delay', `${this.animationDelay}s`);
       }
+      const waitTime = parseFloat(this.hideAfterAnimation)
       if (this.animationActions.length > 0) {
         await this.animateQueueCell(this.$refs.targetDom, this.animationActions)
-        const waitTime = parseFloat(this.hideAfterAnimation)
         if (waitTime.toString() !== "NaN") {
           if (waitTime === 0) {
             targetDom.style.display = 'none'
           } else if (waitTime > 0) {
             setTimeout(() => {
               targetDom.style.display = 'none'
-            }, 1000)
+            }, waitTime * 1000)
           }
         } else {
           waitTime && (targetDom.style.display = 'none')
         }
+      } else if (waitTime.toString() !== "NaN" && waitTime > 0) {
+        setTimeout(() => {
+          targetDom.style.display = 'none'
+        }, waitTime * 1000)
       }
     }
   },

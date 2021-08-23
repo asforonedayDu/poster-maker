@@ -15,18 +15,6 @@ $animationPrefix: animate__;
   animation: rotateSlideInRight;
 }
 
-.animate__static {
-  animation: static;
-}
-
-@keyframes static {
-  from {
-  }
-  to {
-  }
-}
-
-
 @keyframes scaleIn {
   from {
     transform: scale(2.4, 2.4);
