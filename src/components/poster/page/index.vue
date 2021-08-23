@@ -44,7 +44,7 @@
       return (
         <div class={`page-body ${this.pageClass}`} style={this.styleTranslateY}>
           {this.pageData.cells && show && this.pageData.cells.map(cell => {
-            return this.renderCell(h, cell)
+            return !cell.props.disabled && this.renderCell(h, cell)
           })}
         </div>
       )

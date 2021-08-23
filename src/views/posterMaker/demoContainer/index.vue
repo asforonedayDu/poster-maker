@@ -111,7 +111,7 @@
     },
     watch: {
       onSelectCell(val) {
-        console.log('val',val)
+        // console.log('val',val)
         if (val && !val.props.hideInDesign) {
           this.$nextTick(vm => {
             const targetComponent = this.$refs[val.id]

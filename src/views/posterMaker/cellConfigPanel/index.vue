@@ -150,7 +150,7 @@
                      class="assets-body" width="80%">
             <div class="upload-img-body">
               <input ref="uploadInput" class="upload-button-input" type="file"
-                     accept="image/jpg,image/jpeg,image/png,image/gif,*.svg"
+                     accept="image/jpg,image/jpeg,image/png,image/gif,image/webp,*.svg"
                      on-change={this.handleImgFileChange}/>
               <el-button class="upload-button" onClick={() => this.$refs.uploadInput.click()}>上传素材</el-button>
             </div>

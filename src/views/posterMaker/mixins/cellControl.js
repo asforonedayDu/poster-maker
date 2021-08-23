@@ -28,6 +28,18 @@ export default {
           this.$set(parent.cells, i - 1, item)
         }
       }
+      const disableCell = {
+        text: '屏蔽元素',
+        onClick: (item) => {
+          this.$set(item.props, 'disabled', true)
+        }
+      }
+      const enableCell = {
+        text: '解除屏蔽',
+        onClick: (item) => {
+          this.$set(item.props, 'disabled', false)
+        }
+      }
       const lock = {
         text: '锁定移动',
         onClick: (item) => {
@@ -79,6 +91,7 @@ export default {
       }
       options.push(item.props.locked ? unLock : lock)
       options.push(item.props.hideInDesign ? unLockHideInDesign : hideInDesign)
+      options.push(item.props.disabled ? enableCell : disableCell)
       return options
     }
   }

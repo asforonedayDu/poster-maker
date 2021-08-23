@@ -56,7 +56,7 @@ export default {
       }
       if (this.animationActions.length > 0) {
         this.animateQueueCell(this.$refs.targetDom, this.animationActions).then(response => {
-          if (this.hideAfterAnimation) targetDom.style.opacity = '0'
+          if (this.hideAfterAnimation) targetDom.style.display = 'none'
         })
       }
     }
@@ -90,6 +90,12 @@ export default {
     // }
   },
   methods: {
-    animateQueueCell
+    animateQueueCell,
+    injectStyleAnimation(style) {
+      // this.animationDuration && (style['--animate-duration'] = `${this.animationDuration}s`)
+      // this.animationCount && (style['animation-iteration-count'] = this.animationCount)
+      // this.animationFillMode && (style['animation-fill-mode'] = `${this.animationFillMode}s`)
+      // this.animationDelay && (style['animation-delay'] = `${this.animationDelay}s`)
+    }
   }
 }
