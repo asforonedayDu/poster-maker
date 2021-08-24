@@ -35,6 +35,8 @@
           name: '',
           animationDuration: 1,
           animationDelay: 0,
+          animationDirection: 'normal',
+          animationTimingFunction: '',
           animationCount: 1,
           animationFillMode: 'both',
         },
@@ -119,13 +121,6 @@
       addAnimation(index) {
         if (!this.onSelectCell.props[this.animationPropkey]) this.onSelectCell.props[this.animationPropkey] = []
         this.onEditAnimationIndex = this.onSelectCell.props[this.animationPropkey].length
-        Object.assign(this.tempAnimationData, {
-          name: '',
-          animationDuration: 1,
-          animationDelay: 0,
-          animationCount: 1,
-          animationFillMode: 'both',
-        })
         this.showAnimatePickWindow = true
       },
       editAnimationDetail(index) {
@@ -164,30 +159,44 @@
               </div>
               <div class="selected-animation-body">
                 <div class="example-animate-body">
-                  <div class="input-main">
+                  <div class="input-animation-config">
                     <span>当前选择:</span>
-                    <el-input vModel={this.tempAnimationData.name} placeholder={this.tempAnimationData.name}/>
+                    <el-input style={{display: 'inline-block', width: '200px'}} vModel={this.tempAnimationData.name}
+                              placeholder={this.tempAnimationData.name}/>
                   </div>
-                  <div class="input-main">
+                  <div class="input-animation-config">
+                    <span>动画执行次数(数字或infinite表示无限循环):</span>
+                    <el-input style={{width: '100px'}} vModel={this.tempAnimationData.animationCount} placeholder="数字"/>
+                  </div>
+                  <div class="input-animation-config">
+                    <span>速度曲线(animation-timing-function):</span>
+                    <el-input style={{width: '200px'}} vModel={this.tempAnimationData.animationTimingFunction} placeholder=""/>
+                  </div>
+                  <div class="input-animation-config">
+                    <span>动画播放方向控制（执行次数>1时生效）:</span>
+                    <el-radio-group class="flex-column-config" vModel={this.tempAnimationData.animationDirection}>
+                      <el-radio class="radio-label-body" label={'normal'}>正常播放</el-radio>
+                      <el-radio class="radio-label-body" label={'alternate'}>奇数次正常，偶数次反向</el-radio>
+                    </el-radio-group>
+                  </div>
+                  <div class="input-animation-config">
                     <span>动画执行时间(数字 单位秒):</span>
-                    <el-input vModel={this.tempAnimationData.animationDuration} placeholder="数字 单位秒"/>
+                    <el-input style={{display: 'inline-block', width: '200px'}}
+                              vModel={this.tempAnimationData.animationDuration} placeholder="数字 单位秒"/>
                   </div>
-                  <div class="input-main">
-                    <span>动画执行次数(数字或者infinite表示无限循环):</span>
-                    <el-input vModel={this.tempAnimationData.animationCount} placeholder="数字"/>
-                  </div>
-                  <div class="input-main">
+                  <div class="input-animation-config">
                     <span>动画结束状态控制:</span>
-                    <el-radio-group vModel={this.tempAnimationData.animationFillMode}>
+                    <el-radio-group class="flex-column-config" vModel={this.tempAnimationData.animationFillMode}>
                       <el-radio class="radio-label-body" label={'none'}>无</el-radio>
                       <el-radio class="radio-label-body" label={'forwards'}>保持结束状态</el-radio>
                       <el-radio class="radio-label-body" label={'backwards'}>回复初始状态</el-radio>
                       <el-radio class="radio-label-body" label={'both'}>兼顾以上两种</el-radio>
                     </el-radio-group>
                   </div>
-                  <div class="input-main">
+                  <div class="input-animation-config">
                     <span>动画执行延时:</span>
-                    <el-input vModel={this.tempAnimationData.animationDelay} placeholder="数字 单位秒"/>
+                    <el-input style={{display: 'inline-block', width: '200px'}}
+                              vModel={this.tempAnimationData.animationDelay} placeholder="数字 单位秒"/>
                   </div>
                 </div>
               </div>
@@ -266,7 +275,7 @@
     }
 
     .radio-label-body {
-      margin: 15px 15px;
+      margin: 5px 5px;
     }
 
     .panel-item-body {
@@ -278,9 +287,14 @@
 
     .input-main {
       display: flex;
-      align-items: flex-start;
       flex-flow: column nowrap;
       justify-content: space-around;
+      align-items: flex-start;
+      margin: 10px 0;
+
+      > span {
+        margin: auto 5px 10px 0;
+      }
     }
 
     .inline-content {
@@ -303,10 +317,10 @@
     .pick-window-body {
       height: 600px;
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
 
       .pick-list {
-        width: 300px;
+        width: 250px;
         height: 100%;
         overflow: auto;
 
@@ -321,7 +335,7 @@
       .selected-animation-body {
         display: flex;
         flex-flow: column nowrap;
-        width: 300px;
+        width: 350px;
 
         .example-animate-body {
           margin: 0 0 5px 0;
@@ -330,13 +344,33 @@
           min-height: 45px;
           display: flex;
           flex-flow: column nowrap;
+
+          .input-animation-config {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 10px 0;
+
+            > span {
+              display: inline-block;
+              width: 120px;
+              margin: auto 5px auto 0;
+            }
+
+            .flex-column-config {
+              display: flex;
+              flex-flow: row wrap;
+              width: 220px;
+            }
+          }
         }
       }
 
       .example-body {
         display: inline-flex;
         flex-flow: column nowrap;
-        margin: 0 15px;
+        margin: 0 25px;
         justify-content: flex-start;
         align-items: flex-start;
 

@@ -34,6 +34,14 @@ const animateQueueCell = async function (node, animations = [], eventHandler) {
       node.style.setProperty('animation-delay', `${animation.animationDelay}s`);
       node.style.setProperty('-webkit-animation-delay', `${animation.animationDelay}s`);
     }
+    if (animation.animationDirection) {
+      node.style.setProperty('animation-direction', `${animation.animationDirection}`);
+      node.style.setProperty('-webkit-animation-direction', `${animation.animationDirection}`);
+    }
+    if (animation.animationTimingFunction) {
+      node.style.setProperty('animation-timing-function', `${animation.animationTimingFunction}`);
+      node.style.setProperty('-webkit-animation-timing-function', `${animation.animationTimingFunction}`);
+    }
     await animateCell(node, animation.name, i, eventHandler)
   }
   return ''

@@ -98,11 +98,12 @@ export default {
     },
     rHideAfterAnimation(h, config) {
       return (
-        <div>
+        <div class="input-main">
           <span>
             动画结束几秒后隐藏(负数则不处理,无动画也生效):
-              <el-input className="input-right" vModel={this.configProps[config.propKey]} placeholder="0"/>
           </span>
+          <el-input class="input-right" vModel={this.configProps[config.propKey]} placeholder="0"/>
+
         </div>
       )
     },

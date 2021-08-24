@@ -35,20 +35,4 @@ export default {
     method: 'rHideAfterAnimation',
     propKey: 'hideAfterAnimation',
   },
-  // animationDuration: {
-  //   method: 'rAnimationDuration',
-  //   propKey: 'animationDuration',
-  // },
-  // animationCount: {
-  //   method: 'rAnimationCount',
-  //   propKey: 'animationCount',
-  // },
-  // animationFillMode: {
-  //   method: 'rAnimationFillMode',
-  //   propKey: 'animationFillMode',
-  // },
-  // animationDelay: {
-  //   method: 'rAnimationDelay',
-  //   propKey: 'animationDelay',
-  // },
 }

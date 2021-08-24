@@ -15,6 +15,60 @@ $animationPrefix: animate__;
   animation: rotateSlideInRight;
 }
 
+
+.animate__moveLeft50 {
+  animation: moveLeft50;
+}
+
+@keyframes moveLeft50 {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate__moveLeft {
+  animation: moveLeft;
+}
+
+@keyframes moveLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate__moveRight50 {
+  animation: moveRight50;
+}
+
+@keyframes moveRight50 {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(50%);
+  }
+}
+
+
+.animate__moveRight {
+  animation: moveRight;
+}
+
+@keyframes moveRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 .animate__show {
   animation: show;
 }

@@ -16,6 +16,9 @@ function getAnimationList() {
     const result = /@keyframes (.*?) \{/.exec(item)
     data.push(result[1])
   })
+  data.sort((a, b) => {
+    return a.charCodeAt(0) - b.charCodeAt(0)
+  })
   return data
 }
 

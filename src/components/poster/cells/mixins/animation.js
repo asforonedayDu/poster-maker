@@ -15,6 +15,12 @@ export default {
     animationDelay: {
       default: 0,
     },
+    animationDirection: {
+      default: 'normal',
+    },
+    animationTimingFunction: {
+      default: '',
+    },
     animationActions: {
       default: () => {
         return []
@@ -90,11 +96,5 @@ export default {
   },
   methods: {
     animateQueueCell,
-    injectStyleAnimation(style) {
-      // this.animationDuration && (style['--animate-duration'] = `${this.animationDuration}s`)
-      // this.animationCount && (style['animation-iteration-count'] = this.animationCount)
-      // this.animationFillMode && (style['animation-fill-mode'] = `${this.animationFillMode}s`)
-      // this.animationDelay && (style['animation-delay'] = `${this.animationDelay}s`)
-    }
   }
 }

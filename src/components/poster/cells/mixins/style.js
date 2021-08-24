@@ -49,7 +49,6 @@ export default {
       this.fontsize && (style.fontSize = `${this.fontsize / 2}rem`)
       // this.backgroundImage && (style.backgroundImage = `${this.backgroundImage}`)
 
-      this.injectStyleAnimation(style)
       return style
     }
   }
