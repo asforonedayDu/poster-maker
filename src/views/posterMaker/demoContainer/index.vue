@@ -77,15 +77,21 @@
       },
       handleResize(handle, x, y, width, height) {
         if (!this.onSelectCell.props.position) this.$set(this.onSelectCell.props, 'position', {})
-        this.$set(this.onSelectCell.props.position, 'top', (y / baseConfig.designHeight) * 100)
-        this.$set(this.onSelectCell.props.position, 'left', (x / baseConfig.designWidth) * 100)
-        this.$set(this.onSelectCell.props.position, 'width', (width / baseConfig.designWidth) * 100)
-        this.$set(this.onSelectCell.props.position, 'height', (height / baseConfig.designHeight) * 100)
+        const position = this.onSelectCell.props.position
+        this.$set(position, 'top', Math.round(y / baseConfig.designHeight * 10000) / 100)
+        this.$set(position, 'left', Math.round(x / baseConfig.designWidth * 10000) / 100)
+        this.$set(position, 'width', Math.round(width / baseConfig.designWidth * 10000) / 100)
+        this.$set(position, 'height', Math.round(height / baseConfig.designHeight * 10000) / 100)
+        const heightPx = position.height * baseConfig.designHeight / 100
+        this.$set(position, 'bottom', Math.round((baseConfig.designHeight - heightPx - y) / baseConfig.designHeight * 10000) / 100)
       },
       handleDrag(x, y) {
         if (!this.onSelectCell.props.position) this.$set(this.onSelectCell.props, 'position', {})
-        this.$set(this.onSelectCell.props.position, 'top', (y / baseConfig.designHeight) * 100)
-        this.$set(this.onSelectCell.props.position, 'left', (x / baseConfig.designWidth) * 100)
+        const position = this.onSelectCell.props.position
+        this.$set(position, 'top', Math.round(y / baseConfig.designHeight * 10000) / 100)
+        this.$set(position, 'left', Math.round(x / baseConfig.designWidth * 10000) / 100)
+        const heightPx = position.height * baseConfig.designHeight / 100
+        this.$set(position, 'bottom', Math.round((baseConfig.designHeight - heightPx - y) / baseConfig.designHeight * 10000) / 100)
       }
     },
     computed: {

@@ -1,5 +1,6 @@
 import Vue from "vue";
 import ca from "element-ui/src/locale/lang/ca";
+import cells from '@/components/poster/cells'
 
 export default {
   data() {
@@ -66,6 +67,15 @@ export default {
       }
       loading.close()
       posterData = JSON.parse(posterData.poster_data)
+      // 设置默认值
+      posterData.pages && posterData.pages.forEach(page => {
+        page.cells && page.cells.forEach(cell => {
+          const defaultCell = cells.find(i => i.name === cell.type)
+          Object.keys(defaultCell.defaultProps).forEach(defaultKey => {
+            if (!cell.props.hasOwnProperty(defaultKey)) cell.props[defaultKey] = defaultCell.defaultProps[defaultKey]
+          })
+        })
+      })
       this.posterList[this.onSelectExistedPoster].poster_data = posterData
       Vue.set(this, 'pages', posterData.pages)
       if (posterData.audio) {

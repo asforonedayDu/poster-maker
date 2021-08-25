@@ -25,6 +25,7 @@
       fontsize: 8,
       hideAfterAnimation: -1,
       flexHeight: true,
+      justifyContent: 'start',
     },
     panelList: [panelList.switchFlexHeight, panelList.inputText, panelList.verticalDirection, panelList.fontsize, panelList.color, panelList.background,
       panelList.hideAfterAnimation, panelList.animationActions],

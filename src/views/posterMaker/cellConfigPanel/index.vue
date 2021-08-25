@@ -170,7 +170,8 @@
                   </div>
                   <div class="input-animation-config">
                     <span>速度曲线(animation-timing-function):</span>
-                    <el-input style={{width: '200px'}} vModel={this.tempAnimationData.animationTimingFunction} placeholder=""/>
+                    <el-input style={{width: '200px'}} vModel={this.tempAnimationData.animationTimingFunction}
+                              placeholder=""/>
                   </div>
                   <div class="input-animation-config">
                     <span>动画播放方向控制（执行次数>1时生效）:</span>

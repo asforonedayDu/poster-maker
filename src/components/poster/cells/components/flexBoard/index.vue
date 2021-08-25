@@ -29,6 +29,7 @@
       background: 'rgba(78,19,42,1)',
       hideAfterAnimation: -1,
       flexHeight: true,
+      justifyContent: 'start',
     },
     panelList: panelCellList,
     mixins: [animation, style, base],

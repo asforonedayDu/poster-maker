@@ -3,6 +3,10 @@ export default {
     method: 'rFlexHeight',
     propKey: 'flexHeight',
   },
+  justifyContentType: {
+    method: 'rJustifyContentType',
+    propKey: 'justifyContent',
+  },
   inputText: {
     method: 'rInputText',
     propKey: 'content',
