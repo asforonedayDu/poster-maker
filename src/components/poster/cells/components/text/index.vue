@@ -12,6 +12,14 @@
   import panelList from '@/views/posterMaker/cellConfigPanel/panelList'
   import base from '../../mixins/base'
 
+  const panelCellList = Object.values({
+    ...panelList,
+    inputText: null,
+    verticalDirection: null,
+    color: null,
+    fontsize: null
+  }).filter(e => e)
+
   export default {
     name: "cell-text",
     descriptor: '文字内容',
@@ -27,7 +35,7 @@
       flexHeight: true,
       justifyContent: 'start',
     },
-    panelList: [panelList.switchFlexHeight, panelList.inputText, panelList.verticalDirection, panelList.fontsize, panelList.color, panelList.background,
+    panelList: [panelList.switchFlexHeight, panelList.justifyContentType, panelList.inputText, panelList.verticalDirection, panelList.fontsize, panelList.color, panelList.background,
       panelList.hideAfterAnimation, panelList.animationActions],
     mixins: [animation, style, base],
     props: {
