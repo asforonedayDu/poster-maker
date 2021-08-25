@@ -50,23 +50,25 @@ export default {
     showPosterManageWindow() {
       this.isShowDialogPosterManageWindow = true
     },
-    async setPosterData() {
+    async handleSelectPoster() {
       if (this.onSelectExistedPoster === null) {
         this.$message('请选择一个海报')
         return
       }
-      const loading = this.$loading({background: 'rgba(0,0,0,0.3)'})
       let posterData
+      const loading = this.$loading({background: 'rgba(0,0,0,0.3)'})
       try {
         posterData = await this.$api.GET_POSTER_DETAIL(this.posterList[this.onSelectExistedPoster].poster_id)
       } catch (e) {
         loading.close()
         this.$message('请求错误~')
-        loading.close()
         return
       }
       loading.close()
-      posterData = JSON.parse(posterData.poster_data)
+      this.setPosterData(posterData.poster_data)
+    },
+    setPosterData(posterData) {
+      posterData = JSON.parse(posterData)
       // 设置默认值
       posterData.pages && posterData.pages.forEach(page => {
         page.cells && page.cells.forEach(cell => {
@@ -76,7 +78,9 @@ export default {
           })
         })
       })
-      this.posterList[this.onSelectExistedPoster].poster_data = posterData
+      if (this.onSelectExistedPoster) {
+        this.posterList[this.onSelectExistedPoster].poster_data = posterData
+      }
       Vue.set(this, 'pages', posterData.pages)
       if (posterData.audio) {
         Object.assign(this.audio, posterData.audio);

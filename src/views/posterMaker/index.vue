@@ -40,7 +40,7 @@
             </div>
             <div class="pick-bottom">
               <el-button type="danger" @click="deletePosterData">删除</el-button>
-              <el-button type="primary" @click="setPosterData">导入</el-button>
+              <el-button type="primary" @click="handleSelectPoster">导入</el-button>
             </div>
           </div>
 
@@ -131,6 +131,7 @@
   import cellConfigPanel from './cellConfigPanel'
   import poster from '@/components/poster/index'
   import {treeDataType, baseConfig} from './libs/static'
+  import Vue from "vue";
 
   const cellList = cells.map(component => {
     return {
@@ -168,7 +169,29 @@
         baseConfig
       }
     },
-    mounted() {
+    async mounted() {
+      const posterId = this.$route.query.posterId
+      if (posterId && parseFloat(posterId).toString() !== 'NaN') {
+        let data;
+        try {
+          data = await this.$api.GET_POSTER_LIST()
+        } catch (e) {
+          this.$message('获取数据失败~')
+          return
+        }
+        Vue.set(this, 'posterList', data)
+        this.requestedPosterList = true
+        const targetPoster = data.find(poster => {
+          return Number(poster.poster_id) === Number(posterId)
+        })
+        if (!targetPoster) {
+          this.$message('posterId参数错误，不存在该数据')
+          return
+        }
+        const posterData = await this.$api.GET_POSTER_DETAIL(posterId)
+        this.onSelectExistedPoster = data.indexOf(targetPoster)
+        this.setPosterData(posterData.poster_data)
+      }
     },
     computed: {
       treeData() {
