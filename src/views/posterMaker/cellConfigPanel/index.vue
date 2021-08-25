@@ -223,7 +223,8 @@
                     return (
                       <div class="asset-body">
                         <div class="asset-img-body" vOn:click={() => this.handleAssetClick(asset)}>
-                          <img src={asset.asset_content}/>
+                          <img class={`${/\.gif$/i.test(asset.asset_content) ? 'gif-bg' : ''}`}
+                               src={asset.asset_content}/>
                           {asset.uploading && <div class="uploading-tag">上传中</div>}
                           {this.onSelectAsset === asset && <div class="asset-selected"/>}
                         </div>
@@ -466,6 +467,10 @@
           justify-content: center;
           cursor: pointer;
           position: relative;
+
+          .gif-bg {
+            background: black;
+          }
 
           img {
             max-height: 100%;
