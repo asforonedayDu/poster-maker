@@ -391,6 +391,8 @@
         flex-flow: column nowrap;
         justify-content: center;
         align-items: flex-start;
+        box-sizing: border-box;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
 
         span {
           margin: auto 0;
