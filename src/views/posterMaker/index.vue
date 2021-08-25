@@ -22,6 +22,7 @@
       <demo-container :demoPageData="onSelectPage" :onSelectCell="onSelectCell"/>
     </div>
     <div class="cell-config-body">
+      <page-config-panel v-if="showPageConfigPanel && onSelectPage" :onSelectPage.sync="onSelectPage"/>
       <cell-config-panel v-if="onSelectCell" :onSelectCell.sync="onSelectCell"/>
     </div>
     <el-dialog title="海报管理" :visible.sync="isShowDialogPosterManageWindow" custom-class="poster-manage-dialog"
@@ -129,6 +130,7 @@
   import posterControl from './mixins/posterControl'
   import demoContainer from './demoContainer'
   import cellConfigPanel from './cellConfigPanel'
+  import pageConfigPanel from './pageConfigPanel'
   import poster from '@/components/poster/index'
   import {treeDataType, baseConfig} from './libs/static'
   import Vue from "vue";
@@ -152,6 +154,7 @@
       'tree-container': treeContainer,
       'demo-container': demoContainer,
       'cell-config-panel': cellConfigPanel,
+      'page-config-panel': pageConfigPanel,
       'poster': poster,
     },
     mixins: [pageControl, cellControl, posterControl],
@@ -217,11 +220,13 @@
           handleClickItem: function (item, index) {
             if (item.createType === treeDataType.PAGE) {
               this.handleClickPage(item, index)
+              this.showPageConfigPanel = true
               if (item.$hasChild) {
                 const treeComponent = this.$refs.treeContainer
                 treeComponent.handleClickTriangle(treeComponent, item, index)
               }
             } else if (item.createType === treeDataType.CELL) {
+              this.showPageConfigPanel = false
               return this.handleClickCell(item, index)
             }
           }.bind(self),

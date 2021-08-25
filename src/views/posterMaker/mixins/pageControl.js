@@ -5,6 +5,7 @@ export default {
     return {
       dialogAddCellVisible: false,
       dialogPreviewVisible: false,
+      showPageConfigPanel: false,
       onSelectAddCell: {
         inputCellName: '',
         cell: ''
