@@ -217,11 +217,11 @@
             contentMinWidth: '300',
             backgroundColor: 'white'
           },
-          handleClickItem: function (item, index) {
+          handleClickItem: function (item, index, opened) {
             if (item.createType === treeDataType.PAGE) {
               this.handleClickPage(item, index)
               this.showPageConfigPanel = true
-              if (item.$hasChild) {
+              if (item.$hasChild && !opened) {
                 const treeComponent = this.$refs.treeContainer
                 treeComponent.handleClickTriangle(treeComponent, item, index)
               }

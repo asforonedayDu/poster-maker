@@ -37,6 +37,9 @@
       },
       max: {
         default: 1000,
+      },
+      preAnimation: {
+        default: undefined,
       }
     },
     data() {
@@ -49,24 +52,35 @@
         draggingEndLine: false,
       }
     },
+    created() {
+      this.originState = Number(this.start)
+    },
     mounted() {
       this.throttleHandleMove = _.throttle(this.handleMouseMove)
-      document.addEventListener('mousedown', this.handleMouseDown)
-      document.addEventListener('mousemove', this.throttleHandleMove)
-      document.addEventListener('mouseup', this.handleMouseUp)
+      const root = this.$refs.root
+      root.addEventListener('mousedown', this.handleMouseDown)
+      root.addEventListener('mousemove', this.throttleHandleMove)
+      root.addEventListener('mouseup', this.handleMouseUp)
+      root.addEventListener('mouseleave', this.handleMouseLeave)
     },
     methods: {
       handleMouseDown(event) {
         const target = event.target
         if (target === this.$refs.duration) {
           this.movingWindow = true
+          this.draggingStartLine = false
+          this.draggingEndLine = false
           this.originState = Number(this.start)
         } else if (target === this.$refs.start) {
           this.draggingStartLine = true
+          this.movingWindow = false
+          this.draggingEndLine = false
           this.originState = Number(this.start)
           this.originEnd = Number(this.duration) + this.originState
         } else if (target === this.$refs.end) {
           this.draggingEndLine = true
+          this.movingWindow = false
+          this.draggingStartLine = false
           this.originState = Number(this.duration)
         } else {
           return true
@@ -88,7 +102,7 @@
         const distance = event.x - this.startX
         const timeDistance = (distance / this.$refs.root.clientWidth) * maxTime
         const newStart = this.originState + timeDistance
-        if (newStart < 0 || (newStart + Number(this.duration)) >= (maxTime)) {
+        if (newStart < 0 || (newStart + Number(this.duration)) >= (maxTime) || newStart < this.preEndTime) {
           return
         }
         this.$emit('update:start', Math.round(newStart * 100) / 100)
@@ -97,7 +111,7 @@
         const distance = event.x - this.startX
         const timeDistance = (distance / this.$refs.root.clientWidth) * this.timeList[this.timeList.length - 1] / 10
         const newStart = this.originState + timeDistance
-        if (newStart < 0 || newStart >= this.originEnd) {
+        if (newStart < 0 || newStart >= this.originEnd || newStart < this.preEndTime) {
           return
         }
         this.$emit('update:start', Math.round(newStart * 100) / 100)
@@ -114,13 +128,27 @@
         this.$emit('update:duration', Math.round((newEnd - this.start) * 100) / 100)
       },
       handleMouseUp(event) {
-        this.handleMouseMove(event)
+        if (this.movingWindow || this.draggingStartLine || this.draggingEndLine) {
+          this.originState = Number(this.start)
+        }
+        this.movingWindow = false
+        this.draggingStartLine = false
+        this.draggingEndLine = false
+      },
+      handleMouseLeave(event) {
+        if (this.movingWindow || this.draggingStartLine || this.draggingEndLine) {
+          this.originState = Number(this.start)
+        }
         this.movingWindow = false
         this.draggingStartLine = false
         this.draggingEndLine = false
       },
     },
     computed: {
+      preEndTime() {
+        if (!this.preAnimation) return 0
+        return Number(this.preAnimation.animationDelay) + Number(this.preAnimation.animationDuration)
+      },
       pxWidth() {
         return baseWidth + 100 * Math.round(this.indeedMax / 100)
       },
@@ -146,10 +174,22 @@
         return ((Number(this.start) + Number(this.duration)) * 10) / this.indeedMax * 100
       }
     },
+    watch: {
+      'preAnimation': {
+        handler(newVal, oldVal) {
+          const preEnd = Number(newVal.animationDelay) + Number(newVal.animationDuration)
+          const distance = preEnd - Number(this.start || 0)
+          if (distance > 0) this.$emit('update:start', Math.round(preEnd * 100) / 100)
+        },
+        deep: true
+      }
+    },
     beforeDestroy() {
-      document.removeEventListener('mousedown', this.handleMouseDown)
-      document.removeEventListener('mouseup', this.handleMouseUp)
-      document.removeEventListener('mousemove', this.throttleHandleMove)
+      const root = this.$refs.root
+      root.removeEventListener('mousedown', this.handleMouseDown)
+      root.removeEventListener('mouseup', this.handleMouseUp)
+      root.removeEventListener('mousemove', this.throttleHandleMove)
+      root.removeEventListener('mouseleave', this.handleMouseLeave)
     }
   }
 </script>

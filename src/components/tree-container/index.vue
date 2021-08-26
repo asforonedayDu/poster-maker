@@ -264,7 +264,7 @@
       handleClickItem: function (h, self, item, index) {
         self.selectedIndex = index
         if (self?.options?.handleClickItem) {
-          self.options.handleClickItem(item, index)
+          self.options.handleClickItem(item, index, self.openItems[item.id])
         }
       },
       handleClickTriangle: function (self, item, index) {

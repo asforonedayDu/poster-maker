@@ -16,11 +16,15 @@ const animateCell = (node, animationName = '', index, eventHandler) => {
 
 const animateQueueCell = async function (node, animations = [], eventHandler) {
   if (!animations instanceof Array) throw new Error('animations 参数必须是数组类型')
+  let preEndTime
   for (let i = 0; i < animations.length; i++) {
+    if (i === 0) preEndTime = 0
     const animation = animations[i]
     if (animation.animationDuration) {
-      node.style.setProperty('animate-duration', `${animation.animationDuration}s`);
-      node.style.setProperty('-webkit-animation-duration', `${animation.animationDuration}s`);
+      const count = animation.animationCount ? Number(animation.animationCount) : 1
+      const indeedDuration = animation.animationDuration / count
+      node.style.setProperty('animate-duration', `${indeedDuration}s`);
+      node.style.setProperty('-webkit-animation-duration', `${indeedDuration}s`);
     }
     if (animation.animationCount) {
       node.style.setProperty('animation-iteration-count', `${animation.animationCount}`);
@@ -30,9 +34,12 @@ const animateQueueCell = async function (node, animations = [], eventHandler) {
       node.style.setProperty('animation-fill-mode', `${animation.animationFillMode}`);
       node.style.setProperty('-webkit-animation-fill-mode', `${animation.animationFillMode}`);
     }
+    let indeedDelay = 0
     if (animation.animationDelay) {
-      node.style.setProperty('animation-delay', `${animation.animationDelay}s`);
-      node.style.setProperty('-webkit-animation-delay', `${animation.animationDelay}s`);
+      indeedDelay = Number(animation.animationDelay) - preEndTime
+      indeedDelay = indeedDelay > 0 ? indeedDelay : 0
+      node.style.setProperty('animation-delay', `${indeedDelay}s`);
+      node.style.setProperty('-webkit-animation-delay', `${indeedDelay}s`);
     }
     if (animation.animationDirection) {
       node.style.setProperty('animation-direction', `${animation.animationDirection}`);
@@ -43,6 +50,9 @@ const animateQueueCell = async function (node, animations = [], eventHandler) {
       node.style.setProperty('-webkit-animation-timing-function', `${animation.animationTimingFunction}`);
     }
     await animateCell(node, animation.name, i, eventHandler)
+    if (i + 1 < animations.length) {
+      preEndTime += (indeedDelay + Number(animation.animationDuration || 0))
+    }
   }
   return ''
 }

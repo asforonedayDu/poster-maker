@@ -31,7 +31,7 @@
           </div>
           <div class="sequence-body">
             <sequence-select v-for="(item,index) in allAnimation" :key="`page${index}`" class="for-item"
-                             :start.sync="item.animation.animationDelay"
+                             :start.sync="item.animation.animationDelay" :preAnimation="item.preAnimation"
                              :duration.sync="item.animation.animationDuration" :max="max"/>
           </div>
         </div>
@@ -87,11 +87,15 @@
         const animations = []
         this.onSelectPage.cells.forEach(cell => {
           if (cell.props.animationActions) {
-            cell.props.animationActions.forEach(item => {
+            let preAnimation = undefined
+            cell.props.animationActions.forEach((item, index) => {
+              if (index === 0) preAnimation = undefined
               animations.push({
                 cellName: cell.name,
                 animation: item,
+                preAnimation: preAnimation,
               })
+              preAnimation = item
             })
           }
         })
