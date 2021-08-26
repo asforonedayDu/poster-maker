@@ -71,11 +71,12 @@ export default {
       posterData = JSON.parse(posterData)
       // 设置默认值
       posterData.pages && posterData.pages.forEach(page => {
-        let maxId = Math.max(...page.cells.map(cell => {
-          const id = Number(cell.id.split('_')[1])
-          if (id === Infinity) return 0
-          return id
-        }))
+        const ids = page.cells ? page.cells.map(cell => {
+          const id = cell.id.split('_')[1]
+          if (/infinity/i.test(id)) return 0
+          return Number(id)
+        }) : [0]
+        let maxId = Math.max(...ids)
         page.cells && page.cells.forEach(cell => {
           const defaultCell = cells.find(i => i.name === cell.type)
           Object.keys(defaultCell.defaultProps).forEach(defaultKey => {
