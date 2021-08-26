@@ -54,6 +54,11 @@
     },
     created() {
       this.originState = Number(this.start)
+      if (this.preAnimation) {
+        if (Number(this.start) < this.preEndTime) {
+          this.$emit('update:start', Math.round(this.preEndTime * 100) / 100)
+        }
+      }
     },
     mounted() {
       this.throttleHandleMove = _.throttle(this.handleMouseMove)
