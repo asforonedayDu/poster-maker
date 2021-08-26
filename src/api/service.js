@@ -47,7 +47,7 @@ function createService () {
           default:
             // 不是正确的 code
             errorCreate(`${dataAxios.errmsg}: ${response.config.url}`)
-            return Promise.reject(dataAxios.errmsg)
+            return Promise.reject(dataAxios)
         }
       }
     },

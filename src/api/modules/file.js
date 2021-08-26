@@ -18,7 +18,7 @@ const uploadImage = function (data) {
 }
 
 export {
-  uploadImage
+  uploadImage,
 }
 
 export default ({request, tools}) => ({

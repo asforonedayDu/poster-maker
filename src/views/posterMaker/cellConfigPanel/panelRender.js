@@ -1,3 +1,5 @@
+const {basicFontFamily} = require('../libs/static')
+
 export default {
   methods: {
     rInputText(h, config) {
@@ -69,6 +71,32 @@ export default {
         </div>
       )
     },
+    rFontFamily(h, config) {
+      const fonts = basicFontFamily.concat(this.allFontList || [])
+      return (
+        <div class="input-main">
+          <span>选择字体:</span>
+          <el-button class="button-front" on-click={() => {
+            this.showFontsWindow = true
+          }}>打开字体管理库
+          </el-button>
+          <el-select vModel={this.configProps[config.propKey]} class="el-select-font"
+                     placeholder={`${this.configProps[config.propKey] ? this.configProps[config.propKey] : '选择字体'}`}>
+            {fonts.map((font, index) => {
+              let indeed = font
+              if (font.asset_content) {
+                indeed = JSON.parse(font.asset_content)
+              }
+              return (
+                <el-option key={index} label={font.asset_name}
+                           value={`${indeed.fontFamily}${indeed.url ? `|${indeed.url}` : ''}`}>
+                </el-option>
+              )
+            })}
+          </el-select>
+        </div>
+      )
+    },
     rFontsize(h, config) {
       return (
         <div class="input-main">
@@ -113,7 +141,7 @@ export default {
           <span>高度随屏幕拉伸(宽高比不固定): </span>
           <el-radio-group vModel={this.configProps[config.propKey]}>
             <el-radio class="radio-label-body" label={true}>是(保证相对位置，图片可能会显示不完整)</el-radio>
-            <el-radio class="radio-label-body" label={false}>否(保证图片显示完整，位置根据竖向适配模式自动调整)</el-radio>
+            <el-radio class="radio-label-body" label={false}>否(保证图片显示完整，位置取决于竖向适配模式)</el-radio>
           </el-radio-group>
         </div>
       )

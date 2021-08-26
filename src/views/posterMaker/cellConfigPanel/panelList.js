@@ -31,6 +31,10 @@ export default {
     method: 'rFontsize',
     propKey: 'fontsize',
   },
+  fontFamily: {
+    method: 'rFontFamily',
+    propKey: 'fontFamily',
+  },
   animationActions: {
     method: 'rAnimationActions',
     propKey: 'animationActions',

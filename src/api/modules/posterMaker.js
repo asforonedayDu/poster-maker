@@ -1,4 +1,5 @@
 import setting from "@/setting";
+import {request} from "@/api/service";
 
 export default ({request, tools}) => ({
   /**
@@ -61,7 +62,7 @@ export default ({request, tools}) => ({
   /**
    * @description 获取素材库资源
    */
-  async GET_COMMON_ASSETS() {
+  async GET_PIC_ASSETS() {
     // return new Promise((resolve, reject) => {
     //   jsonp(setting.node_server + 'queryAllPicAssets', {}, (result) => {
     //     resolve(result.data)
@@ -70,6 +71,22 @@ export default ({request, tools}) => ({
     // 接口请求
     return await request({
       url: setting.node_server + 'queryAllPicAssets',
+      method: 'get',
+      params: {}
+    })
+  },
+  /**
+   * @description 获取素材库资源
+   */
+  async GET_FONT_ASSETS() {
+    // return new Promise((resolve, reject) => {
+    //   jsonp(setting.node_server + 'queryAllPicAssets', {}, (result) => {
+    //     resolve(result.data)
+    //   })
+    // })
+    // 接口请求
+    return await request({
+      url: setting.node_server + 'queryAllFontAssets',
       method: 'get',
       params: {}
     })
@@ -102,5 +119,22 @@ export default ({request, tools}) => ({
         asset_content,
       }
     })
+  },
+
+
+  async UPLOAD_FONT(data) {
+    const options = {
+      url: setting.node_server + 'saveFontAddDb',
+      method: 'post',
+      headers: {
+        dataType: 'json',
+        processData: false,
+        contentType: false,
+        mimeType: 'multipart/form-data'
+      },
+      timeout: 300000,
+      data: data,
+    }
+    return await request(options)
   },
 })

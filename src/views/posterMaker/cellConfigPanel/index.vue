@@ -46,6 +46,9 @@
       }
     },
     created() {
+      if (!this.$context.requestedFontAssets) {
+        this.getFontList().then()
+      }
       this.setConfigData(this.onSelectCell)
       this.animateList = util.getAnimationList()
     },
@@ -84,6 +87,7 @@
           })}
           {this.renderAnimatePickWindow(h)}
           {this.renderAssetsWindow(h)}
+          {this.renderFontWindow(h)}
         </div>
       )
     },
@@ -214,7 +218,8 @@
               <input ref="uploadInput" class="upload-button-input" type="file"
                      accept="image/jpg,image/jpeg,image/png,image/gif,image/webp,*.svg"
                      on-change={this.handleImgFileChange}/>
-              <el-button class="upload-button" onClick={() => this.$refs.uploadInput.click()}>上传素材</el-button>
+              <el-button class="upload-button" type={'primary'} onClick={() => this.$refs.uploadInput.click()}>上传素材
+              </el-button>
             </div>
             <div>
               <div class="assets-list">
@@ -228,6 +233,50 @@
                           {asset.uploading && <div class="uploading-tag">上传中</div>}
                           {this.onSelectAsset === asset && <div class="asset-selected"/>}
                         </div>
+                      </div>
+                    )
+                  })
+                }
+              </div>
+              <div class="operation-buttons-body">
+                {this.onSelectAsset &&
+                <div class="operation-buttons">
+                  <el-button type="danger" on-click={() => this.deleteAsset(this.onSelectAsset)}>删除</el-button>
+                  <el-button type="primary" on-click={() => this.setBackgroundImage(this.onSelectAsset)}>确认</el-button>
+                </div>
+                }
+              </div>
+
+            </div>
+          </el-dialog>
+        )
+      },
+      renderFontWindow(h) {
+        return (
+          <el-dialog title="字体管理"
+                     visible={this.showFontsWindow} {...{on: {'update:visible': () => this.showFontsWindow = false}}}
+                     class="assets-body" width="80%">
+
+            <div class="upload-img-body">
+              <input ref="uploadFontInput" class="upload-button-input" type="file"
+                     accept="font/ttf,font/woff2,font/woff,application/vnd.ms-fontobject"
+                     on-change={this.handleFontFileChange}/>
+              <el-button class="upload-button" type={'primary'}
+                         onClick={() => this.$refs.uploadFontInput.click()}>上传字体文件
+              </el-button>
+            </div>
+            <p>字体文件需要转码，比较耗时，上传时请耐心等待。 尽量使用ttf/woff/woff2格式字体，其它格式可能不支持。</p>
+            <div>
+              <div class="assets-list">
+                {
+                  this.allFontList.map((font, index) => {
+                    return (
+                      <div class="asset-body" key={index}>
+                        <el-tag style={{cursor: 'pointer'}} closable={true} vOn:close={() => {
+                          this.handlerFontAssetDelete(font, index)
+                        }}>
+                          {font.asset_name}
+                        </el-tag>
                       </div>
                     )
                   })
@@ -292,11 +341,15 @@
       flex-flow: column nowrap;
       justify-content: space-around;
       align-items: flex-start;
-      margin: 10px 0;
+      margin: 5px 0;
 
       > span {
         margin: auto 5px 10px 0;
       }
+    }
+
+    .el-select-font {
+      margin-top: 15px;
     }
 
     .inline-content {
@@ -438,7 +491,6 @@
       .upload-button {
         position: absolute;
         left: 20px;
-        width: 100px;
         height: 100%;
         margin: auto 0;
       }

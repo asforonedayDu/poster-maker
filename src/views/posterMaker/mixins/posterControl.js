@@ -24,7 +24,8 @@ export default {
       inputNewPosterName: '',
       poster: {
         poster_id: null,
-      }
+      },
+      fontList: [],
     }
   },
   methods: {
@@ -157,7 +158,7 @@ export default {
       this.poster.poster_id = result.insertId
       this.requestedPosterList = false
       this.isShowDialogPosterManageWindow = false
-    }
+    },
   },
   watch: {
     async isShowDialogPosterManageWindow(val) {
@@ -172,6 +173,6 @@ export default {
         Vue.set(this, 'posterList', data)
         this.requestedPosterList = true
       }
-    }
+    },
   }
 }

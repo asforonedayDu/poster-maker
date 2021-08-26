@@ -169,7 +169,16 @@
       return {
         pages: [],
         cellList: cellList,
-        baseConfig
+        baseConfig,
+        allFontList: [],
+        requestedAssets: false,
+        requestedFontAssets: false,
+      }
+    },
+    provide() {
+      return {
+        'allFontList': this.allFontList,
+        $context: this,
       }
     },
     async mounted() {
@@ -314,6 +323,12 @@
         align-items: center;
         justify-content: center;
         overflow: hidden;
+      }
+
+      .fonts-body {
+        display: flex;
+        flex-flow: row wrap;
+        margin: 20px 0px
       }
     }
 

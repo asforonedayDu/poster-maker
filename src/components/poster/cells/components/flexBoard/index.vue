@@ -14,7 +14,8 @@
     inputText: null,
     verticalDirection: null,
     color: null,
-    fontsize: null
+    fontsize: null,
+    fontFamily: null
   })
   export default {
     name: "cell-flex-board",
