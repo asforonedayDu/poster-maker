@@ -121,7 +121,7 @@
         const maxTime = this.timeList[this.timeList.length - 1]
         const distance = event.x - this.startX
         const timeDistance = (distance / this.$refs.root.clientWidth) * maxTime / 10
-        const newEnd = this.start + this.originState + timeDistance
+        const newEnd = Number(this.start) + this.originState + timeDistance
         if (newEnd <= this.start || newEnd >= maxTime / 10) {
           return
         }
