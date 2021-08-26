@@ -71,11 +71,20 @@ export default {
       posterData = JSON.parse(posterData)
       // 设置默认值
       posterData.pages && posterData.pages.forEach(page => {
+        let maxId = Math.max(...page.cells.map(cell => {
+          const id = Number(cell.id.split('_')[1])
+          if (id === Infinity) return 0
+          return id
+        }))
         page.cells && page.cells.forEach(cell => {
           const defaultCell = cells.find(i => i.name === cell.type)
           Object.keys(defaultCell.defaultProps).forEach(defaultKey => {
             if (!cell.props.hasOwnProperty(defaultKey)) cell.props[defaultKey] = defaultCell.defaultProps[defaultKey]
           })
+          if (/Infinity/i.test(cell.id)) {
+            maxId += 1
+            cell.id = cell.id.split('_')[0] + '_' + (maxId)
+          }
         })
       })
       if (this.onSelectExistedPoster) {

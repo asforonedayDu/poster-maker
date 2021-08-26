@@ -81,7 +81,9 @@ export default {
       this.dialogAddCellVisible = false
       if (!this.onSelectPage.cells) this.$set(this.onSelectPage, 'cells', [])
       const maxId = Math.max(...this.onSelectPage.cells.map(cell => {
-        return cell.id.split('_')[1]
+        const id = Number(cell.id.split('_')[1])
+        if (id === Infinity) return 0
+        return id
       }))
       this.onSelectPage.cells.push(_.cloneDeep({
         name: this.onSelectAddCell.inputCellName,
