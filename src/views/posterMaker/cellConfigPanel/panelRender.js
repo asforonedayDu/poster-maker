@@ -194,7 +194,7 @@ export default {
           <span>（不同尺寸屏幕下按照哪个标准确定）:</span>
           <el-radio-group vModel={this.configProps[config.propKey]}>
             <el-radio class="radio-label-body" label={'start'}>元素顶部离屏幕顶部百分比</el-radio>
-            <el-radio class="radio-label-body" label={'mid'}>元素中部离屏幕中部百分比(长屏幕时偏中)</el-radio>
+            <el-radio class="radio-label-body" label={'mid'}>按照设计比例居中(长屏幕时偏中)</el-radio>
             <el-radio class="radio-label-body" label={'end'}>元素底部离屏幕底部百分比</el-radio>
           </el-radio-group>
         </div>

@@ -52,12 +52,20 @@ export default {
             styleCss.bottom = `${bottom}%`
           }
         } else if (this.justifyContent === 'mid') {
-          const midPosition = this.position.top + this.position.height / 2
+          const {top, height} = this.position
           const windowHeight = this.designMode ? baseConfig.designHeight : document.documentElement.clientHeight || document.body.clientHeight
           const windowWidth = this.designMode ? baseConfig.designWidth : document.documentElement.clientWidth || document.body.clientWidth
-          const cellAbsHeight = this.position.height * heightWidthPercentage * windowWidth / 100
-          const heightPercent = cellAbsHeight / windowHeight * 100
-          styleCss.top = `${midPosition - heightPercent / 2}%`
+          const designAreaHeight = heightWidthPercentage * windowWidth
+          // const cellAbsHeight = height * heightWidthPercentage * windowWidth / 100
+          const inAreaTop = designAreaHeight * top / 100
+          const outAreaTopPadding = (windowHeight - designAreaHeight) / 2
+          const indeedTop = (outAreaTopPadding + inAreaTop) * 100 / windowHeight
+          // const midPercentDistance = top + height / 2 - 50
+          // const mid2midDistance = windowHeight * midPercentDistance / 100
+          // const mid2TopDistance = windowHeight / 2 + mid2midDistance
+          // const top2TopDistance = mid2TopDistance - cellAbsHeight / 2
+          // const indeedTop = top2TopDistance * 100 / windowHeight
+          styleCss.top = `${indeedTop}%`
         } else {
           styleCss.top = `${this.position.top}%`
         }
