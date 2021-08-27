@@ -11,11 +11,14 @@
   Object.keys(panelList).forEach(key => {
     const propKey = panelList[key]['propKey']
     const watchTarget = `configProps.${propKey}`
-    watcher[watchTarget] = function (val, oldValue) {
-      if (val !== null) {
-        // console.log('watcher[watchTarget]', watchTarget, val)
-        this.$set(this.onSelectCell.props, propKey, _.cloneDeep(val))
-      }
+    watcher[watchTarget] = {
+      handler: function (val, oldValue) {
+        if (val !== null) {
+          // console.log('watcher[watchTarget]', watchTarget, val)
+          this.$set(this.onSelectCell.props, propKey, _.cloneDeep(val))
+        }
+      },
+      deep: true,
     }
   })
   const vueComponent = {
@@ -77,14 +80,22 @@
           <div class="panel-item-body">
             <p>{this.onSelectCell.type}</p>
           </div>
-          {Object.values(this.targetCell.panelList).map(config => {
-            if (!config) return ''
-            return (
-              <div class="panel-item-body">
-                {this[`${config.method}`](h, config)}
-              </div>
-            )
-          })}
+          <el-collapse>
+
+            {Object.values(this.targetCell.panelList).map(config => {
+              if (!config) return ''
+              return (
+                <div class="panel-item-body">
+                  <el-collapse-item>
+                    <template slot={'title'}>
+                      {config.description}:
+                    </template>
+                    {this[`${config.method}`](h, config)}
+                  </el-collapse-item>
+                </div>
+              )
+            })}
+          </el-collapse>
           {this.renderAnimatePickWindow(h)}
           {this.renderAssetsWindow(h)}
           {this.renderFontWindow(h)}
@@ -241,7 +252,7 @@
               <div class="operation-buttons-body">
                 {this.onSelectAsset &&
                 <div class="operation-buttons">
-                  <el-button type="danger" on-click={() => this.deleteAsset(this.onSelectAsset)}>删除</el-button>
+                  <el-button type="danger" on-click={() => this.deletePicAsset(this.onSelectAsset)}>删除</el-button>
                   <el-button type="primary" on-click={() => this.setBackgroundImage(this.onSelectAsset)}>确认</el-button>
                 </div>
                 }
@@ -282,14 +293,6 @@
                   })
                 }
               </div>
-              <div class="operation-buttons-body">
-                {this.onSelectAsset &&
-                <div class="operation-buttons">
-                  <el-button type="danger" on-click={() => this.deleteAsset(this.onSelectAsset)}>删除</el-button>
-                  <el-button type="primary" on-click={() => this.setBackgroundImage(this.onSelectAsset)}>确认</el-button>
-                </div>
-                }
-              </div>
 
             </div>
           </el-dialog>
@@ -303,6 +306,31 @@
   .dialog-select-animation {
     min-width: 1150px;
     /*width: auto;*/
+  }
+
+  .el-input__inner {
+    width: 200px;
+  }
+
+  .el-collapse {
+    border: none;
+  }
+
+  .el-collapse-item__wrap {
+    border-bottom: none !important;
+    width: 350px;
+  }
+
+  .el-collapse-item__content {
+    padding-bottom: 5px;
+  }
+
+  .el-collapse-item__header {
+    line-height: 30px;
+    height: 30px;
+    width: 350px;
+    margin-top: -10px;
+    font-size: 14px;
   }
 </style>
 <style lang="scss" scoped>
@@ -331,7 +359,7 @@
 
     .panel-item-body {
       box-sizing: border-box;
-      padding: 15px 10px 15px 10px;
+      padding: 15px 10px 5px 10px;
       width: 100%;
       border-bottom: 1px solid rgba(0, 0, 0, 0.4);
     }
@@ -346,6 +374,7 @@
       > span {
         margin: auto 5px 10px 0;
       }
+
     }
 
     .el-select-font {

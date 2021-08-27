@@ -31,6 +31,9 @@
       hideAfterAnimation: -1,
       flexHeight: true,
       justifyContent: 'start',
+      borders: {
+        default: {width: '0', style: 'solid', color: 'rgba(0,0,0,1)',}
+      },
     },
     panelList: panelCellList,
     mixins: [animation, style, base],

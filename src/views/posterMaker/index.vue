@@ -1,7 +1,7 @@
 <template>
   <div class="poster-maker-body">
     <div class="cells-body">
-      <tree-container :data="treeData" :options="treeOptions" ref="treeContainer">
+      <tree-container :data="treeData" :options="treeOptions" ref="treeContainer" class="tree-class">
         <template v-slot:header>
           <div class="header-body" @click="previewAllPage">
             预览
@@ -14,6 +14,10 @@
           </div>
           <div class="header-body" @click="showSetAudioWindow">
             全局设置（背景音等）
+          </div>
+        </template>
+        <template v-slot:footer>
+          <div class="footer-body">
           </div>
         </template>
       </tree-container>
@@ -224,7 +228,7 @@
           style: {
             contentWidth: '380',
             contentMinWidth: '300',
-            backgroundColor: 'white'
+            backgroundColor: 'white',
           },
           handleClickItem: function (item, index, opened) {
             if (item.createType === treeDataType.PAGE) {
@@ -280,10 +284,21 @@
       line-height: 35px;
     }
 
+    .footer-body {
+      min-height: 150px;
+    }
+
     .cells-body {
       height: 100%;
       padding-top: 100px;
       box-sizing: border-box;
+
+      .tree-class {
+        overflow: hidden;
+        box-sizing: border-box;
+        display: flex;
+        flex-flow: column nowrap;
+      }
     }
 
     .maker-body {

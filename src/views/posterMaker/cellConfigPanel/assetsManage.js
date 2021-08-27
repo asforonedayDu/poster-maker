@@ -111,9 +111,8 @@ export default {
         this.onSelectAsset = null
       }
     },
-    async deleteAsset(asset) {
-      const data = await this.$api.DELETE_COMMON_ASSETS(asset.asset_id)
-      console.log('data', data)
+    async deletePicAsset(asset) {
+      await this.$api.DELETE_COMMON_ASSETS(asset.asset_id)
       const index = this.commonAssets.indexOf(asset)
       this.commonAssets.splice(index, 1)
       this.onSelectAsset = null

@@ -43,6 +43,13 @@ module.exports = {
       //   '^/api_h5': '/api'
       // }
     },
+    '/posterFile': {
+      target: 'http://127.0.0.1:7001/',
+      changeOrigin: true,
+      // pathRewrite: {
+      //   '^/posterFile/font': '/'
+      // },
+    }
   },
   getAnimationList
 }

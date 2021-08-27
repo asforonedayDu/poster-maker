@@ -398,7 +398,7 @@
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
   .container {
     height: 100%;
@@ -429,9 +429,10 @@
   .content {
     display: flex;
     flex-grow: 1;
-    flex-direction: column;
+    flex-flow: column nowrap;
     overflow-x: hidden;
     overflow-y: auto;
+    flex-shrink: 1;
     height: auto;
   }
 

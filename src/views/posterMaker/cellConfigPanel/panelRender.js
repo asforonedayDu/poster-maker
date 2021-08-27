@@ -1,12 +1,53 @@
-const {basicFontFamily} = require('../libs/static')
+import {basicFontFamily} from '../libs/static'
 
 export default {
+  data() {
+    return {
+      showBorderColorPick: false,
+    }
+  },
   methods: {
     rInputText(h, config) {
       return (
         <div class="input-main">
           <span>修改文字内容:</span>
           <el-input vModel={this.configProps[config.propKey]} placeholder="请输入内容"/>
+        </div>
+      )
+    },
+    rBorder(h, config) {
+      const defaultConfig = this.configProps[config.propKey].default //目前不支持单独配置各个边框
+      const styles = ['solid', 'dotted', 'double', 'dashed']
+      return (
+        <div class="input-main">
+          <el-form vModel={defaultConfig} label-width="100px" style="width: 400px">
+            <el-form-item label="边框宽度">
+              <el-input vModel={defaultConfig.width} placeholder="数字"/>
+            </el-form-item>
+            <el-form-item label="边框样式">
+              <el-select vModel={defaultConfig.style} class="el-select-font"
+                         placeholder={`${defaultConfig.style ? defaultConfig.style : 'solid'}`}>
+                {styles.map((style, index) => {
+                  return (
+                    <el-option key={index} label={style}
+                               value={`${style}`}>
+                    </el-option>
+                  )
+                })}
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="边框颜色">
+              <el-input class="input-right" vModel={defaultConfig.color} on-focus={() => {
+                this.showBorderColorPick = true
+              }}/>
+            </el-form-item>
+            <div>
+              {this.showBorderColorPick &&
+              <color-pick style={{width: '340px'}} vModel={defaultConfig.color} color-format="rgba"
+                          show={this.showBorderColorPick}/>}
+            </div>
+          </el-form>
         </div>
       )
     },
