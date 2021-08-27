@@ -9,9 +9,9 @@ const uploadImage = function (data) {
       dataType: 'json',
       processData: false,
       contentType: false,
-      timeout: 30000,
       mimeType: 'multipart/form-data'
     },
+    timeout: 30000,
     data: data,
   }
   return request(options)
