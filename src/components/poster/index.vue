@@ -273,6 +273,8 @@
 
     * {
       white-space: pre-wrap;
+      flex-shrink: 1;
+      text-align: justify;
     }
   }
 </style>
