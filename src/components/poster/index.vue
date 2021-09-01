@@ -275,6 +275,7 @@
       white-space: pre-wrap;
       flex-shrink: 1;
       text-align: justify;
+      word-break: normal;
     }
   }
 </style>
