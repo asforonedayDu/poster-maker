@@ -55,11 +55,13 @@
   .cell-text-body {
     text-align: justify;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     writing-mode: horizontal-tb;
     height: 100%;
     width: 100%;
+    white-space: pre-wrap;
+    word-break: normal;
   }
 
   .vertical {
