@@ -53,7 +53,7 @@
 
 <style lang="scss" scoped>
   .cell-text-body {
-    text-align: center;
+    text-align: justify;
     display: flex;
     align-items: center;
     justify-content: center;
