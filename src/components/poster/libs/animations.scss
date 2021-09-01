@@ -1663,54 +1663,6 @@ $animationPrefix: animate__;
   animation-name: particles
 }
 
-
-@keyframes wobble {
-  0% {
-
-    transform: translateZ(0)
-  }
-  10% {
-
-    transform: translate3d(20%, 0, 0) rotate(3deg)
-  }
-  20% {
-
-    transform: translate3d(-15%, 0, 0) rotate(-3deg)
-  }
-  30% {
-
-    transform: translate3d(10%, 0, 0) rotate(2deg)
-  }
-  40% {
-
-    transform: translate3d(-5%, 0, 0) rotate(-1deg)
-  }
-  50% {
-
-    transform: translateZ(0)
-  }
-  75% {
-
-    transform: scale(1.5)
-  }
-  85% {
-
-    transform: scale(1)
-  }
-  95% {
-
-    transform: scale(1.2)
-  }
-  to {
-    transform: scale(1)
-  }
-}
-
-.animate__wobble {
-  animation-name: wobble
-}
-
-
 @keyframes shake {
   0%, to {
 

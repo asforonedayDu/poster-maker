@@ -270,6 +270,10 @@
     background-position: center !important;
     background-size: cover !important;
     background-repeat: no-repeat !important;
+
+    * {
+      white-space: pre-wrap;
+    }
   }
 </style>
 <style lang="scss" scoped>
