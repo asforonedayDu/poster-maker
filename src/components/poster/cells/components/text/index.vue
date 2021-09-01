@@ -1,8 +1,6 @@
 <template>
   <div class="default-cell" :style="{...style}" ref="targetDom">
-    <div :class="`cell-text-body ${verticalDirection?'vertical':''}`">
-      {{content}}
-    </div>
+    <div :class="`cell-text-body ${verticalDirection?'vertical':''}`">{{content}}</div>
   </div>
 </template>
 
