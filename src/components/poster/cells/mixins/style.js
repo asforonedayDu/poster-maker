@@ -26,7 +26,7 @@ export default {
     borders: {
       default() {
         return {
-          default: {default: {width: '0', style: 'solid', color: 'rgba(255,255,255,1)',}}
+          default: {default: {width: '0', style: 'solid', color: 'rgba(255,255,255,1)', radius: 0}}
         }
       }
     },
@@ -108,8 +108,9 @@ export default {
         }
       }
       if (this.borders?.default) {
-        const {width = 0, style = 'solid', color = 'black'} = this.borders.default
+        const {width = 0, style = 'solid', color = 'black', radius = 0} = this.borders.default
         styleCss.borderWidth = `${width}px`
+        styleCss.borderRadius = `${radius}%`
         styleCss.borderStyle = style
         styleCss.borderColor = color
       }

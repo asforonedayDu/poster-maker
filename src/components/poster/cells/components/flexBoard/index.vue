@@ -32,7 +32,7 @@
       flexHeight: true,
       justifyContent: 'start',
       borders: {
-        default: {width: '0', style: 'solid', color: 'rgba(0,0,0,1)',}
+        default: {width: '0', style: 'solid', color: 'rgba(0,0,0,1)', radius: 0}
       },
     },
     panelList: panelCellList,

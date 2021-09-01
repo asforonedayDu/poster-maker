@@ -631,69 +631,58 @@ $animationPrefix: animate__;
   animation-name: fadeInDown
 }
 
-@keyframes opacityFadeInLeft {
+@keyframes inLeft {
   0% {
-    opacity: 0;
     transform: translate3d(-200px, 0, 0)
   }
   to {
-    opacity: 1;
-
     transform: none
   }
 }
 
-.animate__opacityFadeInLeft {
-  animation-name: opacityFadeInLeft
+.animate__inLeft {
+  animation-name: inLeft
 }
 
-@keyframes opacityFadeInRight {
-  from {
-    opacity: 0;
+@keyframes inRight {
+  0% {
     transform: translate3d(200px, 0, 0)
   }
   to {
-    opacity: 1;
-
     transform: none
   }
 }
 
-.animate__opacityFadeInRight {
-  animation-name: opacityFadeInRight
+.animate__inRight {
+  animation-name: inRight
 }
 
-@keyframes opacityFadeInUp {
+@keyframes inUp {
   0% {
-    opacity: 0;
     transform: translate3d(0, 200px, 0)
   }
   to {
-    opacity: 1;
-
     transform: none
   }
 }
 
-.animate__opacityFadeInUp {
-  animation-name: opacityFadeInUp
+.animate__inUp {
+  animation-name: inUp
 }
 
-@keyframes opacityFadeInDown {
+@keyframes inDown {
   0% {
-    opacity: 0;
     transform: translate3d(0, -200px, 0)
   }
   to {
-    opacity: 1;
-
     transform: none
   }
 }
 
-.animate__opacityFadeInDown {
-  animation-name: opacityFadeInDown
+.animate__inDown {
+  animation-name: inDown
 }
+
 
 @keyframes fadeOutDown {
   0% {
@@ -1915,25 +1904,6 @@ $animationPrefix: animate__;
   animation-name: hammer
 }
 
-@keyframes bounceInDown {
-  0% {
-    opacity: 0;
-  }
-  60% {
-    opacity: 1;
-
-  }
-  80% {
-
-  }
-  to {
-
-  }
-}
-
-.animate__bounceInDown {
-  animation-name: bounceInDown
-}
 
 @keyframes magicCubeRotate {
   0% {

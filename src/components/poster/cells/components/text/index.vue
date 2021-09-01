@@ -24,7 +24,7 @@
       content: 'TEXT',
       fontsize: 8,
       fontFamily: '',
-      borders: {default: {width: '0', style: 'solid', color: 'rgba(0,0,0,1)',}},
+      borders: {default: {width: '0', style: 'solid', color: 'rgba(0,0,0,1)', radius: 0}},
       hideAfterAnimation: -1,
       flexHeight: true,
       justifyContent: 'start',

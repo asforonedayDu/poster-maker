@@ -24,6 +24,9 @@ export default {
             <el-form-item label="边框宽度">
               <el-input vModel={defaultConfig.width} placeholder="数字"/>
             </el-form-item>
+            <el-form-item label="边框圆角">
+              <el-input vModel={defaultConfig.radius} placeholder="数字(0-100)"/>
+            </el-form-item>
             <el-form-item label="边框样式">
               <el-select vModel={defaultConfig.style} class="el-select-font"
                          placeholder={`${defaultConfig.style ? defaultConfig.style : 'solid'}`}>
