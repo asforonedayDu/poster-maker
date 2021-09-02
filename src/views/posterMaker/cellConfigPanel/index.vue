@@ -6,6 +6,7 @@
   import assetsManage from "@/views/posterMaker/cellConfigPanel/assetsManage";
   import panelRender from "@/views/posterMaker/cellConfigPanel/panelRender";
   import cells from '@/components/poster/cells'
+  import {baseConfig} from '@/views/posterMaker/libs/static'
 
   const watcher = {}
   Object.keys(panelList).forEach(key => {
@@ -22,6 +23,24 @@
       deep: true,
     }
   })
+  // 当修改了长宽后改变数据
+  watcher[`configProps.position`] = {
+    handler: function (val, oldValue) {
+      if (val !== null) {
+        const position = this.onSelectCell.props.position
+        const width = Math.round(val.width / baseConfig.designWidth * 10000) / 100
+        const height = Math.round(val.height / baseConfig.designHeight * 10000) / 100
+        if (position.width !== width && oldValue) {
+          // console.log('set configProps width ', position, val, width, height)
+          this.$set(position, 'width', width)
+        }
+        if (position.height !== height && oldValue) {
+          this.$set(position, 'height', height)
+        }
+      }
+    },
+    deep: true,
+  }
   const vueComponent = {
     name: "cell-config-panel",
     mixins: [assetsManage, panelRender],
@@ -47,7 +66,6 @@
         onEditAnimationIndex: 0,
         showBackgroundColorPick: false,
         showTextColorPick: false,
-        watchSelectCell: null,
       }
     },
     created() {
@@ -56,6 +74,10 @@
       }
       this.setConfigData(this.onSelectCell)
       this.animateList = util.getAnimationList()
+      this.debounceFollowChangeHeight = _.debounce(this.handleCellHeightChange)
+      this.debounceFollowChangeWidth = _.debounce(this.handleCellWidthChange)
+      this.$watch('onSelectCell.props.position.width',this.debounceFollowChangeWidth)
+      this.$watch('onSelectCell.props.position.height',this.debounceFollowChangeHeight)
     },
     watch: {
       ...watcher,
@@ -70,16 +92,6 @@
             })
           }
         }
-      },
-      'onSelectCell.props.position.width': {
-        handler(val) {
-          this.configProps.position.width = val
-        },
-      },
-      'onSelectCell.props.position.height': {
-        handler(val) {
-          this.configProps.position.height = val
-        },
       },
     },
     render(h, context) {
@@ -115,6 +127,20 @@
       )
     },
     methods: {
+      handleCellHeightChange(val) {
+        const newVal = Math.round(Number(val) * baseConfig.designHeight / 100)
+        if (newVal !== this.configProps.position.height) {
+          console.log('on change height')
+          this.configProps.position.height = newVal
+        }
+      },
+      handleCellWidthChange(val) {
+        const newVal = Math.round(Number(val) * baseConfig.designWidth / 100)
+        if (newVal !== this.configProps.position.width) {
+          console.log('on change width')
+          this.configProps.position.width = newVal
+        }
+      },
       handlerAnimationDelete(index) {
         this.onSelectCell.props[this.animationPropkey].splice(index, 1)
       },
@@ -126,7 +152,13 @@
             if (config.method === 'rAnimationActions') {
               this.animationPropkey = config.propKey
             }
-            const value = onSelectCell.props[config.propKey]
+            let value = onSelectCell.props[config.propKey]
+            // 长宽需要转换
+            if (config.propKey === 'position') {
+              value = _.cloneDeep(value)
+              value.width = Math.round(Number(value.width) * baseConfig.designWidth / 100)
+              value.height = Math.round(Number(value.height) * baseConfig.designHeight / 100)
+            }
             Vue.set(this.configProps, config.propKey, value)
           })
         }
