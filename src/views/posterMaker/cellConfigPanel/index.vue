@@ -76,8 +76,8 @@
       this.animateList = util.getAnimationList()
       this.debounceFollowChangeHeight = _.debounce(this.handleCellHeightChange)
       this.debounceFollowChangeWidth = _.debounce(this.handleCellWidthChange)
-      this.$watch('onSelectCell.props.position.width',this.debounceFollowChangeWidth)
-      this.$watch('onSelectCell.props.position.height',this.debounceFollowChangeHeight)
+      this.$watch('onSelectCell.props.position.width', this.debounceFollowChangeWidth)
+      this.$watch('onSelectCell.props.position.height', this.debounceFollowChangeHeight)
     },
     watch: {
       ...watcher,
@@ -130,14 +130,14 @@
       handleCellHeightChange(val) {
         const newVal = Math.round(Number(val) * baseConfig.designHeight / 100)
         if (newVal !== this.configProps.position.height) {
-          console.log('on change height')
+          // console.log('on change height')
           this.configProps.position.height = newVal
         }
       },
       handleCellWidthChange(val) {
         const newVal = Math.round(Number(val) * baseConfig.designWidth / 100)
         if (newVal !== this.configProps.position.width) {
-          console.log('on change width')
+          // console.log('on change width')
           this.configProps.position.width = newVal
         }
       },

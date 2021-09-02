@@ -70,29 +70,42 @@ export default {
     },
     setPosterData(posterData) {
       posterData = JSON.parse(posterData)
-      // 设置默认值
-      posterData.pages && posterData.pages.forEach(page => {
-        const ids = page.cells ? page.cells.map(cell => {
-          const id = cell.id.split('_')[1]
-          if (/infinity/i.test(id)) return 0
-          return Number(id)
-        }) : [0]
-        let maxId = Math.max(...ids)
-        page.cells && page.cells.forEach(cell => {
-          const defaultCell = cells.find(i => i.name === cell.type)
-          Object.keys(defaultCell.props).forEach(defaultKey => {
-            if (!cell.props.hasOwnProperty(defaultKey)) cell.props[defaultKey] = defaultCell.props[defaultKey].default
-          })
-          if (/Infinity/i.test(cell.id)) {
-            maxId += 1
-            cell.id = cell.id.split('_')[0] + '_' + (maxId)
+      if (posterData.pages && posterData.pages.length > 0) {
+        // 设置默认值
+        let maxPageId = Math.max(...posterData.pages.map(page => {
+          if (/Infinity|null/i.test(page.id)) {
+            return 0
           }
+          return page.id
+        }))
+        posterData.pages && posterData.pages.forEach(page => {
+          if (/Infinity|null/i.test(page.id)) {
+            maxPageId += 1
+            page.id = maxPageId
+          }
+
+          const ids = page.cells ? page.cells.map(cell => {
+            const id = cell.id.split('_')[1]
+            if (/Infinity|null/i.test(id)) return 0
+            return Number(id)
+          }) : [0]
+          let maxId = Math.max(...ids)
+          page.cells && page.cells.forEach(cell => {
+            const defaultCell = cells.find(i => i.name === cell.type)
+            Object.keys(defaultCell.props).forEach(defaultKey => {
+              if (!cell.props.hasOwnProperty(defaultKey)) cell.props[defaultKey] = defaultCell.props[defaultKey].default
+            })
+            if (/Infinity|null/i.test(cell.id)) {
+              maxId += 1
+              cell.id = `${page.id}_${maxId}`
+            }
+          })
         })
-      })
+        Vue.set(this, 'pages', posterData.pages)
+      }
       if (this.onSelectExistedPoster) {
         this.posterList[this.onSelectExistedPoster].poster_data = posterData
       }
-      Vue.set(this, 'pages', posterData.pages)
       if (posterData.audio) {
         Object.assign(this.audio, posterData.audio);
         Object.assign(this.tempData, posterData.audio);

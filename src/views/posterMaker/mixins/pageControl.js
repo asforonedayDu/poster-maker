@@ -25,7 +25,12 @@ export default {
     },
     handleCreateNewPage() {
       const length = this.pages.length
-      const maxId = Math.max(...this.pages.map(page => page.id))
+      let maxId
+      if (this.pages && this.pages.length > 0) {
+        maxId = Math.max(...this.pages.map(page => page.id))
+      } else {
+        maxId = 0
+      }
       this.pages.push({
         id: maxId + 1,
         name: `第${length + 1}页`,

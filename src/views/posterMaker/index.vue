@@ -140,14 +140,18 @@
   import Vue from "vue";
 
   const cellList = cells.map(component => {
+    const defaultPops = {}
+    if (component.props) {
+      Object.keys(component.props).forEach(key => {
+        defaultPops[key] = component.props[key].default
+      })
+    }
     return {
       type: component.name,
       descriptor: component.descriptor || '未描述组件',
       // 作为默认属性
       props: {
-        ...(component.props ? Object.keys(component.props).map(key => {
-          return {[key]: component.props[key].default}
-        }) : {}),
+        ...defaultPops,
         locked: false, hideInDesign: false,
       },
       // panelList: component.panelList.filter(e => e),
