@@ -11,33 +11,48 @@
   import base from '../../mixins/base'
 
   export default {
-    name: "cell-text",
+    name: 'cell-text',
     descriptor: '文字内容',
-    defaultProps: {
-      position: {
-        left: 40,
-        top: 40
-      },
-      verticalDirection: false,
-      content: 'TEXT',
-      fontsize: 8,
-      fontFamily: '',
-      borders: {default: {width: '0', style: 'solid', color: 'rgba(0,0,0,1)', radius: 0}},
-      hideAfterAnimation: -1,
-      flexHeight: true,
-      justifyContent: 'start',
-    },
-    panelList: [panelList.switchFlexHeight, panelList.justifyContentType, panelList.inputText, panelList.verticalDirection,
-      panelList.fontsize, panelList.fontFamily, panelList.color, panelList.background, panelList.borderOption,
+    panelList: [panelList.size, panelList.switchFlexHeight, panelList.justifyContentType, panelList.inputText, panelList.verticalDirection,
+      panelList.fontsize, panelList.lineHeight, panelList.fontFamily, panelList.color, panelList.background, panelList.borderOption,
       panelList.hideAfterAnimation, panelList.animationActions],
     mixins: [animation, style, base],
     props: {
+      position: {
+        default: {
+          left: 40,
+          top: 40,
+          width: 30,
+          height: 20,
+        }
+      },
       content: {
-        required: true
+        default: 'TEXT',
+      },
+      fontsize: {
+        default: 8,
+      },
+      fontFamily: {
+        default: '',
+      },
+      borders: {
+        default: {default: {width: '0', style: 'solid', color: 'rgba(0,0,0,1)', radius: 0}},
+      },
+      hideAfterAnimation: {
+        default: -1,
+      },
+      flexHeight: {
+        default: true,
+      },
+      justifyContent: {
+        default: 'start',
       },
       verticalDirection: {
         type: Boolean,
         default: false
+      },
+      lineHeight: {
+        default: 0.2
       },
     },
     data() {

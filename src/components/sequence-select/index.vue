@@ -64,9 +64,9 @@
       this.throttleHandleMove = _.throttle(this.handleMouseMove)
       const root = this.$refs.root
       root.addEventListener('mousedown', this.handleMouseDown)
-      root.addEventListener('mousemove', this.throttleHandleMove)
-      root.addEventListener('mouseup', this.handleMouseUp)
-      root.addEventListener('mouseleave', this.handleMouseLeave)
+      document.addEventListener('mousemove', this.throttleHandleMove)
+      document.addEventListener('mouseup', this.handleMouseUp)
+      // root.addEventListener('mouseleave', this.handleMouseLeave)
     },
     methods: {
       handleMouseDown(event) {
@@ -94,11 +94,11 @@
       },
       handleMouseMove(event) {
         const target = event.target
-        if (this.movingWindow && target === this.$refs.duration) {
+        if (this.movingWindow) {
           this.moveSequence(event)
-        } else if (this.draggingStartLine && target === this.$refs.start) {
+        } else if (this.draggingStartLine) {
           this.changeStartTime(event)
-        } else if (this.draggingEndLine && target === this.$refs.end) {
+        } else if (this.draggingEndLine) {
           this.changeEndTime(event)
         }
       },
@@ -192,8 +192,8 @@
     beforeDestroy() {
       const root = this.$refs.root
       root.removeEventListener('mousedown', this.handleMouseDown)
-      root.removeEventListener('mouseup', this.handleMouseUp)
-      root.removeEventListener('mousemove', this.throttleHandleMove)
+      document.removeEventListener('mouseup', this.handleMouseUp)
+      document.removeEventListener('mousemove', this.throttleHandleMove)
       root.removeEventListener('mouseleave', this.handleMouseLeave)
     }
   }

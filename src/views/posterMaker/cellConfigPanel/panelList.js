@@ -1,4 +1,9 @@
 export default {
+  size: {
+    description:'元素宽高',
+    method: 'rSize',
+    propKey: 'position',
+  },
   switchFlexHeight: {
     description:'弹性高度',
     method: 'rFlexHeight',
@@ -43,6 +48,11 @@ export default {
     description:'文字大小',
     method: 'rFontsize',
     propKey: 'fontsize',
+  },
+  lineHeight: {
+    description:'行间距',
+    method: 'rLineHeight',
+    propKey: 'lineHeight',
   },
   fontFamily: {
     description:'字体配置',

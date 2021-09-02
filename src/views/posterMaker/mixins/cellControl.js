@@ -11,6 +11,7 @@ export default {
       if (!parent) {
         throw new Error('该元素未找到所属页面 handleClickCell' + item.$parentId)
       }
+      this.showPageConfigPanel = false
       this.onSelectPage = parent
       this.onSelectCell = item
       this.isOpenConfigDrawer = true

@@ -10,7 +10,7 @@
     components[component.name] = component
   })
   components['vue-draggable-resizable'] = VueDraggableResizable
-
+  const invalidDragFlag = -1000
   export default {
     name: "demoContainer",
     components,
@@ -27,6 +27,12 @@
         editWidth: 0,
         editHeight: 0,
         showEditWindow: false,
+        dragStartX: 0,
+        dragStartY: 0,
+        dragStartLeft: invalidDragFlag,
+        dragStartTop: invalidDragFlag,
+        dragLineLeft: -1,
+        dragLineTop: -1,
       }
     },
     render(h, context) {
@@ -38,14 +44,75 @@
           items.push(this.renderEditWindow(h))
         }
       }
+      const top = this.dragLineTop
+      const left = this.dragLineLeft
       return (
-        <div class="demo-container-body">
-          {items}
+        <div class="design-root-container"
+             style={{width: `${baseConfig.designWidth}px`, height: `${baseConfig.designHeight}px`}}>
+
+          <div class="demo-container-body">
+            {items}
+          </div>
+          <div class="line-horizon" style={{top: `${top}px`}}/>
+          <div class="line-horizon-right" style={{top: `${top}px`}} ref="rightDrag"/>
+          <div class="line-vertical" style={{left: `${left}px`}}/>
+          <div class="line-vertical-bottom" style={{left: `${left}px`}} ref="bottomDrag"/>
         </div>
       )
     },
+    mounted() {
+      const rightDrag = this.$refs.rightDrag
+      const bottomDrag = this.$refs.bottomDrag
+      rightDrag.addEventListener('mousedown', this.handleVerticalMousedown)
+      document.addEventListener('mousemove', this.handleVerticalMousemove)
+      document.addEventListener('mouseup', this.handleVerticalMouseup)
+
+      bottomDrag.addEventListener('mousedown', this.handleHorizonMousedown)
+      document.addEventListener('mousemove', this.handleHorizonMousemove)
+      document.addEventListener('mouseup', this.handleHorizonMouseup)
+    },
     methods: {
-      renderCell(h, item, context) {
+      handleVerticalMousedown(event) {
+        this.dragStartY = event.y
+        this.dragStartTop = this.dragLineTop
+      },
+      handleVerticalMousemove(event) {
+        if (this.dragStartY === invalidDragFlag) return
+        const distance = event.y - this.dragStartY
+        const newDragLineTop = this.dragStartTop + distance
+        if (newDragLineTop < -1) {
+          this.dragLineTop = -1
+        } else if (newDragLineTop - 1 > baseConfig.designHeight) {
+          this.dragLineTop = baseConfig.designHeight + 1
+        } else {
+          this.dragLineTop = newDragLineTop
+        }
+      },
+      handleVerticalMouseup(event) {
+        // this.handleVerticalMousemove(event)
+        this.dragStartY = invalidDragFlag
+      },
+      handleHorizonMousedown(event) {
+        this.dragStartX = event.x
+        this.dragStartLeft = this.dragLineLeft
+      },
+      handleHorizonMousemove(event) {
+        if (this.dragStartX === invalidDragFlag) return
+        const distance = event.x - this.dragStartX
+        const newDragLineLeft = this.dragStartLeft + distance
+        if (newDragLineLeft < -1) {
+          this.dragLineLeft = -1
+        } else if (newDragLineLeft - 1 > baseConfig.designWidth) {
+          this.dragLineLeft = baseConfig.designWidth + 1
+        } else {
+          this.dragLineLeft = newDragLineLeft
+        }
+      },
+      handleHorizonMouseup(event) {
+        // this.handleHorizonMousemove(event)
+        this.dragStartX = invalidDragFlag
+      },
+      renderCell(h, item) {
         return h(`${item.type}`, {
           props: {
             ...item.props, designMode: true, id: item.id,
@@ -98,31 +165,14 @@
       demoCells() {
         return (this.demoPageData && this.demoPageData.cells) ? this.demoPageData.cells : []
       },
-      // editWidth() {
-      //   const targetComponent = this.$refs[this.onSelectCell.id]
-      //   if (!targetComponent) {
-      //     console.log('onSelectCell targetComponent 未绑定', this.onSelectCell.id)
-      //     return 200
-      //   }
-      //   return targetComponent.$refs.targetDom.clientWidth
-      // },
-      // editHeight() {
-      //   const targetComponent = this.$refs[this.onSelectCell.id]
-      //   if (!targetComponent) {
-      //     console.log('onSelectCell editHeight targetComponent 未绑定', this.onSelectCell.id)
-      //     return 200
-      //   }
-      //   return targetComponent.$refs.targetDom.clientHeight
-      // }
     },
     watch: {
-      onSelectCell(val) {
-        // console.log('val',val)
-        if (val && !val.props.hideInDesign) {
+      'onSelectCell.props.position'(val) {
+        if (val && !this.onSelectCell.props.hideInDesign) {
           this.$nextTick(vm => {
-            const targetComponent = this.$refs[val.id]
+            const targetComponent = this.$refs[this.onSelectCell.id]
             if (!targetComponent) {
-              console.error('onSelectCell targetComponent 未绑定', val.id)
+              console.error('onSelectCell targetComponent 未绑定', this.onSelectCell.id)
               return 200
             }
             this.editWidth = targetComponent.$refs.targetDom.clientWidth
@@ -131,28 +181,127 @@
           })
         }
         this.showEditWindow = false
-      }
+      },
+      'onSelectCell.props.position.height': {
+        handler(val) {
+          if (!this.onSelectCell) return
+          const targetComponent = this.$refs[this.onSelectCell.id]
+          if (targetComponent) {
+            this.$nextTick(() => {
+              const height = targetComponent.$refs.targetDom.clientHeight
+              this.editHeight !== height && (this.editHeight = height)
+            })
+          }
+        },
+      },
+      'onSelectCell.props.position.width': {
+        handler(val) {
+          if (!this.onSelectCell) return
+          const targetComponent = this.$refs[this.onSelectCell.id]
+          if (targetComponent) {
+            this.$nextTick(() => {
+              const width = targetComponent.$refs.targetDom.clientWidth
+              this.editWidth !== width && (this.editWidth = width)
+            })
+          }
+        },
+      },
     },
-    mounted() {
-    }
+    beforeDestroy() {
+      const rightDrag = this.$refs.rightDrag
+      const bottomDrag = this.$refs.bottomDrag
+      rightDrag.removeEventListener('mousedown', this.handleVerticalMousedown)
+      document.removeEventListener('mousemove', this.handleVerticalMousemove)
+      document.removeEventListener('mouseup', this.handleVerticalMouseup)
+
+      bottomDrag.removeEventListener('mousedown', this.handleHorizonMousedown)
+      document.removeEventListener('mousemove', this.handleHorizonMousemove)
+      document.removeEventListener('mouseup', this.handleHorizonMouseup)
+    },
   }
 </script>
 
 <style lang="scss" scoped>
 
-  .demo-container-body {
-    width: 500px;
-    height: 800px;
+  .design-root-container {
     position: relative;
-    border-radius: 25px;
-    border: 1px solid black;
+    overflow: visible;
     margin-bottom: 40px;
-    overflow: hidden;
 
-    .vue-draggable {
-      border: 1.5px dashed #000;
+    .demo-container-body {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      border-radius: 25px;
+      box-sizing: content-box;
+      border: 1px solid black;
+      overflow: hidden;
 
-      /*transform:scale(2,2.5);*/
+      .vue-draggable {
+        border: 1.5px dashed #000;
+        /*transform:scale(2,2.5);*/
+      }
+
+    }
+
+    .line-vertical {
+      position: absolute;
+      width: 1px;
+      background: black;
+      top: 0;
+      bottom: 0;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .line-vertical-top {
+      position: absolute;
+      top: -16px;
+      transform: translateX(-50%);
+      border-left: 8px solid transparent;
+      border-bottom: 16px solid red;
+      border-right: 8px solid transparent;
+      cursor: move;
+    }
+
+    .line-vertical-bottom {
+      position: absolute;
+      bottom: -25px;
+      transform: translateX(-50%);
+      border-left: 12px solid transparent;
+      border-top: 24px solid red;
+      border-right: 12px solid transparent;
+      cursor: move;
+    }
+
+    .line-horizon {
+      position: absolute;
+      height: 1px;
+      background: black;
+      left: 0;
+      right: 0;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .line-horizon-left {
+      position: absolute;
+      left: -16.2px;
+      transform: translateY(-50%);
+      border-top: 8px solid transparent;
+      border-right: 16px solid red;
+      border-bottom: 8px solid transparent;
+      cursor: move;
+    }
+
+    .line-horizon-right {
+      position: absolute;
+      right: -25px;
+      transform: translateY(-50%);
+      border-top: 12px solid transparent;
+      border-left: 24px solid red;
+      border-bottom: 12px solid transparent;
+      cursor: move;
     }
   }
 

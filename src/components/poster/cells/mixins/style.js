@@ -90,23 +90,33 @@ export default {
       }
       // this.background && (style.background = `${this.background}`)
       this.color && (styleCss.color = `${this.color}`)
-      this.fontsize && (styleCss.fontSize = `${this.fontsize / 2}rem`)
-      if (this.fontFamily) {
-        const infos = this.fontFamily.split('|')
-        styleCss.fontFamily = `${infos[0]}`
-        if (infos.length > 1) {
-          const fontUrl = infos[1]
-          if (!this.$root.$fontLoaded) this.$root.$fontLoaded = {}
-          if (!this.$root.$fontLoaded[fontUrl]) {
-            this.$root.$fontLoaded[fontUrl] = true
-            const newStyle = document.createElement('style');
-            newStyle.setAttribute("type", "text/css");
-            newStyle.appendChild(document.createTextNode("@font-face {font-family:" + infos[0] + ";src:url('" + fontUrl + "');}"));
-            document.head.appendChild(newStyle);
-            // console.log('load font face', infos[0], infos[1], style.fontFamily)
+
+      // 文字相关
+      if (this.fontsize) {
+        const fontsize = Number(this.fontsize)
+        const lineHeight = Number(this.lineHeight)
+        styleCss.fontSize = `${fontsize / 2}rem`
+        styleCss.lineHeight = `${fontsize / 2 * (1 + lineHeight)}rem`
+        styleCss['marginTop'] = `${fontsize / -4 * lineHeight}rem`
+
+        if (this.fontFamily) {
+          const infos = this.fontFamily.split('|')
+          styleCss.fontFamily = `${infos[0]}`
+          if (infos.length > 1) {
+            const fontUrl = infos[1]
+            if (!this.$root.$fontLoaded) this.$root.$fontLoaded = {}
+            if (!this.$root.$fontLoaded[fontUrl]) {
+              this.$root.$fontLoaded[fontUrl] = true
+              const newStyle = document.createElement('style');
+              newStyle.setAttribute("type", "text/css");
+              newStyle.appendChild(document.createTextNode("@font-face {font-family:" + infos[0] + ";src:url('" + fontUrl + "');}"));
+              document.head.appendChild(newStyle);
+              // console.log('load font face', infos[0], infos[1], style.fontFamily)
+            }
           }
         }
       }
+
       if (this.borders?.default) {
         const {width = 0, style = 'solid', color = 'black', radius = 0} = this.borders.default
         styleCss.borderWidth = `${width}px`

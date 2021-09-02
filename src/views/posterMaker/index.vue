@@ -145,7 +145,9 @@
       descriptor: component.descriptor || '未描述组件',
       // 作为默认属性
       props: {
-        ...(component.defaultProps ? component.defaultProps : {}),
+        ...(component.props ? Object.keys(component.props).map(key => {
+          return {[key]: component.props[key].default}
+        }) : {}),
         locked: false, hideInDesign: false,
       },
       // panelList: component.panelList.filter(e => e),

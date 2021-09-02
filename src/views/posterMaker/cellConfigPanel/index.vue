@@ -15,6 +15,7 @@
       handler: function (val, oldValue) {
         if (val !== null) {
           // console.log('watcher[watchTarget]', watchTarget, val)
+          if (val === this.onSelectCell.props[propKey]) return
           this.$set(this.onSelectCell.props, propKey, _.cloneDeep(val))
         }
       },
@@ -46,6 +47,7 @@
         onEditAnimationIndex: 0,
         showBackgroundColorPick: false,
         showTextColorPick: false,
+        watchSelectCell: null,
       }
     },
     created() {
@@ -68,7 +70,17 @@
             })
           }
         }
-      }
+      },
+      'onSelectCell.props.position.width': {
+        handler(val) {
+          this.configProps.position.width = val
+        },
+      },
+      'onSelectCell.props.position.height': {
+        handler(val) {
+          this.configProps.position.height = val
+        },
+      },
     },
     render(h, context) {
       if (!this.targetCell.panelList) {

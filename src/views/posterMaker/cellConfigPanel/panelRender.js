@@ -7,11 +7,23 @@ export default {
     }
   },
   methods: {
+    rSize(h, config) {
+      const position = this.configProps[config.propKey]
+      return (
+        <div class="input-main">
+          <span>宽度:</span>
+          <el-input vModel={position.width} placeholder=""/>
+          <span>高度:</span>
+          <el-input vModel={position.height} placeholder=""/>
+        </div>
+      )
+    },
     rInputText(h, config) {
       return (
         <div class="input-main">
           <span>修改文字内容:</span>
-          <el-input vModel={this.configProps[config.propKey]} placeholder="请输入内容"/>
+          <el-input vModel={this.configProps[config.propKey]} placeholder="请输入内容" type={'textarea'}
+                    autosize={{minRows: 2, maxRows: 10}}/>
         </div>
       )
     },
@@ -146,6 +158,14 @@ export default {
         <div class="input-main">
           <span>字体大小(基于屏幕宽度百分比 数字):</span>
           <el-input vModel={this.configProps[config.propKey]} placeholder="基于屏幕宽度百分比"/>
+        </div>
+      )
+    },
+    rLineHeight(h, config) {
+      return (
+        <div class="input-main">
+          <span>行间距(基于字体大小的倍数):</span>
+          <el-input vModel={this.configProps[config.propKey]} placeholder=""/>
         </div>
       )
     },
