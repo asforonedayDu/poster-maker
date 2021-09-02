@@ -95,7 +95,7 @@
       <div>
         <div class="preview-example-body">
           <div class="example-container">
-            <poster :posterData="previewData" :htmlFontSize="1"/>
+            <poster :posterData="previewData" :htmlFontSize="1" :designMode="true"/>
           </div>
         </div>
       </div>

@@ -115,7 +115,7 @@
       renderCell(h, item) {
         return h(`${item.type}`, {
           props: {
-            ...item.props, designMode: true, id: item.id,
+            ...item.props, designMode: true, noAnimation: true, id: item.id,
             'onClickCell': (id) => {
               const item = this.demoCells.find(item => item.id === id)
               if (item) {

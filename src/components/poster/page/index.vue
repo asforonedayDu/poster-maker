@@ -13,6 +13,9 @@
         type: Object,
         default: {}
       },
+      designMode: {
+        default: false
+      },
       currentPage: {
         required: true,
         type: Number
@@ -100,7 +103,7 @@
     },
     methods: {
       renderCell(h, cell) {
-        return h(`${cell.type}`, {props: {...cell.props}})
+        return h(`${cell.type}`, {props: {...cell.props, designMode: this.designMode}})
       }
     }
   }

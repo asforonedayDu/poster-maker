@@ -9,6 +9,9 @@
           return {pages: [], audio: {}, loopPage: false}
         }
       },
+      designMode: {
+        default: false,
+      },
       htmlFontSize: {
         default: 0,
       },
@@ -74,7 +77,7 @@
           {this.pages.map((pageData, index) => {
             return (
               <page pageData={pageData} currentPage={this.currentPage} pageIndex={index} pageLength={this.pages.length}
-                    translateY={this.translateY} key={index}/>
+                    translateY={this.translateY} key={index} designMode={this.designMode}/>
             )
           })}
           <div class={`mp3-body ${this.audioPlaying ? 'playing' : ''}`} onClick={this.triggerMusic}>

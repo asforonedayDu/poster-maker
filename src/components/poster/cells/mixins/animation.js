@@ -34,6 +34,9 @@ export default {
     },
     designMode: {
       default: false,
+    },
+    noAnimation: {
+      default: false,
     }
   },
   data() {
@@ -43,7 +46,7 @@ export default {
 
   },
   async mounted() {
-    if (!this.designMode) {
+    if (!this.noAnimation) {
       const targetDom = this.$refs.targetDom
       const waitTime = parseFloat(this.hideAfterAnimation)
       if (this.animationActions.length > 0) {
