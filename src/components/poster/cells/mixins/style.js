@@ -84,11 +84,7 @@ export default {
         }
       }
       this.position.width && (styleCss.width = `${this.position.width}%`)
-      if (this.background || this.backgroundImage) {
-        styleCss.background = `${this.backgroundImage && `url(${this.backgroundImage})`} ${this.background && `${this.background}`}`
-        // console.log('style.background', style.background)
-      }
-      // this.background && (style.background = `${this.background}`)
+
       this.color && (styleCss.color = `${this.color}`)
 
       // 文字相关
@@ -114,6 +110,15 @@ export default {
               // console.log('load font face', infos[0], infos[1], style.fontFamily)
             }
           }
+        }
+        if (this.background) {
+          styleCss.background = `${this.background && `${this.background}`}`
+        }
+      } else //图像
+      {
+        if (this.background || this.backgroundImage) {
+          styleCss.background = `${this.backgroundImage && `url(${this.backgroundImage})`} ${this.background && `${this.background}`}`
+          // console.log('style.background', style.background)
         }
       }
 
