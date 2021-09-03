@@ -10,7 +10,7 @@
   import panelList from '@/views/posterMaker/cellConfigPanel/panelList'
   import base from '../../mixins/base'
 
-  export default {
+  const index = {
     name: 'cell-text',
     descriptor: '文字内容',
     panelList: [panelList.size, panelList.switchFlexHeight, panelList.justifyContentType, panelList.inputText, panelList.verticalDirection,
@@ -35,24 +35,15 @@
       fontFamily: {
         default: '',
       },
-      borders: {
-        default: {default: {width: '0', style: 'solid', color: 'rgba(0,0,0,1)', radius: 0}},
-      },
-      hideAfterAnimation: {
-        default: -1,
-      },
-      flexHeight: {
-        default: true,
-      },
-      justifyContent: {
-        default: 'start',
-      },
       verticalDirection: {
         type: Boolean,
         default: false
       },
       lineHeight: {
         default: 0.2
+      },
+      color: {
+        default: 'black'
       },
     },
     data() {
@@ -62,6 +53,18 @@
     // this.animateCell(this.$refs.targetDom, this.animation.actions || [])
     // },
   }
+  const defaultProps = {}
+  Object.keys(animation.props).forEach(key => {
+    defaultProps[key] = animation.props[key].default instanceof Function ? animation.props[key].default() : animation.props[key].default
+  })
+  Object.keys(style.props).forEach(key => {
+    defaultProps[key] = style.props[key].default instanceof Function ? style.props[key].default() : style.props[key].default
+  })
+  Object.keys(index.props).forEach(key => {
+    defaultProps[key] = index.props[key].default instanceof Function ? index.props[key].default() : index.props[key].default
+  })
+  index.defaultProps = defaultProps
+  export default index
 </script>
 
 <style lang="scss" scoped>

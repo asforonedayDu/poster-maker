@@ -92,8 +92,8 @@ export default {
           let maxId = Math.max(...ids)
           page.cells && page.cells.forEach(cell => {
             const defaultCell = cells.find(i => i.name === cell.type)
-            Object.keys(defaultCell.props).forEach(defaultKey => {
-              if (!cell.props.hasOwnProperty(defaultKey)) cell.props[defaultKey] = defaultCell.props[defaultKey].default
+            Object.keys(defaultCell.defaultProps).forEach(defaultKey => {
+              if (!cell.props.hasOwnProperty(defaultKey)) cell.props[defaultKey] = defaultCell.defaultProps[defaultKey]
             })
             if (/Infinity|null/i.test(cell.id)) {
               maxId += 1

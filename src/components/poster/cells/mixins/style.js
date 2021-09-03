@@ -6,22 +6,10 @@ export default {
   props: {
     position: {
       required: true,
-      default: Object,
+      default: {},
     },
     background: {
       default: '',
-    },
-    backgroundImage: {
-      default: '',
-    },
-    color: {
-      default: 'black'
-    },
-    fontsize: {
-      default: '8'
-    },
-    fontFamily: {
-      default: ''
     },
     borders: {
       default() {

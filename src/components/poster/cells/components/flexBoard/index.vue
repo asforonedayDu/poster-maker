@@ -18,7 +18,7 @@
     fontFamily: null,
     lineHeight: null,
   }).filter(e => e)
-  export default {
+  const index = {
     name: "cell-flex-board",
     descriptor: '图片或纯色',
     props: {
@@ -30,28 +30,28 @@
           top: 15
         }
       },
-      fontsize: {
-        default: null,
-      },
       background: {
-        default: 'rgba(78,19,42,1)'
+        default: 'rgba(11,36,132,1)'
       },
-      hideAfterAnimation: {
-        default: -1,
-      },
-      flexHeight: {
-        default: true,
-      },
-      justifyContent: {
-        default: 'start',
-      },
-      borders: {
-        default: {default: {width: '0', style: 'solid', color: 'rgba(0,0,0,1)', radius: 0}},
+      backgroundImage: {
+        default: '',
       },
     },
     panelList: panelCellList,
     mixins: [animation, style, base],
   }
+  const defaultProps = {}
+  Object.keys(animation.props).forEach(key => {
+    defaultProps[key] = animation.props[key].default instanceof Function ? animation.props[key].default() : animation.props[key].default
+  })
+  Object.keys(style.props).forEach(key => {
+    defaultProps[key] = style.props[key].default instanceof Function ? style.props[key].default() : style.props[key].default
+  })
+  Object.keys(index.props).forEach(key => {
+    defaultProps[key] = index.props[key].default instanceof Function ? index.props[key].default() : index.props[key].default
+  })
+  index.defaultProps = defaultProps
+  export default index
 </script>
 
 <style lang="scss" scoped>

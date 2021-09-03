@@ -86,8 +86,8 @@ export default {
       this.dialogAddCellVisible = false
       if (!this.onSelectPage.cells) this.$set(this.onSelectPage, 'cells', [])
       const ids = this.onSelectPage.cells ? this.onSelectPage.cells.map(cell => {
+        if (/infinity|null/i.test(id)) return 0
         const id = cell.id.split('_')[1]
-        if (/infinity/i.test(id)) return 0
         return Number(id)
       }) : [0]
       let maxId = Math.max(...ids)

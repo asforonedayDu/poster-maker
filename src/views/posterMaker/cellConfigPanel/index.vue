@@ -172,9 +172,8 @@
           return
         }
         if (this.onEditAnimationIndex >= this.onSelectCell.props[this.animationPropkey].length) {
-          this.onSelectCell.props[this.animationPropkey].push(_.cloneDeep(this.tempAnimationData))
-        } else {
-          Object.assign(this.onSelectCell.props[this.animationPropkey][this.onEditAnimationIndex], _.cloneDeep(this.tempAnimationData))
+          const animationActions = this.onSelectCell.props[this.animationPropkey]
+          this.$set(animationActions, this.onEditAnimationIndex, _.cloneDeep(this.tempAnimationData))
         }
       },
       addAnimation(index) {

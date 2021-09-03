@@ -70,6 +70,7 @@
     },
     methods: {
       handleMouseDown(event) {
+        console.log('this down', this)
         const target = event.target
         if (target === this.$refs.duration) {
           this.movingWindow = true
@@ -187,7 +188,7 @@
           if (distance > 0) this.$emit('update:start', Math.round(preEnd * 100) / 100)
         },
         deep: true
-      }
+      },
     },
     beforeDestroy() {
       const root = this.$refs.root
