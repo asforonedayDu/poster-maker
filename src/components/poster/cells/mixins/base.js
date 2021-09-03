@@ -1,5 +1,18 @@
 export default {
-  props: ['onClickCell', 'id'],
+  props: {
+    onClickCell: {
+      default: false,
+    },
+    id: {
+      default: false,
+    },
+    designMode: {
+      default: false,
+    },
+    noAnimation: {
+      default: false,
+    }
+  },
   mounted() {
     if (this.designMode) {
       this.$refs.targetDom.addEventListener('click', this.handleClick)

@@ -32,12 +32,6 @@ export default {
     hideAfterAnimation: {
       default: -1,
     },
-    designMode: {
-      default: false,
-    },
-    noAnimation: {
-      default: false,
-    }
   },
   data() {
     return {}
