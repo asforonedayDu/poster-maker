@@ -49,10 +49,21 @@
       return (
         <div class="design-root-container"
              style={{width: `${baseConfig.designWidth}px`, height: `${baseConfig.designHeight}px`}}>
+          {...new Array(81).fill('').map(() => {
+            return (
+              <div class="point-top"/>
+            )
+          })}
+          {...new Array(101).fill('').map(() => {
+            return (
+              <div class="point-left"/>
+            )
+          })}
 
           <div class="demo-container-body">
             {items}
           </div>
+
           <div class="line-horizon" style={{top: `${top}px`}}/>
           <div class="line-horizon-right" style={{top: `${top}px`}} ref="rightDrag"/>
           <div class="line-vertical" style={{left: `${left}px`}}/>
@@ -222,7 +233,8 @@
 </script>
 
 <style lang="scss" scoped>
-
+  $alias-point-left-length: 101;
+  $alias-point-top-length: 81;
   .design-root-container {
     position: relative;
     overflow: visible;
@@ -303,7 +315,54 @@
       border-bottom: 12px solid transparent;
       cursor: move;
     }
+
+
   }
 
+  .point-top {
+    position: absolute;
+    transform: translateX(-50%);
+    width: 1px;
+    background: black;
+  }
+
+  .point-top:nth-child(even) {
+    height: 14px;
+    top: -14px;
+  }
+
+  .point-top:nth-child(odd) {
+    height: 5px;
+    top: -5px;
+  }
+
+  @for $ii from 1 through ($alias-point-top-length) {
+    .point-top:nth-child(#{$ii}) {
+      left: (100/(($alias-point-top-length)-1))*(($ii)-1)*1%;
+    }
+  }
+
+  .point-left {
+    position: absolute;
+    transform: translateY(-50%);
+    height: 1px;
+    background: black;
+  }
+
+  .point-left:nth-child(even) {
+    left: -14px;
+    width: 14px;
+  }
+
+  .point-left:nth-child(odd) {
+    left: -5px;
+    width: 5px;
+  }
+
+  @for $i from ($alias-point-top-length+1) through ($alias-point-left-length+$alias-point-top-length) {
+    .point-left:nth-child(#{$i}) {
+      top: (100/(($alias-point-left-length)-1))*(($i)-($alias-point-top-length)-1)*1%;
+    }
+  }
 
 </style>
