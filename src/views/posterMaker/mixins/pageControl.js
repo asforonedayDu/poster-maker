@@ -91,8 +91,8 @@ export default {
         return Number(id)
       }) : [0]
       let maxId = Math.max(...ids)
+      this.onSelectAddCell.cell.props.name = this.onSelectAddCell.inputCellName
       this.onSelectPage.cells.push(_.cloneDeep({
-        name: this.onSelectAddCell.inputCellName,
         id: this.onSelectPage.id + '_' + (maxId + 1),
         createType: treeDataType.CELL,
         ...this.onSelectAddCell.cell
