@@ -42,6 +42,9 @@
       imgFullScreen: {
         default: false,
       },
+      name: {
+        default: '',
+      },
     },
     mixins: [animation, style, base],
     panelList: panelCellList,

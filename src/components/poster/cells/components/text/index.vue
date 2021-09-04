@@ -13,7 +13,7 @@
   const index = {
     name: 'cell-text',
     descriptor: '文字内容',
-    panelList: [panelList.size, panelList.switchFlexHeight, panelList.justifyContentType, panelList.inputText, panelList.verticalDirection,
+    panelList: [panelList.name, panelList.size, panelList.switchFlexHeight, panelList.justifyContentType, panelList.inputText, panelList.verticalDirection,
       panelList.fontsize, panelList.lineHeight, panelList.fontFamily, panelList.color, panelList.background, panelList.borderOption,
       panelList.hideAfterAnimation, panelList.animationActions],
     mixins: [animation, style, base],
@@ -44,6 +44,9 @@
       },
       color: {
         default: 'black'
+      },
+      name: {
+        default: '',
       },
     },
     data() {

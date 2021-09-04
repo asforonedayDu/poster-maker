@@ -1,4 +1,9 @@
 export default {
+  name: {
+    description:'自定义名',
+    method: 'rName',
+    propKey: 'name',
+  },
   size: {
     description:'元素宽高',
     method: 'rSize',

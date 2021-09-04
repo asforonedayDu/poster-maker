@@ -3,7 +3,7 @@
     <div class="panel-item-body">
       <div class="input-main">
         <span>修改页名:</span>
-        <el-input v-model="onSelectPage.name" :placeholder="initialName"/>
+        <el-input v-model="onSelectPage.props.name" :placeholder="initialName"/>
       </div>
       <div class="input-main">
         <el-button class="button-front" @click="showConfigWindow">

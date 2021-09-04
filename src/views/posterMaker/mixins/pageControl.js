@@ -33,7 +33,7 @@ export default {
       }
       this.pages.push({
         id: maxId + 1,
-        name: `第${length + 1}页`,
+        props: {name: `第${length + 1}页`},
         createType: treeDataType.PAGE
       })
     },

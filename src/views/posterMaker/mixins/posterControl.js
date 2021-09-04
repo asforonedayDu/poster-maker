@@ -90,11 +90,18 @@ export default {
             return Number(id)
           }) : [0]
           let maxId = Math.max(...ids)
+          !page.props && (page.props = {})
+          if (!page?.props?.name) {
+            page.name && (page.props.name = page.name)
+          }
           page.cells && page.cells.forEach(cell => {
             const defaultCell = cells.find(i => i.name === cell.type)
             Object.keys(defaultCell.defaultProps).forEach(defaultKey => {
               if (!cell.props.hasOwnProperty(defaultKey)) cell.props[defaultKey] = defaultCell.defaultProps[defaultKey]
             })
+            if (!cell.props.name) {
+              cell.name && (cell.props.name = cell.name)
+            }
             if (/Infinity|null/i.test(cell.id)) {
               maxId += 1
               cell.id = `${page.id}_${maxId}`
@@ -121,6 +128,21 @@ export default {
         return
       }
       const data = _.cloneDeep(this.pages)
+      data.forEach(page => {
+        delete page.$level
+        delete page.$position
+        delete page.$hasChild
+        delete page.$parentId
+        delete page.$namePath
+        delete page.name
+        page.cells && page.cells.forEach(cell => {
+          delete cell.$level
+          delete cell.$position
+          delete cell.$hasChild
+          delete cell.$parentId
+          delete cell.name
+        })
+      })
       const poster = this.posterList[this.onSelectSaveTargetPoster]
       const result = await this.$api.UPDATE_POSTER({
         poster_id: poster.poster_id,

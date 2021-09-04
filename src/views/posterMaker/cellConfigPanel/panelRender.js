@@ -18,6 +18,13 @@ export default {
         </div>
       )
     },
+    rName(h, config) {
+      return (
+        <div>
+          <el-input vModel={this.configProps[config.propKey]} placeholder=""/>
+        </div>
+      )
+    },
     rSize(h, config) {
       const position = this.configProps[config.propKey]
       return (

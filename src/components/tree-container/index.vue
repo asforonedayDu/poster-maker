@@ -258,7 +258,7 @@
         if (this.search.input && this.options.search.useLocalSearch) {
           return (item.$namePath ? (item.$namePath + '/') : '') + item.name
         } else {
-          return item.name
+          return item?.props?.name || item.name
         }
       },
       handleClickItem: function (h, self, item, index) {
