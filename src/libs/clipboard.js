@@ -16,7 +16,8 @@ function clipboardError() {
   })
 }
 
-export default function handleClipboard(text, event) {
+export default function handleClipboard(text, event, handler = () => {
+}) {
   const clipboard = new Clipboard(event.target, {
     text: () => text
   })
@@ -25,12 +26,14 @@ export default function handleClipboard(text, event) {
     clipboard.off('error')
     clipboard.off('success')
     clipboard.destroy()
+    handler('success')
   })
   clipboard.on('error', () => {
     clipboardError()
     clipboard.off('error')
     clipboard.off('success')
     clipboard.destroy()
+    handler('error')
   })
   clipboard.onClick(event)
 }

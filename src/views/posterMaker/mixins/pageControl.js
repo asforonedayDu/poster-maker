@@ -1,4 +1,5 @@
 import {treeDataType} from '../libs/static'
+import {cleanCellProps, cleanPageProps, getMaxCellId, getMaxPageId} from "@/views/posterMaker/libs/static";
 
 export default {
   data() {
@@ -25,21 +26,17 @@ export default {
     },
     handleCreateNewPage() {
       const length = this.pages.length
-      let maxId
-      if (this.pages && this.pages.length > 0) {
-        maxId = Math.max(...this.pages.map(page => page.id))
-      } else {
-        maxId = 0
-      }
+      let maxId = getMaxPageId(this.pages)
       this.pages.push({
         id: maxId + 1,
         props: {name: `第${length + 1}页`},
-        createType: treeDataType.PAGE
+        createType: treeDataType.PAGE,
+        cells: []
       })
     },
     getPageOptions(item, index) {
       this.$refs.treeContainer.setClickItemByIndex(index)
-      return [
+      const options = [
         {
           text: '预览本页',
           onClick: (item, index) => {
@@ -72,7 +69,56 @@ export default {
             this.onSelectCell = null
           }
         },
+        {
+          text: '复制本页',
+          onClick: (item, index) => {
+            this.copyPage(item)
+          }
+        },
       ]
+      const moveUp = {
+        text: '上移',
+        onClick: (item) => {
+          const i = this.pages.indexOf(item)
+          this.pages[i] = this.pages[i - 1]
+          this.$set(this.pages, i - 1, item)
+        }
+      }
+      const moveDown = {
+        text: '下移',
+        onClick: (item, index) => {
+          const i = this.pages.indexOf(item)
+          this.pages[i] = this.pages[i + 1]
+          this.$set(this.pages, i + 1, item)
+        }
+      }
+
+      const position = this.pages.indexOf(item)
+      if (position > 0) {
+        options.push(moveUp)
+      }
+      if (position < (this.pages.length - 1)) {
+        options.push(moveDown)
+      }
+      return options
+    },
+    copyPage(page) {
+      const pageNew = _.cloneDeep(page)
+      const length = this.pages.length
+      let maxId = getMaxPageId(this.pages)
+      pageNew.props.name = `第${length + 1}页`
+      pageNew.id = maxId + 1
+      cleanPageProps(pageNew)
+
+      const cells = pageNew.cells
+      pageNew.cells = []
+      this.pages.push(pageNew)
+      for (let i = 0; i < cells.length; i++) {
+        const cell = cells[i]
+        cleanCellProps(cell)
+        cell.id = `${pageNew.id}_${i + 1}`
+        pageNew.cells.push(cell)
+      }
     },
     handleAddCell() {
       if (this.onSelectAddCell.inputCellName.length === 0) {
@@ -85,12 +131,7 @@ export default {
       }
       this.dialogAddCellVisible = false
       if (!this.onSelectPage.cells) this.$set(this.onSelectPage, 'cells', [])
-      const ids = this.onSelectPage.cells ? this.onSelectPage.cells.map(cell => {
-        if (/infinity|null/i.test(id)) return 0
-        const id = cell.id.split('_')[1]
-        return Number(id)
-      }) : [0]
-      let maxId = Math.max(...ids)
+      let maxId = getMaxCellId(this.onSelectPage.cells)
       this.onSelectAddCell.cell.props.name = this.onSelectAddCell.inputCellName
       this.onSelectPage.cells.push(_.cloneDeep({
         id: this.onSelectPage.id + '_' + (maxId + 1),

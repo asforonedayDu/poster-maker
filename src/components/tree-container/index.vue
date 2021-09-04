@@ -246,8 +246,8 @@
                  }}>
               {this.moreWindow.options.map((option) => {
                 return (
-                  <p class="edit-more-text" onClick={() => {
-                    option.onClick(item, index)
+                  <p class="edit-more-text" onClick={(event) => {
+                    option.onClick(item, index, event)
                   }}>{option.text}</p>
                 )
               })}

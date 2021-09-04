@@ -1,3 +1,6 @@
+import handleClipboard from "@/libs/clipboard";
+import {cleanCellProps, getMaxCellId} from "@/views/posterMaker/libs/static";
+
 export default {
   data() {
     return {
@@ -20,14 +23,6 @@ export default {
       const parent = this.pages.find(page => page.id === item.$parentId)
       if (!parent) {
         throw new Error('该元素未找到所属页面 getCellOptions' + item.$parentId)
-      }
-      const moveUp = {
-        text: '上移',
-        onClick: (item) => {
-          const i = parent.cells.indexOf(item)
-          parent.cells[i] = parent.cells[i - 1]
-          this.$set(parent.cells, i - 1, item)
-        }
       }
       const disableCell = {
         text: '屏蔽元素',
@@ -65,12 +60,33 @@ export default {
           this.$set(item.props, 'hideInDesign', false)
         }
       }
+      const moveUp = {
+        text: '上移',
+        onClick: (item) => {
+          const i = parent.cells.indexOf(item)
+          parent.cells[i] = parent.cells[i - 1]
+          this.$set(parent.cells, i - 1, item)
+        }
+      }
       const moveDown = {
         text: '下移',
         onClick: (item, index) => {
           const i = parent.cells.indexOf(item)
           parent.cells[i] = parent.cells[i + 1]
           this.$set(parent.cells, i + 1, item)
+        }
+      }
+      const copyAfter = {
+        text: '此元素后粘贴',
+        onClick: (item, index) => {
+          const content = this.$root.copedCellContent
+          if (content) {
+            const cell = JSON.parse(content)
+            cleanCellProps(cell)
+            cell.id = `${parent.id}_${getMaxCellId(parent.cells) + 1}`
+            const i = parent.cells.indexOf(item)
+            parent.cells.splice(i + 1, 0, cell)
+          }
         }
       }
       const options = [
@@ -82,6 +98,12 @@ export default {
             this.onSelectCell = null
           }
         },
+        {
+          text: '复制元素',
+          onClick: (item, index, event) => {
+            this.$root.copedCellContent = JSON.stringify(item)
+          }
+        }
       ]
       const position = parent.cells.indexOf(item)
       if (position > 0) {
@@ -93,6 +115,9 @@ export default {
       options.push(item.props.locked ? unLock : lock)
       options.push(item.props.hideInDesign ? unLockHideInDesign : hideInDesign)
       options.push(item.props.disabled ? enableCell : disableCell)
+      if (this.$root.copedCellContent) {
+        options.push(copyAfter)
+      }
       return options
     }
   }

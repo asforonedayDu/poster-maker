@@ -1,6 +1,8 @@
 import Vue from "vue";
 import ca from "element-ui/src/locale/lang/ca";
 import cells from '@/components/poster/cells'
+import {cleanCellProps, cleanPageProps, getMaxCellId, getMaxPageId} from "@/views/posterMaker/libs/static";
+import el from "element-ui/src/locale/lang/el";
 
 export default {
   data() {
@@ -72,41 +74,35 @@ export default {
       posterData = JSON.parse(posterData)
       if (posterData.pages && posterData.pages.length > 0) {
         // 设置默认值
-        let maxPageId = Math.max(...posterData.pages.map(page => {
-          if (/Infinity|null/i.test(page.id)) {
-            return 0
-          }
-          return page.id
-        }))
+        let maxPageId = getMaxPageId(posterData.pages)
         posterData.pages && posterData.pages.forEach(page => {
           if (/Infinity|null/i.test(page.id)) {
             maxPageId += 1
             page.id = maxPageId
           }
 
-          const ids = page.cells ? page.cells.map(cell => {
-            const id = cell.id.split('_')[1]
-            if (/Infinity|null/i.test(id)) return 0
-            return Number(id)
-          }) : [0]
-          let maxId = Math.max(...ids)
+          let maxId = getMaxCellId(page.cells)
           !page.props && (page.props = {})
           if (!page?.props?.name) {
             page.name && (page.props.name = page.name)
           }
-          page.cells && page.cells.forEach(cell => {
-            const defaultCell = cells.find(i => i.name === cell.type)
-            Object.keys(defaultCell.defaultProps).forEach(defaultKey => {
-              if (!cell.props.hasOwnProperty(defaultKey)) cell.props[defaultKey] = defaultCell.defaultProps[defaultKey]
+          if (page.cells) {
+            page.cells.forEach(cell => {
+              const defaultCell = cells.find(i => i.name === cell.type)
+              Object.keys(defaultCell.defaultProps).forEach(defaultKey => {
+                if (!cell.props.hasOwnProperty(defaultKey)) cell.props[defaultKey] = defaultCell.defaultProps[defaultKey]
+              })
+              if (!cell.props.name) {
+                cell.name && (cell.props.name = cell.name)
+              }
+              if (/Infinity|null/i.test(cell.id)) {
+                maxId += 1
+                cell.id = `${page.id}_${maxId}`
+              }
             })
-            if (!cell.props.name) {
-              cell.name && (cell.props.name = cell.name)
-            }
-            if (/Infinity|null/i.test(cell.id)) {
-              maxId += 1
-              cell.id = `${page.id}_${maxId}`
-            }
-          })
+          } else {
+            page.cells = []
+          }
         })
         Vue.set(this, 'pages', posterData.pages)
       }
@@ -129,18 +125,9 @@ export default {
       }
       const data = _.cloneDeep(this.pages)
       data.forEach(page => {
-        delete page.$level
-        delete page.$position
-        delete page.$hasChild
-        delete page.$parentId
-        delete page.$namePath
-        delete page.name
+        cleanPageProps(page)
         page.cells && page.cells.forEach(cell => {
-          delete cell.$level
-          delete cell.$position
-          delete cell.$hasChild
-          delete cell.$parentId
-          delete cell.name
+          cleanCellProps(cell)
         })
       })
       const poster = this.posterList[this.onSelectSaveTargetPoster]
