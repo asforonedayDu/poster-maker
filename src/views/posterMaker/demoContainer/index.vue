@@ -47,7 +47,7 @@
       const top = this.dragLineTop
       const left = this.dragLineLeft
       return (
-        <div class="design-root-container"
+        <div class="design-root-container" ref="designContainer"
              style={{width: `${baseConfig.designWidth}px`, height: `${baseConfig.designHeight}px`}}>
           {...new Array(81).fill('').map(() => {
             return (
@@ -64,9 +64,9 @@
             {items}
           </div>
 
-          <div class="line-horizon" style={{top: `${top}px`}}/>
+          <div class="line-horizon" style={{top: `${top}px`}} ref="horizonLine"/>
           <div class="line-horizon-right" style={{top: `${top}px`}} ref="rightDrag"/>
-          <div class="line-vertical" style={{left: `${left}px`}}/>
+          <div class="line-vertical" style={{left: `${left}px`}} ref="verticalLine"/>
           <div class="line-vertical-bottom" style={{left: `${left}px`}} ref="bottomDrag"/>
         </div>
       )
@@ -149,7 +149,8 @@
           <vue-draggable-resizable style={style} class="vue-draggable"
                                    props={{
                                      onResize: this.handleResize, onDrag: this.handleDrag,
-                                   }} w={this.editWidth} h={this.editHeight} x={left} y={top}>
+                                   }} w={this.editWidth} h={this.editHeight} x={left} y={top}
+                                   on={{'dragstop': this.handleDragStop}}>
           </vue-draggable-resizable>
         )
       },
@@ -170,6 +171,27 @@
         this.$set(position, 'left', Math.round(x / baseConfig.designWidth * 10000) / 100)
         const heightPx = position.height * baseConfig.designHeight / 100
         this.$set(position, 'bottom', Math.round((baseConfig.designHeight - heightPx - y) / baseConfig.designHeight * 10000) / 100)
+      },
+      handleDragStop(x, y) {
+        const horizonEle = this.$refs.horizonLine
+        const verticalEle = this.$refs.verticalLine
+        const designContainer = this.$refs.designContainer
+        const rectH = horizonEle.getBoundingClientRect()
+        const rectV = verticalEle.getBoundingClientRect()
+        const rectContainer = designContainer.getBoundingClientRect()
+        const lineLeft = rectV.x - rectContainer.x
+        const lineRight = rectH.y - rectContainer.y
+        let newX = x
+        let newY = y
+        if (Math.abs(lineLeft - x) < 4) {
+          newX = lineLeft
+        }
+        if (Math.abs(lineRight - y) < 4) {
+          newY = lineRight
+        }
+        if (newX !== x || newY !== y) {
+          this.handleDrag(newX, newY)
+        }
       }
     },
     computed: {

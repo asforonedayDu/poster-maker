@@ -44,7 +44,11 @@ export default {
       const targetDom = this.$refs.targetDom
       const waitTime = parseFloat(this.hideAfterAnimation)
       if (this.animationActions.length > 0) {
+        this.animationPromise = new Promise(resolve => {
+          this.animationResolve = resolve
+        })
         await this.animateQueueCell(this.$refs.targetDom, this.animationActions)
+        this.animationResolve()
         if (waitTime.toString() !== "NaN") {
           if (waitTime === 0) {
             targetDom.style.display = 'none'
@@ -62,6 +66,7 @@ export default {
         }, waitTime * 1000)
       }
     }
+    this.animationFinished = true
   },
   watch: {
     // animationActions(val) {

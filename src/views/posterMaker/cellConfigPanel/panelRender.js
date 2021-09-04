@@ -7,6 +7,17 @@ export default {
     }
   },
   methods: {
+    rImgFullScreen(h, config) {
+      return (
+        <div>
+          <span>是否点击全屏(有背景图时生效):  </span>
+          <el-radio-group vModel={this.configProps[config.propKey]}>
+            <el-radio className="radio-label-body" label={false}>否</el-radio>
+            <el-radio className="radio-label-body" label={true}>是</el-radio>
+          </el-radio-group>
+        </div>
+      )
+    },
     rSize(h, config) {
       const position = this.configProps[config.propKey]
       return (

@@ -69,4 +69,9 @@ export default {
     method: 'rHideAfterAnimation',
     propKey: 'hideAfterAnimation',
   },
+  imgFullScreen: {
+    description:'点击是否展开',
+    method: 'rImgFullScreen',
+    propKey: 'imgFullScreen',
+  },
 }

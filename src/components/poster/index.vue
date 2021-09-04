@@ -1,5 +1,6 @@
 <script type="text/jsx">
   import page from "./page/index";
+  import _ from "lodash";
 
   export default {
     name: "poster",
@@ -94,38 +95,31 @@
       )
     },
     mounted() {
-      this.$nextTick(() => {
-        // 自动播放
-        if (this.audio.autoPlay && this.audio.href) {
-          this.audioTimer = setInterval(() => {
-            if (this.audioPlaying) {
-              clearInterval(this.audioTimer)
-              return
-            }
-            this.$refs.audio && this.$refs.audio.play()
-          }, 300)
-        }
-        this.clientHeight = this.$refs.container.clientHeight
-        //
-        this._isModbile = !!navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
-        let mouseListeners;
-        if (!this._isModbile) {
-          mouseListeners = {
-            'mousedown': this.handleTouchDown,
-            'mouseup': this.handleTouchUp,
-            'mousemove': this.handleTouchMove,
+      // 自动播放
+      if (this.audio.autoPlay && this.audio.href) {
+        this.audioTimer = setInterval(() => {
+          if (this.audioPlaying) {
+            clearInterval(this.audioTimer)
+            return
           }
-        } else {
-          mouseListeners = {
-            'touchmove': this.handleTouchMove,
-            'touchstart': this.handleTouchDown,
-            'touchend': this.handleTouchUp,
-          }
-        }
-        Object.keys(mouseListeners).forEach(key => {
-          this.$refs.container.addEventListener(key, mouseListeners[key])
-        })
-      })
+          this.$refs.audio && this.$refs.audio.play()
+        }, 300)
+      }
+      this.clientHeight = this.$refs.container.clientHeight
+      //
+      this._isModbile = !!navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+      this.$root._isModbile = this._isModbile
+      const mouseListeners = {
+        'down': this._isModbile ? 'touchstart' : 'mousedown',
+        'up': this._isModbile ? 'touchend' : 'mouseup',
+        'move': this._isModbile ? 'touchmove' : 'mousemove',
+      }
+      this.throttleTouchDown = _.throttle(this.handleTouchDown)
+      this.throttleTouchMove = _.throttle(this.handleTouchMove)
+      this.throttleTouchUp = _.throttle(this.handleTouchUp)
+      this.$refs.container.addEventListener(mouseListeners.down, this.throttleTouchDown)
+      this.$refs.container.addEventListener(mouseListeners.move, this.throttleTouchMove)
+      this.$refs.container.addEventListener(mouseListeners.up, this.throttleTouchUp)
     },
     // watch: {
     //   audioPlaying(val) {
@@ -142,6 +136,7 @@
         }
       },
       handleTouchMove(e) {
+        if (this.$root.preventPageScroll) return
         // e.preventDefault()
         if (this.dragging && !this.rolling) {
           // console.log('move')
@@ -164,6 +159,7 @@
       },
       handleTouchDown(e) {
         // e.preventDefault()
+        if (this.$root.preventPageScroll) return
         if (this.rolling) return
         this.touchClientY = e.clientY || e.targetTouches[0].clientY
         this.lastPosition.offsetY = 0
@@ -173,6 +169,7 @@
       },
       handleTouchUp(e) {
         // e.preventDefault()
+        if (this.$root.preventPageScroll) return
         this.dragging = false
         if (this.pages.length < 2) return
         const offsetY = (e.clientY || e.changedTouches[0].clientY) - this.touchClientY
@@ -239,6 +236,14 @@
     },
     beforeDestroy() {
       clearInterval(this.audioTimer)
+      const mouseListeners = {
+        'down': this._isModbile ? 'touchstart' : 'mousedown',
+        'up': this._isModbile ? 'touchend' : 'mouseup',
+        'move': this._isModbile ? 'touchmove' : 'mousemove',
+      }
+      this.$refs.container.removeEventListener(mouseListeners.down, this.throttleTouchDown)
+      this.$refs.container.removeEventListener(mouseListeners.move, this.throttleTouchMove)
+      this.$refs.container.removeEventListener(mouseListeners.up, this.throttleTouchUp)
     },
   }
 </script>
