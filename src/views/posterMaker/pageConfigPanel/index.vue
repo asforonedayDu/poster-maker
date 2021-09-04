@@ -91,7 +91,7 @@
             cell.props.animationActions.forEach((item, index) => {
               if (index === 0) preAnimation = undefined
               animations.push({
-                cellName: cell.name,
+                cellName: cell.props.name,
                 animation: item,
                 preAnimation: preAnimation,
               })
