@@ -71,7 +71,7 @@
         } else if (this.pageLength === 1) {
           return false
         }
-        if (this.pageIndex === this.pageLength - 1) {
+        if (this.currentPage === this.pageLength - 1) {
           return this.pageIndex === 0
         }
         return this.pageIndex === this.currentPage + 1
