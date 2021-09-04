@@ -171,7 +171,7 @@
         if (!this.tempAnimationData.name) {
           return
         }
-        if (this.onEditAnimationIndex >= this.onSelectCell.props[this.animationPropkey].length) {
+        if (this.onEditAnimationIndex >= this.onSelectCell.props[this.animationPropkey].length - 1) {
           const animationActions = this.onSelectCell.props[this.animationPropkey]
           this.$set(animationActions, this.onEditAnimationIndex, _.cloneDeep(this.tempAnimationData))
         }
