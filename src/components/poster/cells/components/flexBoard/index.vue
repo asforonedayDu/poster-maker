@@ -51,7 +51,7 @@
       }
     },
     mounted() {
-      if (this.backgroundImage && this.imgFullScreen) {
+      if (this.backgroundImage && this.imgFullScreen && !this.noAnimation) {
         this.$refs.targetDom.addEventListener('click', this.handleClickFlexBoard)
         // const _isMobile = this.$root._isModbile
         // const mouseListeners = {
@@ -87,7 +87,7 @@
       },
     },
     beforeDestroy() {
-
+      this.$refs.targetDom.removeEventListener('click', this.handleClickFlexBoard)
     },
   }
   const defaultProps = {}
