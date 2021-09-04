@@ -1,6 +1,6 @@
 <template>
   <div class="default-cell" :style="{...style}" ref="targetDom">
-    <div :class="`cell-text-body ${verticalDirection?'vertical':''}`">{{content}}</div>
+    <div :class="`cell-text-body ${verticalDirection?'vertical':''}`" :style="{...style.childStyle}">{{content}}</div>
   </div>
 </template>
 
@@ -14,7 +14,7 @@
     name: 'cell-text',
     descriptor: '文字内容',
     panelList: [panelList.name, panelList.size, panelList.switchFlexHeight, panelList.justifyContentType, panelList.inputText, panelList.verticalDirection,
-      panelList.fontsize, panelList.lineHeight, panelList.fontFamily, panelList.color, panelList.background, panelList.borderOption,
+      panelList.fontsize, panelList.lineHeight, panelList.verticalAliaType, panelList.fontFamily, panelList.color, panelList.background, panelList.borderOption,
       panelList.hideAfterAnimation, panelList.animationActions],
     mixins: [animation, style, base],
     props: {
@@ -41,6 +41,9 @@
       },
       lineHeight: {
         default: 0.2
+      },
+      verticalAlia: {
+        default: 'start'
       },
       color: {
         default: 'black'

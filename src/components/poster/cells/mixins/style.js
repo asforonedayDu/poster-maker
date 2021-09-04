@@ -30,6 +30,7 @@ export default {
     style() {
       const styleCss = {
         left: `${this.position.left}%`,
+        childStyle: {}
       }
       if (!this.flexHeight) {
         if (this.justifyContent === 'end') {
@@ -77,11 +78,18 @@ export default {
 
       // 文字相关
       if (this.fontsize) {
-        const fontsize = Number(this.fontsize)
+        const fontsize = Number(this.fontsize) / 2
         const lineHeight = Number(this.lineHeight)
-        styleCss.fontSize = `${fontsize / 2}rem`
-        styleCss.lineHeight = `${fontsize / 2 * (1 + lineHeight)}rem`
-        styleCss['marginTop'] = `${fontsize / -4 * lineHeight}rem`
+        styleCss.fontSize = `${fontsize}rem`
+        // styleCss.lineHeight = `${fontsize * (1 + lineHeight)}rem`
+        styleCss.lineHeight = `${1 + lineHeight}`
+        if (this.verticalAlia !== 'center') {
+          if (this.verticalAlia === 'end') {
+            styleCss['marginTop'] = `${fontsize / 2 * lineHeight}rem`
+          } else {
+            styleCss['marginTop'] = `${fontsize / -2 * lineHeight}rem`
+          }
+        }
 
         if (this.fontFamily) {
           const infos = this.fontFamily.split('|')
@@ -101,6 +109,13 @@ export default {
         }
         if (this.background) {
           styleCss.background = `${this.background && `${this.background}`}`
+        }
+        if (this.verticalAlia === 'end') {
+          styleCss.childStyle.alignItems = 'flex-end'
+        } else if (this.verticalAlia === 'center') {
+          styleCss.childStyle.alignItems = 'center'
+        } else {
+          styleCss.childStyle.alignItems = 'flex-start'
         }
       } else //图像
       {

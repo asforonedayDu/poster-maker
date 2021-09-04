@@ -228,6 +228,17 @@ export default {
         </div>
       )
     },
+    rVerticalAlia(h, config) {
+      return (
+        <div class="input-main">
+          <el-radio-group vModel={this.configProps[config.propKey]}>
+            <el-radio class="radio-label-body" label={'start'}>垂直居上</el-radio>
+            <el-radio class="radio-label-body" label={'center'}>垂直居中</el-radio>
+            <el-radio class="radio-label-body" label={'end'}>垂直居下</el-radio>
+          </el-radio-group>
+        </div>
+      )
+    },
     rJustifyContentType(h, config) {
       return (
         <div class="input-main">

@@ -18,6 +18,7 @@
     verticalDirection: null,
     color: null,
     fontsize: null,
+    verticalAliaType: null,
     fontFamily: null,
     lineHeight: null,
   }).filter(e => e)

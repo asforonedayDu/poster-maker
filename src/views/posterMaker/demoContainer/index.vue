@@ -40,9 +40,9 @@
       for (let item of this.demoCells) {
         if (item.props.hideInDesign) continue
         items.push(this.renderCell(h, item, context))
-        if (item === this.onSelectCell) {
-          items.push(this.renderEditWindow(h))
-        }
+        // if (item === this.onSelectCell) {
+        //   items.push(this.renderEditWindow(h))
+        // }
       }
       const top = this.dragLineTop
       const left = this.dragLineLeft
@@ -63,7 +63,7 @@
           <div class="demo-container-body">
             {items}
           </div>
-
+          {this.onSelectCell && this.renderEditWindow(h)}
           <div class="line-horizon" style={{top: `${top}px`}} ref="horizonLine"/>
           <div class="line-horizon-right" style={{top: `${top}px`}} ref="rightDrag"/>
           <div class="line-vertical" style={{left: `${left}px`}} ref="verticalLine"/>
