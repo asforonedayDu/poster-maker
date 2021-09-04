@@ -46,7 +46,7 @@
         default: 'start'
       },
       color: {
-        default: 'black'
+        default: 'rgba(0,0,0,1)'
       },
       name: {
         default: '',

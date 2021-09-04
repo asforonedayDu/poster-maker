@@ -9,7 +9,9 @@ export default {
       showPageConfigPanel: false,
       onSelectAddCell: {
         inputCellName: '',
-        cell: ''
+        cell: '',
+        parentPage: {},
+        addPosition: 0,
       },
       onSelectPage: {},
       previewData: {}
@@ -53,6 +55,8 @@ export default {
           text: '添加子元素',
           onClick: (item, index) => {
             this.onSelectPage = item
+            this.onSelectAddCell.parentPage = item
+            this.onSelectAddCell.addPosition = item.length
             this.dialogAddCellVisible = true
             if (!item.$hasChild) {
               const treeComponent = this.$refs.treeContainer
@@ -130,14 +134,15 @@ export default {
         return
       }
       this.dialogAddCellVisible = false
-      if (!this.onSelectPage.cells) this.$set(this.onSelectPage, 'cells', [])
-      let maxId = getMaxCellId(this.onSelectPage.cells)
+      const page = this.onSelectAddCell.parentPage
+      let maxId = getMaxCellId(page.cells)
       this.onSelectAddCell.cell.props.name = this.onSelectAddCell.inputCellName
-      this.onSelectPage.cells.push(_.cloneDeep({
-        id: this.onSelectPage.id + '_' + (maxId + 1),
+      const cellNew = _.cloneDeep({
+        id: page.id + '_' + (maxId + 1),
         createType: treeDataType.CELL,
         ...this.onSelectAddCell.cell
-      }))
+      })
+      page.cells.splice(this.onSelectAddCell.addPosition, 0, cellNew)
     }
   }
 }

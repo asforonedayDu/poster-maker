@@ -103,6 +103,15 @@ export default {
           onClick: (item, index, event) => {
             this.$root.copedCellContent = JSON.stringify(item)
           }
+        },
+        {
+          text: '在下方添加元素',
+          onClick: (item) => {
+            const i = parent.cells.indexOf(item)
+            this.dialogAddCellVisible = true
+            this.onSelectAddCell.parentPage = parent
+            this.onSelectAddCell.addPosition = i + 1
+          }
         }
       ]
       const position = parent.cells.indexOf(item)
