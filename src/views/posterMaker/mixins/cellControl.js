@@ -105,6 +105,17 @@ export default {
           }
         },
         {
+          text: '剪切元素',
+          onClick: (item, index, event) => {
+            this.$root.copedCellContent = JSON.stringify(item)
+            if (this.onSelectCell === item) {
+              this.onSelectCell = null
+            }
+            const i = parent.cells.indexOf(item)
+            parent.cells.splice(i, 1)
+          }
+        },
+        {
           text: '在下方添加元素',
           onClick: (item) => {
             const i = parent.cells.indexOf(item)
