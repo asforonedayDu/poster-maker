@@ -35,6 +35,9 @@
     data() {
       return {}
     },
+    // created() {
+    //   this.pageWidth = document.getElementById('poster-root').clientWidth
+    // },
     render(h, context) {
       // const self = this
       let show = true
@@ -45,7 +48,7 @@
         }
       }
       return (
-        <div class={`page-body ${this.pageClass}`} style={this.styleTranslateY}>
+        <div class={`page-body ${this.pageClass}`} style={this.styleTranslateY} ref="pageContainer">
           {this.pageData.cells && show && this.pageData.cells.map(cell => {
             return !cell.props.disabled && this.renderCell(h, cell)
           })}

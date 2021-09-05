@@ -48,7 +48,7 @@
       const left = this.dragLineLeft
       return (
         <div class="design-root-container" ref="designContainer"
-             style={{width: `${baseConfig.designWidth}px`, height: `${baseConfig.designHeight}px`}}>
+             style={{width: `${baseConfig.designWidth}px`, height: `${baseConfig.designHeight}px`}} id="poster-root">
           {...new Array(81).fill('').map(() => {
             return (
               <div class="point-top"/>

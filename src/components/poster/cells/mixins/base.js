@@ -11,7 +11,7 @@ export default {
     },
     noAnimation: {
       default: false,
-    }
+    },
   },
   mounted() {
     if (this.designMode) {

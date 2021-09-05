@@ -70,7 +70,6 @@
     },
     methods: {
       handleMouseDown(event) {
-        console.log('this down', this)
         const target = event.target
         if (target === this.$refs.duration) {
           this.movingWindow = true

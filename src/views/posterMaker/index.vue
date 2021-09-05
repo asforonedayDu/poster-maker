@@ -94,8 +94,9 @@
     <el-dialog title="预览" v-if="dialogPreviewVisible" :visible.sync="dialogPreviewVisible">
       <div>
         <div class="preview-example-body">
-          <div class="example-container">
-            <poster :posterData="previewData" :htmlFontSize="1" :designMode="true"/>
+          <div class="example-container"
+               :style="`width:${baseConfig.designWidth}px;height: ${baseConfig.designHeight}px`">
+            <poster :posterData="previewData" :designMode="true"/>
           </div>
         </div>
       </div>
@@ -328,8 +329,6 @@
       align-items: center;
 
       .example-container {
-        width: 500px;
-        height: 800px;
         position: relative;
         border: 1px solid rgba(0, 0, 0, .3);
         border-radius: 30px;

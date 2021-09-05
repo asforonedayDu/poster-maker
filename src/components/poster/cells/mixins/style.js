@@ -42,8 +42,8 @@ export default {
           }
         } else if (this.justifyContent === 'mid') {
           const {top, height} = this.position
-          const windowHeight = this.designMode ? baseConfig.designHeight : document.documentElement.clientHeight || document.body.clientHeight
-          const windowWidth = this.designMode ? baseConfig.designWidth : document.documentElement.clientWidth || document.body.clientWidth
+          const windowHeight = document.getElementById('poster-root').clientHeight
+          const windowWidth = document.getElementById('poster-root').clientWidth
           const designAreaHeight = heightWidthPercentage * windowWidth
           // const cellAbsHeight = height * heightWidthPercentage * windowWidth / 100
           const inAreaTop = designAreaHeight * top / 100

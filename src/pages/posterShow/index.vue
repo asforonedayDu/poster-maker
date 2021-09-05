@@ -1,6 +1,6 @@
 <template>
-  <div class="poster-show-body">
-    <div class="poster-show-container" :style="{width:`${rootWidth?`${rootWidth}px`:'100%'}`}">
+  <div class="poster-show-body" ref="showContainer">
+    <div class="poster-show-container" :style="{width:`${rootWidth?`${rootWidth}px`:'100%'}`}" id="poster-root">
       <poster v-if="posterData.pages.length>0" :posterData="posterData" :rootWidth="rootWidth"/>
     </div>
   </div>
@@ -9,7 +9,6 @@
 <script>
   import {urlParse} from "@/libs/util.dependent";
   import {get_poster_detail} from "@/api/modules/system";
-  // import poster from '@/components/poster/index'
 
   export default {
     name: "posterShow",
@@ -35,14 +34,22 @@
         console.log('请求错误')
         return
       }
-      const windowWidth = document.documentElement.clientWidth || document.body.clientWidth
-      const windowHeight = document.documentElement.clientHeight || document.body.clientHeight
-      if ((windowHeight / windowWidth) < 1.6) {
-        this.rootWidth = windowHeight * 5 / 8
-      }
       this.posterData = JSON.parse(result.poster_data)
       // console.log('this.posterData', this.posterData)
     },
+    mounted() {
+      // 设定高度是宽度1.6倍 cell-container-mid 中设置的高度是80rem 动态根据屏幕高度设置body fontsize
+      // 因为移动端浏览器对html的font size最小值有限制 这里让html fontsize变大了一倍
+      const rootWidth = this.$refs.showContainer.clientWidth
+      const windowHeight = this.$refs.showContainer.clientHeight
+      if ((windowHeight / rootWidth) < 1.6) {
+        this.rootWidth = windowHeight * 5 / 8
+      } else {
+        this.rootWidth = rootWidth
+      }
+      let htmlDom = document.getElementsByTagName('html')[0]
+      htmlDom.style.fontSize = (this.rootWidth / 50) + 'px'
+    }
   }
 </script>
 
