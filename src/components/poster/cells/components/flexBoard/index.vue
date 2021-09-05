@@ -1,6 +1,8 @@
 <template>
-  <div :class="`default-cell ${fullScreenClass}`" :style="style" ref="targetDom">
-    <img class="full-screen-image" v-if="this.fullScreenClass && this.backgroundImage" :src="this.backgroundImage"/>
+  <div :class="`default-cell board-cell ${fullScreenClass}`" :style="style" ref="targetDom">
+    <div class="img-body" v-if="this.fullScreenClass && this.backgroundImage">
+      <img class="full-screen-image" ref="image" :src="this.backgroundImage"/>
+    </div>
   </div>
 </template>
 
@@ -9,9 +11,11 @@
   import panelList from '@/views/posterMaker/cellConfigPanel/panelList'
   import base from '../../mixins/base'
   import animation from "../../mixins/animation";
+  import PinchZoom from '@/libs/pinchzoom'
 
   const fullScreenClass = 'full-screen'
   const fullScreenReverseClass = 'full-screen-reverse'
+
   const panelCellList = Object.values({
     ...panelList,
     inputText: null,
@@ -79,6 +83,12 @@
           await this.animationPromise
         }
         if (this.fullScreenClass === fullScreenClass) {
+          this.pz.disable()
+          const imageDom = this.$refs.image
+          imageDom.style.top = '50%'
+          imageDom.style.transform = 'translate(0, -50%) scale(1, 1)'
+          imageDom.style.position = 'absolute'
+          imageDom.parentElement.style.height = 'auto'
           this.fullScreenClass = fullScreenReverseClass
           setTimeout(() => {
             this.fullScreenClass = ''
@@ -87,6 +97,13 @@
         } else {
           this.fullScreenClass = fullScreenClass
           this.$root.preventPageScroll = true
+          setTimeout(() => {
+            this.$refs.image.style.top = 0
+            this.$refs.image.style.position = 'relative'
+            this.pz = new PinchZoom(this.$refs.image, {
+              use2d: true,
+            });
+          }, 650)
         }
       },
     },
@@ -163,10 +180,79 @@
     background: rgba(1, 1, 1, 0.3) !important;
   }
 
-  .full-screen-image {
-    width: 100%;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+  .board-cell {
+    display: flex;
+    align-items: center;
+    flex-flow: column nowrap;
+    justify-content: center;
+
+    .img-body {
+      width: 100%;
+      height: auto;
+      /*display: flex;*/
+      /*align-items: center;*/
+
+      .full-screen-image {
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
   }
+
+
+  //css文件
+  .pinch-zoom-container {
+    width: 100%;
+  }
+
+  div.page {
+    /*margin: 50px auto 50px auto;*/
+    max-width: 500px;
+    position: relative;
+    text-align: left;
+  }
+
+  div.pinch-zoom {
+    position: relative;
+  }
+
+  div.pinch-zoom a {
+    color: white;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    text-decoration: none;
+    background: #333;
+    padding: 3px;
+    font-size: 11px;
+  }
+
+  div.pinch-zoom div.description {
+    position: absolute;
+    top: 500px;
+    left: 210px;
+  }
+
+  div.pinch-zoom div.description h1 {
+    font-size: 40px;
+    margin: 0px;
+    margin-bottom: 10px;
+  }
+
+  div.pinch-zoom div.description p {
+    margin: 0px;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  .imgWidth {
+    width: 100%;
+    /*height: 100%;*/
+  }
+
 </style>
