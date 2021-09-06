@@ -40,6 +40,7 @@
     // },
     render(h, context) {
       // const self = this
+      if (/hide/i.test(this.pageClass)) return ''
       let show = true
       if (!this.isCurrentPage) {
         const translateY = Math.abs(this.translateY)
@@ -128,6 +129,7 @@
 
   .hide-page {
     visibility: hidden;
+    display: none;
   }
 </style>
 <style lang="scss" scoped>
