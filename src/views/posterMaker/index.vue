@@ -23,7 +23,15 @@
       </tree-container>
     </div>
     <div class="maker-body">
-      <demo-container :demoPageData="onSelectPage" :onSelectCell="onSelectCell"/>
+      <div class="cell-drag-body">
+        <div class="drag-tip">所有元素(拖拽到设计区域以添加):</div>
+        <div class="drag-item" v-for="(cell,index) in cellList" :key="index">
+          <el-button type="primary" draggable="true" @dragstart.native="dragStart($event,cell.type)">{{cell.descriptor}}
+          </el-button>
+        </div>
+      </div>
+      <demo-container class="design-container" :demoPageData="onSelectPage" :onSelectCell="onSelectCell"
+                      @drop.native="handleDrop" @dragover.native="handleDragover"/>
     </div>
     <div class="cell-config-body">
       <page-config-panel v-if="showPageConfigPanel && onSelectPage" :onSelectPage.sync="onSelectPage"/>
@@ -137,7 +145,7 @@
   import cellConfigPanel from './cellConfigPanel'
   import pageConfigPanel from './pageConfigPanel'
   import poster from '@/components/poster/index'
-  import {treeDataType, baseConfig} from './libs/static'
+  import {treeDataType, baseConfig, cleanCellProps, getMaxCellId} from './libs/static'
   import Vue from "vue";
 
   const cellList = cells.map(component => {
@@ -254,10 +262,46 @@
               return []
             }
           },
+          handleDropItem: (originItem, item) => {
+            const cells = this.onSelectPage.cells
+            const originIndex = cells.indexOf(originItem)
+            const toIndex = cells.indexOf(item)
+            if (originIndex >= 0 && toIndex >= 0) {
+              cells.splice(originIndex, 1)
+              cleanCellProps(originItem)
+              originItem.id = `${this.onSelectPage.id}_${getMaxCellId(cells) + 1}`
+              cells.splice(toIndex > originIndex ? toIndex : toIndex + 1, 0, originItem)
+            }
+          }
         }
       }
     },
-    methods: {}
+    methods: {
+      handleDrop(event) {
+        event.preventDefault()
+        const cellType = event.dataTransfer?.getData('cellType')
+        if (!cellType) return
+        if (!this.onSelectPage?.id) {
+          if (this.pages.length > 0) {
+            return this.$message('请先选择一个页面')
+          } else {
+            this.handleCreateNewPage()
+            this.onSelectPage = this.pages[0]
+          }
+        }
+        this.onSelectAddCell.inputCellName = '未命名元素'
+        this.onSelectAddCell.cell = this.cellList.find(i => i.type === cellType)
+        this.onSelectAddCell.parentPage = this.onSelectPage
+        this.onSelectAddCell.addPosition = this.onSelectPage.cells.length
+        this.handleAddCell()
+      },
+      handleDragover(event) {
+        event.preventDefault()
+      },
+      dragStart(event, cellType) {
+        event.dataTransfer.setData('cellType', cellType);
+      }
+    }
   }
 </script>
 <style lang="scss">
@@ -305,10 +349,30 @@
     .maker-body {
       min-width: 750px;
       flex: 1;
+      flex-flow: column nowrap;
       height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
+
+      .cell-drag-body {
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        .drag-tip {
+          font-size: 18px;
+        }
+
+        .drag-item {
+          margin: 0 20px;
+        }
+      }
+
+      .design-container {
+        justify-self: center;
+      }
     }
 
     .cell-config-body {

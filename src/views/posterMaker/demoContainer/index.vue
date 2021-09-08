@@ -40,30 +40,31 @@
       for (let item of this.demoCells) {
         if (item.props.hideInDesign) continue
         items.push(this.renderCell(h, item, context))
-        // if (item === this.onSelectCell) {
-        //   items.push(this.renderEditWindow(h))
-        // }
+        if (item === this.onSelectCell) {
+          items.push(this.renderEditWindow(h))
+        }
       }
       const top = this.dragLineTop
       const left = this.dragLineLeft
       return (
         <div class="design-root-container" ref="designContainer"
              style={{width: `${baseConfig.designWidth}px`, height: `${baseConfig.designHeight}px`}} id="poster-root">
-          {...new Array(81).fill('').map(() => {
-            return (
-              <div class="point-top"/>
-            )
-          })}
-          {...new Array(101).fill('').map(() => {
-            return (
-              <div class="point-left"/>
-            )
-          })}
-
           <div class="demo-container-body">
             {items}
           </div>
-          {this.onSelectCell && this.renderEditWindow(h)}
+          <div class="border-body"/>
+          <div class="point-container">
+            {...new Array(51).fill('').map(() => {
+              return (
+                <div className="point-top"/>
+              )
+            })}
+            {...new Array(81).fill('').map(() => {
+              return (
+                <div className="point-left"/>
+              )
+            })}
+          </div>
           <div class="line-horizon" style={{top: `${top}px`}} ref="horizonLine"/>
           <div class="line-horizon-right" style={{top: `${top}px`}} ref="rightDrag"/>
           <div class="line-vertical" style={{left: `${left}px`}} ref="verticalLine"/>
@@ -255,27 +256,120 @@
 </script>
 
 <style lang="scss" scoped>
-  $alias-point-left-length: 101;
-  $alias-point-top-length: 81;
+  $alias-point-left-length: 81;
+  $alias-point-top-length: 51;
   .design-root-container {
     position: relative;
     overflow: visible;
     margin-bottom: 40px;
 
+    .point-container {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      pointer-events: none;
+
+      .point-top {
+        position: absolute;
+        transform: translateX(-50%);
+        width: 1px;
+        background: black;
+
+        &:after {
+          position: absolute;
+          top: -15px;
+          left: 50%;
+          font-size: 2px;
+          transform: translateX(-50%);
+          margin-bottom: 10px;
+        }
+      }
+
+      .point-top:nth-child(even) {
+        height: 14px;
+        top: -14px;
+      }
+
+      .point-top:nth-child(odd) {
+        height: 5px;
+        top: -5px;
+      }
+
+      @for $ii from 1 through ($alias-point-top-length) {
+        .point-top:nth-child(#{$ii}) {
+          left: (100/(($alias-point-top-length)-1))*(($ii)-1)*1%;
+
+          &:after {
+            content: if($ii%2==1, (''+(($ii)-1)), '');
+          }
+        }
+      }
+
+      .point-left {
+        position: absolute;
+        transform: translateY(-50%);
+        height: 1px;
+        background: black;
+
+        &:after {
+          position: absolute;
+          top: 50%;
+          left: -15px;
+          font-size: 2px;
+          transform: translateY(-50%);
+          margin-bottom: 10px;
+        }
+      }
+
+      .point-left:nth-child(even) {
+        left: -5px;
+        width: 5px;
+      }
+
+      .point-left:nth-child(odd) {
+        left: -14px;
+        width: 14px;
+      }
+
+      @for $i from ($alias-point-top-length+1) through ($alias-point-left-length+$alias-point-top-length) {
+        .point-left:nth-child(#{$i}) {
+          top: (100/(($alias-point-left-length)-1))*(($i)-($alias-point-top-length)-1)*1%;
+
+          &:after {
+            content: if($i%2==0, (''+(($i)-($alias-point-top-length)-1)), '');
+          }
+        }
+      }
+    }
+
     .demo-container-body {
       width: 100%;
       height: 100%;
       position: relative;
-      border-radius: 25px;
       box-sizing: content-box;
+      border-radius: 25px;
       border: 1px solid black;
-      overflow: hidden;
+      overflow: visible;
 
       .vue-draggable {
         border: 1.5px dashed #000;
         /*transform:scale(2,2.5);*/
       }
 
+    }
+
+    .border-body {
+      border-radius: 25px;
+      box-sizing: content-box;
+      border: 1px solid black;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      pointer-events: none;
     }
 
     .line-vertical {
@@ -336,54 +430,6 @@
       border-left: 24px solid red;
       border-bottom: 12px solid transparent;
       cursor: move;
-    }
-
-
-  }
-
-  .point-top {
-    position: absolute;
-    transform: translateX(-50%);
-    width: 1px;
-    background: black;
-  }
-
-  .point-top:nth-child(even) {
-    height: 14px;
-    top: -14px;
-  }
-
-  .point-top:nth-child(odd) {
-    height: 5px;
-    top: -5px;
-  }
-
-  @for $ii from 1 through ($alias-point-top-length) {
-    .point-top:nth-child(#{$ii}) {
-      left: (100/(($alias-point-top-length)-1))*(($ii)-1)*1%;
-    }
-  }
-
-  .point-left {
-    position: absolute;
-    transform: translateY(-50%);
-    height: 1px;
-    background: black;
-  }
-
-  .point-left:nth-child(even) {
-    left: -14px;
-    width: 14px;
-  }
-
-  .point-left:nth-child(odd) {
-    left: -5px;
-    width: 5px;
-  }
-
-  @for $i from ($alias-point-top-length+1) through ($alias-point-left-length+$alias-point-top-length) {
-    .point-left:nth-child(#{$i}) {
-      top: (100/(($alias-point-left-length)-1))*(($i)-($alias-point-top-length)-1)*1%;
     }
   }
 

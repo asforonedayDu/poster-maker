@@ -17,7 +17,8 @@
         treeData: [],
         contentWidth: 0,
         treeContentMaxHeight: -1,
-        moreWindow: {left: 0, top: 0, index: -1, isShow: false, options: []}
+        moreWindow: {left: 0, top: 0, index: -1, isShow: false, options: []},
+        dragStarted: false,
       }
     },
     render: function (h) {
@@ -160,12 +161,30 @@
         return treeNode
       },
       renderRow: function (h, self, item, index) {
+        let draggable = false
+        const dragEvents = {}
+        if (this?.options?.handleDropItem) {
+          draggable = true
+          dragEvents.dragstart = (event) => {
+            event.dataTransfer.setData('dragItem', `${item.id}`)
+            this.dragStarted = true
+          }
+          dragEvents.drop = (event) => {
+            const originId = event.dataTransfer?.getData('dragItem')
+            if (originId) {
+              this.handleDrop(event, originId, item)
+            }
+          }
+          dragEvents.dragover = (event) => {
+            if (this.dragStarted) event.preventDefault()
+          }
+        }
         return (
           <div key={item.id} class={['row-body']}
                style={{
                  'padding-left': `${(self.search.input && self.options.search.useLocalSearch) ? 0 : 14 * item.$level}px`,
                  ...self.getBackgroundColor()
-               }}>
+               }} on={dragEvents} draggable={draggable} onDragend={this.handleDragEnd}>
             {self.renderTriangle(h, self, item, index)}
             <div
               class={['content-row', item.active === 0 && 'inactive', self.selectedIndex === index && 'item-selected']}
@@ -260,6 +279,15 @@
         } else {
           return item?.props?.name || item.name
         }
+      },
+      handleDrop(event, originId, item) {
+        const originItem = this.treeData.find(item => item.id === originId)
+        if (originItem && originItem !== item) {
+          this?.options?.handleDropItem(originItem, item)
+        }
+      },
+      handleDragEnd(event) {
+        this.dragStarted = false
       },
       handleClickItem: function (h, self, item, index) {
         self.selectedIndex = index
