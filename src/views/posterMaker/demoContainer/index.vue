@@ -56,12 +56,12 @@
           <div class="point-container">
             {...new Array(51).fill('').map(() => {
               return (
-                <div className="point-top"/>
+                <div class="point-top"/>
               )
             })}
             {...new Array(81).fill('').map(() => {
               return (
-                <div className="point-left"/>
+                <div class="point-left"/>
               )
             })}
           </div>
@@ -350,7 +350,7 @@
       position: relative;
       box-sizing: content-box;
       border-radius: 25px;
-      border: 1px solid black;
+      /*border: 1px solid black;*/
       overflow: visible;
 
       .vue-draggable {
@@ -362,13 +362,13 @@
 
     .border-body {
       border-radius: 25px;
-      box-sizing: content-box;
+      box-sizing: border-box;
       border: 1px solid black;
       position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
+      top: -1px;
+      right: -1px;
+      left: -1px;
+      bottom: -1px;
       pointer-events: none;
     }
 
