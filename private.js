@@ -32,14 +32,14 @@ module.exports = {
   },
   DEV_PROXY: {
     "/posterServer": {
-      target: "http://127.0.0.1:8777/",
+      target: "https://www.cybernick.club/",
       changeOrigin: true,
       // pathRewrite: {
       //   '^/api_h5': '/api'
       // }
     },
     "/posterFile": {
-      target: "http://127.0.0.1:8777/",
+      target: "https://www.cybernick.club/",
       changeOrigin: true,
       // pathRewrite: {
       //   '^/posterFile/font': '/'

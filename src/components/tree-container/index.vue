@@ -30,10 +30,10 @@
             'min-width': this.foldConfig.fold ? '0' : `${this.options.style.contentMinWidth ? this.options.style.contentMinWidth : '230'}px`,
           }}>
             <div class="content-border">
-              {this.renderSearch(h)}
               <div class="slot-header" ref="slotHeaderDom">
                 {this.$scopedSlots.header && this.$scopedSlots.header({})}
               </div>
+              {this.renderSearch(h)}
               <div class="content" style={{
                 'max-height': `${this.treeContentMaxHeight}px`,
               }}>
